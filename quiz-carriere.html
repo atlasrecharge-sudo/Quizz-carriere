@@ -259,7 +259,17 @@ body{min-height:100vh;display:flex;justify-content:center;background:var(--bg)}
     </div>
     <div class="bd-card" id="bd"></div>
     <button class="btn-retry" onclick="retryLevel()">Rejouer ce niveau</button>
+    <button id="btn-share-score" style="width:100%;background:var(--blue);color:white;border:none;border-radius:13px;padding:14px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;margin-bottom:8px" onclick="shareScore()">🔗 Partager mon score</button>
     <button class="btn-back" onclick="goHome()">Retour aux niveaux</button>
+
+    <!-- Score Card partagée -->
+    <div id="shared-score-card" style="display:none;background:var(--card);border:2px solid var(--orange);border-radius:18px;padding:20px;text-align:center;margin-top:4px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:10px">Score partagé</div>
+      <div id="shared-score-display" style="font-size:40px;font-weight:900;color:var(--orange)"></div>
+      <div id="shared-score-level" style="font-size:13px;color:var(--muted);margin:4px 0 12px"></div>
+      <div id="shared-score-link" style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:11px;color:var(--muted);word-break:break-all;text-align:left;cursor:pointer" onclick="copyLink()" title="Clique pour copier"></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:8px">👆 Clique sur le lien pour copier</div>
+    </div>
   </div>
 </div>
 
@@ -570,12 +580,63 @@ function renderFlash(){const q=fcQ[fcIdx];document.getElementById('fcfront').sty
 function flipCard(){const fr=document.getElementById('fcfront'),bk=document.getElementById('fcback');const f=bk.style.display==='flex';fr.style.display=f?'flex':'none';bk.style.display=f?'none':'flex';}
 function fcNext(k){if(k)fcKnown++;fcIdx++;if(fcIdx>=fcQ.length){toast(`Fini ! ${fcKnown}/${fcQ.length} connues.`);setTimeout(()=>{fcIdx=0;fcKnown=0;fcQ=shuffle(Q[curLevel]);renderFlash();},1500);return;}renderFlash();}
 
+function shareScore(){
+  const pct=Math.round(score/qs.length*100);
+  const lvConf=LEVELS[curLevel-1];
+  const name=localStorage.getItem('playerName')||'';
+  const playerName=name||prompt('Ton prénom (pour le lien partagé) :','');
+  if(playerName)localStorage.setItem('playerName',playerName);
+  const base=window.location.href.split('?')[0];
+  const link=`${base}?s=${score}&t=${qs.length}&lv=${curLevel}&pct=${pct}&name=${encodeURIComponent(playerName||'Joueur')}`;
+  document.getElementById('shared-score-display').textContent=score+'/'+qs.length+' ('+pct+'%)';
+  document.getElementById('shared-score-level').textContent=lvConf.icon+' Niveau '+lvConf.name+' · '+(playerName||'Joueur');
+  document.getElementById('shared-score-link').textContent=link;
+  document.getElementById('shared-score-link').dataset.link=link;
+  document.getElementById('shared-score-card').style.display='block';
+  document.getElementById('shared-score-card').scrollIntoView({behavior:'smooth'});
+}
+
+function copyLink(){
+  const link=document.getElementById('shared-score-link').dataset.link;
+  if(navigator.clipboard){navigator.clipboard.writeText(link).then(()=>toast('Lien copié !'));}
+  else{const ta=document.createElement('textarea');ta.value=link;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('Lien copié !');}
+}
+
+function checkSharedScore(){
+  const params=new URLSearchParams(window.location.search);
+  if(!params.get('s'))return;
+  const s=parseInt(params.get('s')),t=parseInt(params.get('t')),lv=parseInt(params.get('lv'));
+  const pct=parseInt(params.get('pct'));const name=decodeURIComponent(params.get('name')||'Joueur');
+  const lvConf=LEVELS[lv-1]||LEVELS[0];
+  // Show a dedicated shared score view
+  const el=document.createElement('div');
+  el.style.cssText='position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:32px;font-family:Inter,sans-serif';
+  el.innerHTML=`
+    <div style="display:flex;height:5px;border-radius:100px;overflow:hidden;gap:3px;width:200px">
+      <div style="flex:1;background:#E8002D;border-radius:100px"></div>
+      <div style="flex:1;background:#F5800A;border-radius:100px"></div>
+      <div style="flex:1;background:#F5C400;border-radius:100px"></div>
+      <div style="flex:1;background:#00A550;border-radius:100px"></div>
+      <div style="flex:1;background:#0064A8;border-radius:100px"></div>
+    </div>
+    <div style="font-size:18px;font-weight:800;color:var(--text)">Quiz TotalEnergies</div>
+    <div style="font-size:48px">${pct>=90?'🏆':pct>=70?'💪':pct>=50?'📚':'🔁'}</div>
+    <div style="font-size:28px;font-weight:900;color:${lvConf.tc}">${s}/${t} (${pct}%)</div>
+    <div style="font-size:15px;font-weight:700;color:var(--text)">${name}</div>
+    <div style="font-size:13px;color:var(--muted)">${lvConf.icon} Niveau ${lvConf.name}</div>
+    <div style="font-size:12px;color:var(--muted);text-align:center;max-width:280px;line-height:1.5">Tu peux battre ce score ?</div>
+    <button onclick="window.location.href=window.location.href.split('?')[0]" style="background:#F5800A;color:white;border:none;border-radius:13px;padding:14px 32px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer">Jouer maintenant →</button>
+  `;
+  document.body.appendChild(el);
+}
+
 const savedTheme=localStorage.getItem('theme')||'light';
 document.documentElement.setAttribute('data-theme',savedTheme);
 document.getElementById('dark-btn').textContent=savedTheme==='dark'?'☀️':'🌙';
 document.getElementById('tab-stats').style.display='flex';
 document.getElementById('tab-stats').style.flexDirection='column';
 document.getElementById('tab-stats').style.gap='14px';
+checkSharedScore();
 renderHome();
 </script>
 </body>
