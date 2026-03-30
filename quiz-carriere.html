@@ -7,19 +7,10 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{
-  --red:#E8002D;--orange:#F5800A;--yellow:#F5C400;--green:#00A550;--blue:#0064A8;
-  --text:#0D1117;--muted:#6B7280;--border:rgba(0,0,0,0.08);--white:#FFFFFF;--bg:#F4F6FA;
-  --card:#FFFFFF;--topbg:rgba(255,255,255,0.96);
-}
-[data-theme="dark"]{
-  --text:#E6EDF3;--muted:#8B949E;--border:rgba(255,255,255,0.08);
-  --white:#161B22;--bg:#0D1117;--card:#161B22;--topbg:rgba(13,17,23,0.96);
-}
+:root{--red:#E8002D;--orange:#F5800A;--yellow:#F5C400;--green:#00A550;--blue:#0064A8;--purple:#7C3AED;--teal:#0891B2;--text:#0D1117;--muted:#6B7280;--border:rgba(0,0,0,0.08);--white:#FFFFFF;--bg:#F4F6FA;--card:#FFFFFF;--topbg:rgba(255,255,255,0.96)}
+[data-theme="dark"]{--text:#E6EDF3;--muted:#8B949E;--border:rgba(255,255,255,0.08);--white:#161B22;--bg:#0D1117;--card:#161B22;--topbg:rgba(13,17,23,0.96)}
 html{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);transition:background 0.3s,color 0.3s}
 body{min-height:100vh;display:flex;justify-content:center;background:var(--bg)}
-
-/* TOPBAR */
 .topbar{position:fixed;top:0;left:0;right:0;z-index:100;height:56px;background:var(--topbg);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;padding:0 16px}
 .tl{display:flex;align-items:center;gap:10px}
 .ti{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--red),var(--orange));display:flex;align-items:center;justify-content:center;color:white;font-size:14px;font-weight:900}
@@ -29,22 +20,15 @@ body{min-height:100vh;display:flex;justify-content:center;background:var(--bg)}
 .mode-btn{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;font-family:inherit;border:1.5px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s}
 .mode-btn.on{background:var(--orange);color:white;border-color:var(--orange)}
 .dark-btn{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--border);background:transparent;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
-
 .app{width:100%;max-width:560px;padding:72px 16px 60px}
 .screen{display:none;flex-direction:column;gap:14px}
 .screen.active{display:flex}
 .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:20px;box-shadow:0 1px 8px rgba(0,0,0,0.05);transition:background 0.3s}
-
-/* STRIPE */
 .stripe{display:flex;height:5px;border-radius:100px;overflow:hidden;margin-bottom:16px;gap:3px}
 .stripe div{flex:1;border-radius:100px}
-
-/* HOME TABS */
 .htabs{display:flex;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:4px}
 .htab{flex:1;padding:8px;border-radius:10px;border:none;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;background:transparent;color:var(--muted);transition:all 0.15s}
 .htab.on{background:var(--orange);color:white}
-
-/* LEVEL CARDS */
 .level-card{border-radius:16px;border:2px solid var(--border);padding:15px 16px;cursor:pointer;transition:all 0.15s;position:relative;overflow:hidden;display:flex;align-items:center;gap:12px;background:var(--card)}
 .level-card:active:not(.locked){opacity:0.85}
 .level-card.locked{opacity:0.45;cursor:not-allowed}
@@ -62,8 +46,6 @@ body{min-height:100vh;display:flex;justify-content:center;background:var(--bg)}
 .lpct{font-size:10px;color:var(--muted)}
 .lprog{height:3px;border-radius:100px;background:var(--bg);overflow:hidden;margin-top:5px}
 .lbar{height:100%;border-radius:100px;transition:width 0.5s}
-
-/* XP BAR */
 .xp-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
 .xp-label{font-size:13px;font-weight:700;color:var(--text)}
 .xp-val{font-size:12px;color:var(--muted)}
@@ -71,8 +53,6 @@ body{min-height:100vh;display:flex;justify-content:center;background:var(--bg)}
 .xp-fill{height:100%;border-radius:100px;transition:width 0.5s;background:linear-gradient(90deg,var(--orange),var(--red))}
 .streak-row{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
 .streak-badge{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--orange)}
-
-/* STATS */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .stat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center}
 .stat-n{font-size:28px;font-weight:900;color:var(--text)}
@@ -85,22 +65,18 @@ body{min-height:100vh;display:flex;justify-content:center;background:var(--bg)}
 .wp-row{display:flex;align-items:center;gap:10px}
 .wp-bar{flex:1;height:6px;border-radius:100px;background:var(--bg);overflow:hidden}
 .wp-fill{height:100%;border-radius:100px}
-.wp-label{font-size:12px;color:var(--muted);min-width:80px}
+.wp-label{font-size:11px;color:var(--muted);min-width:90px}
 .wp-pct{font-size:12px;font-weight:700;min-width:32px;text-align:right}
-
-/* MEMO */
-.memo-tabs{display:flex;gap:8px;flex-wrap:wrap}
-.mtab{padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);font-size:11px;font-weight:700;font-family:inherit;background:transparent;color:var(--muted);cursor:pointer}
+.memo-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.mtab{padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);font-size:11px;font-weight:700;font-family:inherit;background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s}
 .mtab.on{background:var(--orange);color:white;border-color:var(--orange)}
-.memo-content{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-top:10px}
+.memo-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-top:10px}
 .memo-title{font-size:15px;font-weight:800;color:var(--text);margin-bottom:12px}
 .memo-item{display:flex;justify-content:space-between;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--border);gap:12px}
 .memo-item:last-child{border-bottom:none}
 .memo-key{font-size:13px;font-weight:600;color:var(--text);flex:1}
-.memo-val{font-size:13px;font-weight:800;color:var(--orange);text-align:right;flex-shrink:0}
+.memo-val{font-size:13px;font-weight:800;text-align:right;flex-shrink:0}
 .memo-exp{font-size:11px;color:var(--muted);margin-top:2px}
-
-/* QUIZ */
 .quiz-hdr{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:13px 16px;box-shadow:0 1px 6px rgba(0,0,0,0.04)}
 .qm{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
 .qnum{font-size:12px;color:var(--muted);font-weight:600}
@@ -109,14 +85,14 @@ body{min-height:100vh;display:flex;justify-content:center;background:var(--bg)}
 .qlvbadge{font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px}
 .pw{background:var(--bg);border-radius:100px;height:4px;overflow:hidden}
 .pb{height:100%;border-radius:100px;transition:width 0.4s}
-
-/* Q CARD with animation */
 .qcard{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:20px 18px;box-shadow:0 1px 8px rgba(0,0,0,0.05);animation:slideIn 0.25s ease-out}
 @keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
 .qbadge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:4px 11px;border-radius:20px;margin-bottom:12px}
 .b-chiffres{background:rgba(0,100,168,0.1);color:var(--blue)}
 .b-finance{background:rgba(0,165,80,0.1);color:var(--green)}
 .b-strategie{background:rgba(245,128,10,0.1);color:var(--orange)}
+.b-branches{background:rgba(124,58,237,0.1);color:var(--purple)}
+.b-projet{background:rgba(8,145,178,0.1);color:var(--teal)}
 .qtext{font-size:17px;font-weight:800;color:var(--text);line-height:1.4;margin-bottom:5px}
 .qhint{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:16px}
 .answers{display:flex;flex-direction:column;gap:9px}
@@ -134,12 +110,9 @@ body{min-height:100vh;display:flex;justify-content:center;background:var(--bg)}
 .fb.show{display:block}
 .fb.ok{background:rgba(0,165,80,0.08);border:1px solid rgba(0,165,80,0.2);color:#007A3A}
 .fb.ko{background:rgba(232,0,45,0.06);border:1px solid rgba(232,0,45,0.2);color:var(--red)}
-[data-theme="dark"] .fb.ok{color:#56d364}
-[data-theme="dark"] .fb.ko{color:#ff7b72}
+[data-theme="dark"] .fb.ok{color:#56d364}[data-theme="dark"] .fb.ko{color:#ff7b72}
 .btn-next{width:100%;background:var(--card);border:1.5px solid rgba(245,128,10,0.35);border-radius:13px;padding:14px;font-size:14px;font-weight:700;font-family:inherit;color:var(--orange);cursor:pointer;display:none;box-shadow:0 1px 6px rgba(0,0,0,0.04)}
 .btn-next.show{display:block}
-
-/* RESULT */
 .rtop{text-align:center}
 .remoji{font-size:48px;margin-bottom:6px}
 .rtitle{font-size:24px;font-weight:900;color:var(--text);margin-bottom:4px}
@@ -157,16 +130,10 @@ body{min-height:100vh;display:flex;justify-content:center;background:var(--bg)}
 .vg{color:var(--green)}.vm{color:var(--orange)}.vb{color:var(--red)}
 .btn-retry{width:100%;background:var(--orange);color:white;border:none;border-radius:13px;padding:14px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;margin-bottom:8px}
 .btn-back{width:100%;background:var(--card);color:var(--text);border:1.5px solid var(--border);border-radius:13px;padding:14px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer}
-
-/* FLASH */
 .flashcard{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:36px 20px 28px;box-shadow:0 1px 10px rgba(0,0,0,0.06);text-align:center;min-height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:pointer;animation:slideIn 0.2s ease-out}
-
-/* CONFETTI */
 .confetti-wrap{position:fixed;inset:0;pointer-events:none;z-index:999}
 .confetti-piece{position:absolute;width:10px;height:10px;border-radius:2px;animation:confettiFall 3s ease-in forwards}
 @keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
-
-/* TOAST */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:11px 20px;border-radius:11px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:opacity 0.3s;z-index:999;white-space:nowrap}
 .toast.show{opacity:1}
 </style>
@@ -188,39 +155,31 @@ body{min-height:100vh;display:flex;justify-content:center;background:var(--bg)}
 </header>
 
 <div class="app">
-
   <!-- HOME -->
   <div class="screen active" id="screen-home">
     <div class="card">
       <div class="stripe"><div style="background:var(--red)"></div><div style="background:var(--orange)"></div><div style="background:var(--yellow)"></div><div style="background:var(--green)"></div><div style="background:var(--blue)"></div></div>
       <h1 style="font-size:24px;font-weight:900;letter-spacing:-0.02em;margin-bottom:5px">Quiz <span style="color:var(--red)">TotalEnergies</span></h1>
-      <p style="font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:14px">4 niveaux progressifs · Fiches mémo · Stats détaillées</p>
+      <p style="font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:14px">4 niveaux · 5 modules · 60 questions · Fiches mémo incluses</p>
       <div style="display:flex;flex-direction:column;gap:10px" id="levels-grid"></div>
     </div>
-
-    <div class="card" id="xp-card">
-      <div class="xp-row">
-        <span class="xp-label" id="xp-lname">Débutant</span>
-        <span class="xp-val" id="xp-val">0 XP</span>
-      </div>
+    <div class="card">
+      <div class="xp-row"><span class="xp-label" id="xp-lname">Débutant</span><span class="xp-val" id="xp-val">0 XP</span></div>
       <div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
       <div class="streak-row">
-        <div class="streak-badge">🔥 <span id="streak-text">0 jours consécutifs</span></div>
+        <div class="streak-badge">🔥 <span id="streak-text">0 jour consécutif</span></div>
         <div style="font-size:11px;color:var(--muted)" id="last-played"></div>
       </div>
     </div>
-
     <div class="htabs">
       <button class="htab on" onclick="switchTab('stats')">📊 Stats</button>
       <button class="htab" onclick="switchTab('memo')">📋 Mémo</button>
     </div>
-
-    <!-- STATS TAB -->
-    <div id="tab-stats">
+    <div id="tab-stats" style="display:flex;flex-direction:column;gap:14px">
       <div class="card">
-        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:12px">Progression par niveau</div>
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:12px">7 dernières sessions</div>
         <div class="chart-wrap" id="chart"></div>
-        <div style="font-size:12px;font-weight:700;color:var(--text);margin:14px 0 8px">Points faibles détectés</div>
+        <div style="font-size:12px;font-weight:700;color:var(--text);margin:14px 0 8px">Points faibles</div>
         <div class="weakpoints" id="weakpoints"></div>
       </div>
       <div class="stats-grid">
@@ -230,13 +189,13 @@ body{min-height:100vh;display:flex;justify-content:center;background:var(--bg)}
         <div class="stat-card"><div class="stat-n" id="st-best">—</div><div class="stat-l">Meilleur niveau</div></div>
       </div>
     </div>
-
-    <!-- MEMO TAB -->
     <div id="tab-memo" style="display:none">
       <div class="memo-tabs">
         <button class="mtab on" onclick="switchMemo('chiffres')">📊 Chiffres</button>
         <button class="mtab" onclick="switchMemo('finance')">💰 Finance</button>
         <button class="mtab" onclick="switchMemo('strategie')">🌍 Stratégie</button>
+        <button class="mtab" onclick="switchMemo('branches')">⚡ Branches</button>
+        <button class="mtab" onclick="switchMemo('projet')">🎯 Projet</button>
       </div>
       <div id="memo-content"></div>
     </div>
@@ -246,7 +205,7 @@ body{min-height:100vh;display:flex;justify-content:center;background:var(--bg)}
   <div class="screen" id="screen-quiz">
     <div class="quiz-hdr">
       <div class="qm">
-        <span class="qnum" id="qnum">1/10</span>
+        <span class="qnum" id="qnum">1/15</span>
         <div style="display:flex;gap:7px;align-items:center">
           <span class="qlvbadge" id="qlvbadge"></span>
           <span class="qtimer" id="qtimer">30s</span>
@@ -274,10 +233,10 @@ body{min-height:100vh;display:flex;justify-content:center;background:var(--bg)}
       </div>
       <div id="fcback" style="display:none;flex-direction:column;gap:8px;align-items:center">
         <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted)">Réponse</div>
-        <div id="fca" style="font-size:16px;font-weight:700;color:var(--green);line-height:1.5"></div>
+        <div id="fca" style="font-size:16px;font-weight:700;color:var(--green);line-height:1.5;text-align:center"></div>
       </div>
     </div>
-    <div style="font-size:12px;color:var(--muted);text-align:center" id="fccount">Carte 1/10</div>
+    <div style="font-size:12px;color:var(--muted);text-align:center" id="fccount">Carte 1/15</div>
     <div style="display:flex;gap:10px">
       <button onclick="fcNext(false)" style="flex:1;padding:13px;border-radius:12px;font-size:13px;font-weight:700;font-family:inherit;border:1.5px solid var(--red);background:rgba(232,0,45,0.04);color:var(--red);cursor:pointer">Pas su</button>
       <button onclick="fcNext(true)" style="flex:1;padding:13px;border-radius:12px;font-size:13px;font-weight:700;font-family:inherit;border:1.5px solid var(--green);background:rgba(0,165,80,0.05);color:var(--green);cursor:pointer">Su !</button>
@@ -302,79 +261,95 @@ body{min-height:100vh;display:flex;justify-content:center;background:var(--bg)}
     <button class="btn-retry" onclick="retryLevel()">Rejouer ce niveau</button>
     <button class="btn-back" onclick="goHome()">Retour aux niveaux</button>
   </div>
-
 </div>
 
 <script>
-// ── CONFIG ──
 const LEVELS=[
-  {id:1,name:"Débutant",icon:"🌱",color:"var(--green)",tc:"#00A550",timer:40,threshold:0,lv:"lv1",desc:"Notions fondamentales — définitions et ordres de grandeur"},
-  {id:2,name:"Intermédiaire",icon:"📘",color:"var(--blue)",tc:"#0064A8",timer:30,threshold:60,lv:"lv2",desc:"Mécanismes financiers et stratégiques"},
-  {id:3,name:"Avancé",icon:"🔥",color:"var(--orange)",tc:"#F5800A",timer:25,threshold:70,lv:"lv3",desc:"Indicateurs précis et stratégie groupe"},
-  {id:4,name:"Expert",icon:"🏆",color:"var(--red)",tc:"#E8002D",timer:15,threshold:80,lv:"lv4",desc:"Niveau entretien RH Groupe — précision et vitesse"},
+  {id:1,name:"Débutant",icon:"🌱",color:"var(--green)",tc:"#00A550",timer:40,threshold:0,lv:"lv1",desc:"Définitions, notions de base, ordres de grandeur"},
+  {id:2,name:"Intermédiaire",icon:"📘",color:"var(--blue)",tc:"#0064A8",timer:30,threshold:60,lv:"lv2",desc:"Mécanismes financiers, stratégie et branches"},
+  {id:3,name:"Avancé",icon:"🔥",color:"var(--orange)",tc:"#F5800A",timer:25,threshold:70,lv:"lv3",desc:"Indicateurs précis, gestion de projet, stratégie groupe"},
+  {id:4,name:"Expert",icon:"🏆",color:"var(--red)",tc:"#E8002D",timer:15,threshold:80,lv:"lv4",desc:"Niveau entretien RH Groupe — précision et vitesse exigées"},
 ];
 
-const CAT_LABELS={chiffres:"Chiffres TotalEnergies",finance:"Finance Corporate",strategie:"Stratégie Groupe"};
-const CAT_ICONS={chiffres:"📊",finance:"💰",strategie:"🌍"};
-const CAT_COLORS={chiffres:"b-chiffres",finance:"b-finance",strategie:"b-strategie"};
-const PROG_COLORS={chiffres:"var(--blue)",finance:"var(--green)",strategie:"var(--orange)"};
+const CAT_LABELS={chiffres:"Chiffres TotalEnergies",finance:"Finance Corporate",strategie:"Stratégie Groupe",branches:"Branches TotalEnergies",projet:"Gestion de Projet"};
+const CAT_ICONS={chiffres:"📊",finance:"💰",strategie:"🌍",branches:"⚡",projet:"🎯"};
+const CAT_COLORS={chiffres:"b-chiffres",finance:"b-finance",strategie:"b-strategie",branches:"b-branches",projet:"b-projet"};
+const CAT_TC={chiffres:"var(--blue)",finance:"var(--green)",strategie:"var(--orange)",branches:"var(--purple)",projet:"var(--teal)"};
 
-// ── QUESTIONS ──
 const Q={
-1:[
-  {cat:"chiffres",q:"Quel est le CFFO de TotalEnergies en 2025 ?",hint:"Cash Flow des Opérations — chiffre à citer absolument.",a:["22,3 Mds$","27,8 Mds$","31,4 Mds$","19,6 Mds$"],c:1,e:"CFFO 2025 : 27,8 Mds$."},
-  {cat:"chiffres",q:"Performance boursière de TotalEnergies en 2025 ?",hint:"À comparer avec les autres majors.",a:["+8%","+14%","+20%","+31%"],c:2,e:"+20% en 2025."},
-  {cat:"chiffres",q:"Gearing de TotalEnergies fin 2025 ?",hint:"Dette nette / capitaux propres.",a:["8,2%","14,7%","22,1%","31,5%"],c:1,e:"Gearing 14,7% — faible, signe de solidité."},
-  {cat:"finance",q:"Qu'est-ce que le gearing ?",hint:"Ratio d'endettement fondamental.",a:["Ratio dividende/BPA","Dette nette/capitaux propres","EBITDA/CA","Coût du capital"],c:1,e:"Gearing = Dette nette / Capitaux propres."},
-  {cat:"finance",q:"Que signifie EBITDA ?",hint:"Solde intermédiaire de gestion très utilisé.",a:["Earnings Before Interest Taxes Depreciation Amortization","Equity Base Including Tax Distribution Account","Estimated Budget Including Total Debt Amount","Earnings Before Income Tax Distribution"],c:0,e:"EBITDA = Résultat avant intérêts, impôts, amortissements. Proxy du cash-flow opérationnel."},
+1:[ // DÉBUTANT (15 questions)
+  {cat:"chiffres",q:"Quel est le CFFO de TotalEnergies en 2025 ?",hint:"Cash Flow des Opérations — le chiffre le plus cité en entretien.",a:["22,3 Mds$","27,8 Mds$","31,4 Mds$","19,6 Mds$"],c:1,e:"CFFO 2025 : 27,8 Mds$."},
+  {cat:"chiffres",q:"Performance boursière de TotalEnergies en 2025 ?",hint:"À comparer avec les autres majors pétrolières.",a:["+8%","+14%","+20%","+31%"],c:2,e:"+20% en 2025."},
+  {cat:"chiffres",q:"Gearing de TotalEnergies fin 2025 ?",hint:"Ratio dette nette / capitaux propres.",a:["8,2%","14,7%","22,1%","31,5%"],c:1,e:"Gearing 14,7% — faible, signe de solidité financière."},
+  {cat:"finance",q:"Qu'est-ce que le gearing ?",hint:"Ratio d'endettement fondamental des groupes pétroliers.",a:["Ratio dividende / bénéfice par action","Dette nette / capitaux propres","EBITDA / chiffre d'affaires","Coût moyen pondéré du capital"],c:1,e:"Gearing = Dette nette / Capitaux propres."},
+  {cat:"finance",q:"Que signifie EBITDA ?",hint:"Earnings Before Interest, Taxes, Depreciation and Amortization.",a:["Earnings Before Interest Taxes Depreciation and Amortization","Equity Base Including Tax and Dividend Allocation","Estimated Budget Including Total Debt Amount","Earnings Before Income Tax Distribution Assessment"],c:0,e:"EBITDA = Résultat avant intérêts, impôts, dotations aux amortissements. Proxy du cash-flow opérationnel."},
   {cat:"finance",q:"Qu'est-ce qu'un PPA ?",hint:"TotalEnergies en a signé avec Google, ByteDance, Microsoft.",a:["Planned Production Agreement","Power Purchase Agreement","Petroleum Production Allocation","Portfolio Performance Assessment"],c:1,e:"PPA = Power Purchase Agreement. Contrat d'achat d'électricité long terme."},
-  {cat:"strategie",q:"Projets majeurs de TotalEnergies en Namibie ?",hint:">1,5 Mds barils de réserves potentielles.",a:["Oryx et Kalahari","Venus et Mopane","Namib et Atlantic","Orange et Kudu"],c:1,e:"Projets Venus et Mopane."},
-  {cat:"strategie",q:"Stratégie TotalEnergies face à la transition énergétique ?",hint:"Modèle différencié des autres majors.",a:["Sortie totale des hydrocarbures d'ici 2035","Hydrocarbures financent électricité et renouvelables","Focalisation exclusive GNL","Recentrage upstream uniquement"],c:1,e:"Modèle multi-énergie : hydrocarbures (cash machine) financent la croissance dans l'électricité et les renouvelables."},
-  {cat:"chiffres",q:"Coût de production Upstream TotalEnergies 2025 ?",hint:"L'un des plus bas de l'industrie.",a:["3$/boe","5$/boe","8$/boe","12$/boe"],c:1,e:"5$/boe — très compétitif."},
-  {cat:"strategie",q:"Qu'est-ce que le GNL ?",hint:"Axe majeur de la stratégie de transition TotalEnergies.",a:["Gaz Naturel Liquéfié","Gestion Numérique des Liquidités","Garantie de Non-Livraison","Gestion des Niveaux de Liquidité"],c:0,e:"GNL = Gaz Naturel Liquéfié. TotalEnergies est l'un des leaders mondiaux."},
+  {cat:"strategie",q:"Projets majeurs de TotalEnergies en Namibie ?",hint:">1,5 milliards de barils de réserves potentielles.",a:["Oryx et Kalahari","Venus et Mopane","Namib et Atlantic","Orange et Kudu"],c:1,e:"Projets Venus et Mopane — FID attendues 2026-2028."},
+  {cat:"strategie",q:"Stratégie TotalEnergies face à la transition énergétique ?",hint:"Modèle différencié vs BP et Shell.",a:["Sortie totale des hydrocarbures d'ici 2035","Hydrocarbures financent électricité et renouvelables","Focalisation exclusive sur le GNL","Recentrage sur l'upstream pétrole"],c:1,e:"Modèle multi-énergie : les hydrocarbures (cash machine) financent la croissance dans l'électricité, le GNL et les renouvelables."},
+  {cat:"chiffres",q:"Coût de production Upstream TotalEnergies 2025 ?",hint:"L'un des plus bas de l'industrie — exprimé en $/boe.",a:["3$/boe","5$/boe","8$/boe","12$/boe"],c:1,e:"5$/boe — très compétitif parmi les majors pétrolières."},
+  {cat:"strategie",q:"Qu'est-ce que le GNL ?",hint:"Axe de croissance majeur dans la stratégie TotalEnergies.",a:["Gaz Naturel Liquéfié","Gestion Numérique des Liquidités","Garantie de Non-Livraison","Gestion des Niveaux de Liquidité"],c:0,e:"GNL = Gaz Naturel Liquéfié. TotalEnergies est l'un des leaders mondiaux."},
+  {cat:"branches",q:"Que fait la branche EV (Electric Vehicles) de TotalEnergies ?",hint:"Inclut notamment la recharge des véhicules électriques.",a:["Fabrique des véhicules électriques","Développe et opère des infrastructures de recharge pour véhicules électriques","Vend des batteries aux constructeurs auto","Gère les flottes électriques des filiales"],c:1,e:"La branche EV développe et opère des bornes de recharge (CPO/MSP), des solutions de charge intelligente et des services associés."},
+  {cat:"branches",q:"Qu'est-ce que le SAF dans le portefeuille TotalEnergies ?",hint:"Concerne le secteur aérien.",a:["Système d'Analyse Financière","Sustainable Aviation Fuel — carburant aviation durable","Service d'Affrètement de Flotte","Syndicat des Actifs Fixes"],c:1,e:"SAF = Sustainable Aviation Fuel. Carburant durable pour l'aviation, produit à partir de matières résiduelles ou renouvelables."},
+  {cat:"projet",q:"Que signifie l'acronyme SCRUM ?",hint:"Framework de développement agile.",a:["Strategic Corporate Resource Unified Method","Framework agile itératif basé sur des sprints et des rôles définis","Software Control and Release Update Management","Structured Continuous Review and Update Model"],c:1,e:"Scrum est un framework agile organisé en sprints (itérations) avec des rôles clés : Product Owner, Scrum Master, équipe de développement."},
+  {cat:"projet",q:"Qu'est-ce qu'un Product Owner (PO) dans un projet agile ?",hint:"Rôle clé entre le métier et l'équipe technique.",a:["Le chef de projet traditionnel qui gère le budget","Le responsable de la vision produit et du backlog","Le développeur senior référent technique","Le client final du produit"],c:1,e:"Le PO représente les besoins métier, priorise le backlog et s'assure que l'équipe livre de la valeur."},
+  {cat:"projet",q:"Qu'est-ce qu'un sprint en méthode agile ?",hint:"Unité de temps de base dans Scrum.",a:["Une réunion hebdomadaire de statut projet","Une itération de travail courte et fixe (1-4 semaines) avec un livrable défini","Un document de planification trimestriel","Une revue de performance de l'équipe"],c:1,e:"Un sprint est une itération de 1 à 4 semaines avec un objectif clair et un livrable potentiellement shippable."},
 ],
-2:[
-  {cat:"chiffres",q:"Résultat net ajusté TotalEnergies 2025 ?",hint:"Exclut les éléments exceptionnels.",a:["12,1 Mds$","18,3 Mds$","15,6 Mds$","21,2 Mds$"],c:2,e:"Résultat net ajusté 2025 : 15,6 Mds$."},
+2:[ // INTERMÉDIAIRE (15 questions)
+  {cat:"chiffres",q:"Résultat net ajusté TotalEnergies 2025 ?",hint:"Exclut les éléments exceptionnels — performance récurrente.",a:["12,1 Mds$","18,3 Mds$","15,6 Mds$","21,2 Mds$"],c:2,e:"Résultat net ajusté 2025 : 15,6 Mds$."},
   {cat:"chiffres",q:"CAPEX net TotalEnergies 2025 ?",hint:"Investissements nets du groupe.",a:["14,2 Mds$","17,1 Mds$","20,5 Mds$","11,8 Mds$"],c:1,e:"CAPEX net 2025 : 17,1 Mds$."},
-  {cat:"finance",q:"Que mesure le ROACE ?",hint:"Indicateur phare pour les groupes pétroliers.",a:["Rentabilité des actions cotées","Retour sur capitaux employés en moyenne","Rentabilité nette après impôts","Ratio de couverture des intérêts"],c:1,e:"Return On Average Capital Employed = résultat net opérationnel / capitaux employés moyens."},
-  {cat:"finance",q:"Qu'est-ce que le boe ?",hint:"TotalEnergies affiche 5$/boe.",a:["Balance of Earnings","Barrel of Oil Equivalent","Base Operating Expenditure","Budget of Operations Estimate"],c:1,e:"boe = Barrel of Oil Equivalent."},
-  {cat:"finance",q:"Différence résultat net vs résultat net ajusté ?",hint:"L'ajusté reflète la performance récurrente.",a:["Aucune différence","L'ajusté exclut les éléments exceptionnels","L'ajusté inclut les dividendes reçus","L'ajusté est calculé avant impôts"],c:1,e:"Le résultat net ajusté exclut les éléments non récurrents."},
-  {cat:"strategie",q:"Programme d'économies TotalEnergies 2026-2030 ?",hint:"Discipline des coûts massive.",a:["5 Mds$","8,5 Mds$","12,5 Mds$","20 Mds$"],c:2,e:"12,5 Mds$ d'économies sur 2026-2030."},
-  {cat:"strategie",q:"GW acquis via le deal EPH ?",hint:"Acquisition électricité en Europe.",a:["5 GW","10 GW","14 GW","20 GW"],c:2,e:"~14 GW de capacité électrique en Europe via EPH."},
-  {cat:"strategie",q:"PPAs tech signés par TotalEnergies ?",hint:">4 GW au total.",a:["Amazon, Meta, Apple","Google, ByteDance, Microsoft","Netflix, Salesforce, Oracle","IBM, SAP, Tesla"],c:1,e:"Google, ByteDance et Microsoft (>4 GW)."},
-  {cat:"finance",q:"Qu'est-ce qu'un DCF ?",hint:"Méthode de valorisation fondamentale.",a:["Debt Coverage Factor","Discounted Cash Flow","Dividend Capitalization Formula","Depreciation & Cost Factor"],c:1,e:"DCF = Discounted Cash Flow. Valorise en actualisant les flux futurs au WACC."},
-  {cat:"finance",q:"Qu'est-ce que le Free Cash Flow ?",hint:"Différence entre deux agrégats financiers.",a:["Résultat net - dividendes","Cash flow opérationnel - CAPEX","EBITDA - intérêts","CA - coûts opérationnels"],c:1,e:"FCF = Cash flow opérationnel - CAPEX."},
+  {cat:"finance",q:"Que mesure le ROACE ?",hint:"Indicateur phare de rentabilité pour les majors pétroliers.",a:["Rentabilité des actions cotées","Retour sur capitaux employés en moyenne","Rentabilité nette après impôts","Ratio de couverture des intérêts"],c:1,e:"ROACE = Return On Average Capital Employed. Résultat net opérationnel / Capitaux employés moyens."},
+  {cat:"finance",q:"Qu'est-ce que le boe ?",hint:"TotalEnergies affiche un coût de production à 5 de cette unité.",a:["Balance of Earnings","Barrel of Oil Equivalent","Base Operating Expenditure","Budget of Operations Estimate"],c:1,e:"boe = Barrel of Oil Equivalent. Permet de comparer différentes sources d'énergie."},
+  {cat:"finance",q:"Différence entre résultat net et résultat net ajusté ?",hint:"L'ajusté reflète la vraie performance opérationnelle récurrente.",a:["Aucune différence — termes synonymes","L'ajusté exclut les éléments exceptionnels (dépréciations, plus-values...)","L'ajusté inclut les dividendes des filiales","L'ajusté est calculé avant impôts"],c:1,e:"Le résultat net ajusté exclut les éléments non récurrents pour refléter la performance opérationnelle."},
+  {cat:"strategie",q:"Programme d'économies TotalEnergies 2026-2030 ?",hint:"Engagement de discipline des coûts.",a:["5 Mds$","8,5 Mds$","12,5 Mds$","20 Mds$"],c:2,e:"12,5 Mds$ d'économies sur 2026-2030."},
+  {cat:"strategie",q:"Deal EPH : combien de GW acquis ?",hint:"Acquisition dans l'électricité en Europe.",a:["5 GW","10 GW","14 GW","20 GW"],c:2,e:"~14 GW de capacité électrique en Europe via le deal EPH."},
+  {cat:"strategie",q:"PPAs tech signés par TotalEnergies pour les datacenters ?",hint:">4 GW au total — convergence énergie × IA.",a:["Amazon, Meta, Apple","Google, ByteDance, Microsoft","Netflix, Salesforce, Oracle","IBM, SAP, Tesla"],c:1,e:"Google, ByteDance et Microsoft — >4 GW de Power Purchase Agreements."},
+  {cat:"finance",q:"Qu'est-ce que le Free Cash Flow (FCF) ?",hint:"Différence entre deux grands agrégats financiers.",a:["Résultat net - dividendes versés","Cash flow opérationnel - CAPEX","EBITDA - intérêts financiers","Chiffre d'affaires - coûts opérationnels"],c:1,e:"FCF = Cash flow opérationnel - CAPEX. Argent disponible après investissements."},
+  {cat:"branches",q:"Qu'est-ce qu'un CPO dans le secteur EV ?",hint:"Rôle clé dans l'écosystème de recharge.",a:["Chief Project Officer","Charge Point Operator — opérateur de bornes de recharge","Central Payment Organization","Corporate Power Officer"],c:1,e:"CPO = Charge Point Operator. Opérateur qui installe et gère des bornes de recharge. TotalEnergies est CPO via sa branche EV."},
+  {cat:"branches",q:"Qu'est-ce que le protocole OCPP ?",hint:"Standard de communication dans l'infrastructure de recharge EV.",a:["Open Charge Point Protocol — standard de communication borne / système de gestion","Oil Control Pipeline Protocol","Offshore Carbon Processing Platform","Optional Charging Power Profile"],c:1,e:"OCPP = Open Charge Point Protocol. Protocole de communication entre les bornes et le système backend de supervision (CSMS)."},
+  {cat:"branches",q:"Quelle branche TotalEnergies gère les lubrifiants ?",hint:"Marque grand public connue de tous.",a:["TotalEnergies Marketing","TotalEnergies Lubrifiants (marque Total Quartz, Hi-Perf)","TotalEnergies Upstream","TotalEnergies Renewables"],c:1,e:"TotalEnergies commercialise les lubrifiants sous la marque Total (Quartz, Hi-Perf...) — business très rentable et mondial."},
+  {cat:"projet",q:"Qu'est-ce que le backlog dans un projet agile ?",hint:"Liste centrale de tout ce qu'il faut faire.",a:["Le budget prévisionnel du projet","La liste priorisée de toutes les fonctionnalités et tâches à réaliser","Le compte-rendu des rétrospectives","Le planning Gantt de l'équipe"],c:1,e:"Le backlog est la liste priorisée par le PO de tout ce que l'équipe doit réaliser. Il évolue continuellement."},
+  {cat:"projet",q:"Qu'est-ce qu'un KPI ?",hint:"Outil fondamental de pilotage de projet.",a:["Key People Initiative","Key Performance Indicator — indicateur clé de performance","Knowledge Process Integration","Keep Project Informed"],c:1,e:"KPI = Key Performance Indicator. Mesure quantifiable d'un objectif. Ex : taux de livraison dans les délais, qualité, coût."},
+  {cat:"projet",q:"Quelle est la différence entre un projet et un programme ?",hint:"Question classique en entretien de chef de projet.",a:["Aucune — termes interchangeables","Un programme est un ensemble de projets liés coordonnés pour un bénéfice stratégique commun","Un programme est simplement un projet plus long","Un projet a un budget, un programme n'en a pas"],c:1,e:"Un programme = ensemble de projets interdépendants pilotés ensemble pour atteindre un bénéfice stratégique. Un projet est plus ponctuel."},
 ],
-3:[
-  {cat:"chiffres",q:"ROACE TotalEnergies 2025 — et sa particularité ?",hint:"Comparaison avec les majors.",a:["9,4% — dans la moyenne","12,6% — meilleur des majors 4 ans consécutifs","15,1% — record historique","10,8% — en progression"],c:1,e:"ROACE 12,6%, meilleur des majors 4 ans consécutifs."},
-  {cat:"finance",q:"Qu'est-ce que le WACC / CMPC ?",hint:"Taux utilisé dans les valorisations DCF.",a:["Coût moyen pondéré du capital","Ratio de couverture de la dette","Taux de croissance long terme","Capitalisation boursière normalisée"],c:0,e:"WACC = Weighted Average Cost of Capital. Taux de rentabilité minimum exigé par les financeurs."},
-  {cat:"finance",q:"Qu'est-ce que le ratio P/E ?",hint:"Ratio de valorisation boursière le plus utilisé.",a:["Prix action / Bénéfice par action","EBITDA / capitalisation boursière","Dividende / cours","CA / nombre d'actions"],c:0,e:"P/E = Prix action / BPA. Ce que le marché paie pour 1€ de bénéfice."},
-  {cat:"strategie",q:"Horizon FID pour Venus et Mopane ?",hint:"Final Investment Decision — décision majeure.",a:["Déjà prises en 2024","2026-2028","2030-2032","Indéfini"],c:1,e:"FID attendues entre 2026 et 2028."},
-  {cat:"strategie",q:"Cible CAPEX annuel TotalEnergies à moyen terme ?",hint:"Entre croissance et discipline financière.",a:["<10 Mds$","13-17 Mds$","20-25 Mds$",">30 Mds$"],c:1,e:"Cible CAPEX : 13-17 Mds$/an."},
-  {cat:"strategie",q:"Breakeven TotalEnergies (dividende + CAPEX couverts) ?",hint:"Indicateur de résilience aux cycles pétroliers.",a:["~20$/baril","~40$/baril","~65$/baril","~80$/baril"],c:1,e:"Breakeven ~40$/baril."},
-  {cat:"chiffres",q:"GW de PPAs TotalEnergies avec les géants tech ?",hint:"Google, ByteDance, Microsoft.",a:[">1 GW",">2 GW",">4 GW",">10 GW"],c:2,e:">4 GW de PPAs pour alimenter des datacenters."},
-  {cat:"finance",q:"Politique de rémunération actionnaires TotalEnergies ?",hint:"Mix deux composantes.",a:["Dividende uniquement","Dividende progressif + rachats d'actions selon le prix du pétrole","Pas de dividende — réinvestissement total","Dividende fixe"],c:1,e:"Dividende progressif + rachats d'actions variables (breakeven ~40$/bbl)."},
-  {cat:"strategie",q:"Ambition renouvelables TotalEnergies à horizon 2030 ?",hint:"Chiffre en GW.",a:["<5 GW","35+ GW en 2030","Leader mondial >100 GW","Retrait au profit GNL"],c:1,e:"TotalEnergies vise 35+ GW de capacité renouvelable d'ici 2030."},
-  {cat:"finance",q:"Qu'est-ce qu'un dividende progressif ?",hint:"Engagement envers les actionnaires en cycle bas.",a:["Variable selon le résultat net","Augmentant chaque année, maintenu même en cycle bas","Fixe depuis 10 ans","Distribué si prix pétrole >60$"],c:1,e:"Dividende croissant + maintenu même si pétrole bas — signal de confiance au marché."},
+3:[ // AVANCÉ (15 questions)
+  {cat:"chiffres",q:"ROACE TotalEnergies 2025 et sa particularité ?",hint:"Comparaison avec les majors pétrolières mondiales.",a:["9,4% — dans la moyenne","12,6% — meilleur des majors 4 ans consécutifs","15,1% — record historique","10,8% — en progression"],c:1,e:"ROACE 12,6%, meilleur des majors 4 ans consécutifs."},
+  {cat:"finance",q:"Qu'est-ce que le WACC / CMPC ?",hint:"Taux utilisé dans les valorisations DCF.",a:["Coût moyen pondéré du capital (dettes + fonds propres)","Ratio de couverture de la dette","Taux de croissance long terme","Capitalisation boursière normalisée"],c:0,e:"WACC = Weighted Average Cost of Capital. Taux de rentabilité minimum exigé par les financeurs de l'entreprise."},
+  {cat:"finance",q:"Qu'est-ce que le ratio P/E ?",hint:"Ratio de valorisation boursière le plus utilisé.",a:["Prix de l'action / Bénéfice par action","EBITDA / capitalisation boursière","Dividende / cours de bourse","Chiffre d'affaires / nombre d'actions"],c:0,e:"P/E = Prix de l'action / Bénéfice par action. Ce que le marché est prêt à payer pour 1€ de bénéfice."},
+  {cat:"strategie",q:"Horizon FID pour Venus et Mopane en Namibie ?",hint:"Final Investment Decision — décision majeure d'investissement.",a:["Déjà prises en 2024","2026-2028","2030-2032","Pas encore fixé"],c:1,e:"FID attendues entre 2026 et 2028. Plus de 1,5 Mds barils de réserves potentielles."},
+  {cat:"strategie",q:"Breakeven TotalEnergies pour couvrir dividende + CAPEX ?",hint:"Indicateur de résilience aux cycles pétroliers bas.",a:["~20$/baril","~40$/baril","~65$/baril","~80$/baril"],c:1,e:"Breakeven ~40$/baril — permet de maintenir dividende et CAPEX même en prix bas."},
+  {cat:"strategie",q:"Ambition TotalEnergies sur les renouvelables à horizon 2030 ?",hint:"Chiffre en GW communiqué au marché.",a:["<5 GW — présence symbolique","35+ GW en 2030","Leader mondial >100 GW","Retrait progressif au profit du GNL"],c:1,e:"TotalEnergies vise 35+ GW de capacité renouvelable d'ici 2030, financée par les cash-flows hydrocarbures."},
+  {cat:"branches",q:"Qu'est-ce qu'un MSP dans l'EV ?",hint:"Rôle complémentaire du CPO dans l'écosystème de recharge.",a:["Main Service Provider","Mobility Service Provider — fournisseur de services de mobilité pour les conducteurs","Managed System Platform","Multi-Site Provider"],c:1,e:"MSP = Mobility Service Provider. Fournit aux conducteurs l'accès à des réseaux de recharge via une carte ou une app (comme TotalEnergies Charge)."},
+  {cat:"branches",q:"Qu'est-ce que l'OCPI dans le secteur EV ?",hint:"Protocole de communication entre réseaux.",a:["Open Charge Point Interface","Open Charge Point Infrastructure","Open Charge Point Protocol — variante internationale","Protocole de roaming entre CPO et MSP"],c:3,e:"OCPI = Open Charge Point Interface. Protocole de roaming entre CPO et MSP pour permettre la recharge cross-réseau."},
+  {cat:"branches",q:"Qu'est-ce que le Plug & Charge (ISO 15118) ?",hint:"Innovation dans la recharge EV haute puissance.",a:["Câble universel pour toutes les bornes","Authentification automatique du véhicule pour la recharge sans carte ni app","Protocole de facturation unifié","Standard de prise Type 2"],c:1,e:"Plug & Charge (ISO 15118) : le véhicule s'authentifie automatiquement dès la connexion. Pas de badge, pas d'app. Expérience fluide."},
+  {cat:"projet",q:"Qu'est-ce qu'une rétrospective en Scrum ?",hint:"Cérémonie de clôture de sprint.",a:["Réunion de présentation des résultats aux stakeholders","Cérémonie d'amélioration continue — l'équipe identifie ce qui a bien/mal fonctionné","Point de mi-sprint pour ajuster les priorités","Revue du budget du sprint"],c:1,e:"La rétrospective a lieu à la fin de chaque sprint. L'équipe identifie les points positifs, les problèmes et les actions d'amélioration."},
+  {cat:"projet",q:"Qu'est-ce qu'une matrice RACI ?",hint:"Outil de gouvernance de projet.",a:["Responsible Accountable Consulted Informed — outil de clarification des rôles","Risks Actions Costs Impacts — registre de risques","Resources Allocation Control Index — suivi budget","Review Acceptance Control Integration"],c:0,e:"RACI : Responsible (fait le travail), Accountable (responsable final), Consulted (consulté), Informed (informé). Clarifie qui fait quoi."},
+  {cat:"projet",q:"Qu'est-ce que la méthode du chemin critique (CPM) ?",hint:"Outil de planification de projet.",a:["La liste des risques critiques du projet","La séquence de tâches la plus longue déterminant la durée totale du projet","Le budget alloué aux tâches prioritaires","L'ensemble des jalons d'un projet"],c:1,e:"Le chemin critique = séquence de tâches la plus longue. Tout retard sur une tâche du chemin critique retarde l'ensemble du projet."},
+  {cat:"finance",q:"Qu'est-ce qu'un DCF ?",hint:"Méthode de valorisation fondamentale en finance corporate.",a:["Debt Coverage Factor","Discounted Cash Flow — flux de trésorerie actualisés","Dividend Capitalization Formula","Depreciation & Cost Factor"],c:1,e:"DCF = Discounted Cash Flow. Valorise une entreprise en actualisant ses flux futurs au WACC."},
+  {cat:"chiffres",q:"Combien de GW de PPAs TotalEnergies a-t-il signé avec les géants tech ?",hint:"Google, ByteDance, Microsoft.",a:[">1 GW",">2 GW",">4 GW",">10 GW"],c:2,e:">4 GW de PPAs pour alimenter des datacenters."},
+  {cat:"strategie",q:"Politique de rémunération actionnaires TotalEnergies ?",hint:"Mix deux composantes — signal de confiance au marché.",a:["Dividende uniquement","Dividende progressif + rachats d'actions variables selon le prix du pétrole","Pas de dividende — réinvestissement total","Dividende fixe indépendant des résultats"],c:1,e:"Dividende progressif + rachats d'actions variables (breakeven ~40$/bbl)."},
 ],
-4:[
-  {cat:"chiffres",q:"Citez CFFO, résultat net ajusté et ROACE 2025.",hint:"Les 3 chiffres essentiels à tout entretien.",a:["CFFO 27,8 Mds$ / RN ajusté 15,6 Mds$ / ROACE 12,6%","CFFO 22,3 Mds$ / RN ajusté 18 Mds$ / ROACE 10%","CFFO 31 Mds$ / RN ajusté 15,6 Mds$ / ROACE 14%","CFFO 27,8 Mds$ / RN ajusté 12 Mds$ / ROACE 12,6%"],c:0,e:"Les 3 essentiels : CFFO 27,8 Mds$ — RN ajusté 15,6 Mds$ — ROACE 12,6%."},
-  {cat:"finance",q:"Formule exacte du ROACE ?",hint:"Niveau entretien financier.",a:["Résultat net / Total actif","Résultat net opérationnel après impôts / Capitaux employés moyens","EBITDA / Dette nette","FCF / Capitalisation boursière"],c:1,e:"ROACE = RNOAI / Capitaux Employés Moyens."},
-  {cat:"finance",q:"Si WACC = 8% et ROACE = 12%, que conclure ?",hint:"Comparaison ROACE vs WACC.",a:["Le projet détruit de la valeur","Le projet crée de la valeur (ROACE > WACC)","Le projet est neutre","Impossible sans le FCF"],c:1,e:"ROACE (12%) > WACC (8%) → création de valeur économique."},
-  {cat:"strategie",q:"Lien entre stratégie namibienne et politique de dividende ?",hint:"Réflexion stratégique intégrée.",a:["Aucun lien","Les revenus namibiens financeront les dividendes dès la FID","Le cash existant finance le dividende pendant que Namibie mûrit","Namibie remplacera le GNL dans le mix"],c:2,e:"Les hydrocarbures en production financent le dividende (breakeven 40$) pendant que les grands projets préparent la croissance future."},
-  {cat:"chiffres",q:"Gearing cible TotalEnergies à moyen terme ?",hint:"Objectif de structure financière.",a:["<5%","<20%","<30%","<10%"],c:1,e:"TotalEnergies cible un gearing <20% — 14,7% en 2025, dans la cible."},
-  {cat:"finance",q:"Brent à 50$, breakeven 40$ : que se passe-t-il ?",hint:"Marge de sécurité financière.",a:["Dividende en danger","10$/baril de marge — dividende et CAPEX couverts, FCF positif","Break-even atteint — résultat nul","Réduction automatique du CAPEX"],c:1,e:"À 50$/bbl, 10$/bbl de marge. Dividende et CAPEX couverts, FCF positif disponible."},
-  {cat:"strategie",q:"Pourquoi TotalEnergies maintient une production d'hydrocarbures élevée ?",hint:"Logique financière du modèle multi-énergie.",a:["Par dépendance aux actifs passés","Pour financer l'électricité et les renouvelables via le cash-flow","Pour satisfaire les actionnaires uniquement","Faute d'opportunités renouvelables"],c:1,e:"Les hydrocarbures (CFFO 27,8 Mds$) financent l'électricité, le GNL et les renouvelables."},
-  {cat:"finance",q:"Taux d'actualisation DCF pour un major pétrolier intégré ?",hint:"Lien entre WACC et risque sectoriel.",a:["5% — taux sans risque","8-10% — WACC major pétrolier intégré","15% — risque élevé","3% — coût de la dette uniquement"],c:1,e:"WACC 8-10% : taux sans risque (~4%) + prime de marché × bêta sectoriel (~0.8-1.0)."},
-  {cat:"strategie",q:"Différenciateur TotalEnergies vs BP et Shell sur la transition ?",hint:"Choix stratégique distinctif en 2023.",a:["TotalEnergies a abandonné les renouvelables","TotalEnergies maintient croissance hydrocarbures ET renouvelables, là où BP/Shell ont ralenti","TotalEnergies a fusionné avec un acteur renouvelable","TotalEnergies se concentre sur le nucléaire"],c:1,e:"BP/Shell ont réduit leurs ambitions renouvelables. TotalEnergies maintient sa double trajectoire."},
-  {cat:"finance",q:"ROACE minimum exigé par TotalEnergies pour valider un projet ?",hint:"Lié au WACC et à la création de valeur.",a:["5%","Supérieur au WACC (~8-10%)","15% minimum","20% pour les projets Upstream"],c:1,e:"TotalEnergies exige un ROACE supérieur au WACC — condition de création de valeur."},
+4:[ // EXPERT (15 questions)
+  {cat:"chiffres",q:"Citez les 3 chiffres clés TotalEnergies 2025 (CFFO, résultat net ajusté, ROACE).",hint:"Les 3 essentiels pour tout entretien — à réciter de mémoire.",a:["CFFO 27,8 Mds$ / RN ajusté 15,6 Mds$ / ROACE 12,6%","CFFO 22,3 Mds$ / RN ajusté 18 Mds$ / ROACE 10%","CFFO 31 Mds$ / RN ajusté 15,6 Mds$ / ROACE 14%","CFFO 27,8 Mds$ / RN ajusté 12 Mds$ / ROACE 12,6%"],c:0,e:"CFFO 27,8 Mds$ — RN ajusté 15,6 Mds$ — ROACE 12,6%. À mémoriser."},
+  {cat:"finance",q:"Formule exacte du ROACE ?",hint:"Niveau entretien financier exigeant.",a:["Résultat net / Total actif","Résultat net opérationnel après impôts / Capitaux employés moyens","EBITDA / Dette nette","FCF / Capitalisation boursière"],c:1,e:"ROACE = RNOAI (Résultat Net Opérationnel Après Impôts) / Capitaux Employés Moyens."},
+  {cat:"finance",q:"Si WACC = 8% et ROACE = 12%, que peut-on conclure ?",hint:"Logique de création de valeur économique.",a:["Le projet détruit de la valeur","Le projet crée de la valeur économique (ROACE > WACC)","Le projet est neutre","Impossible à conclure sans le FCF"],c:1,e:"ROACE (12%) > WACC (8%) → création de valeur. L'entreprise génère plus que son coût du capital."},
+  {cat:"strategie",q:"Lien entre la stratégie namibienne et la politique de dividende ?",hint:"Réflexion stratégique intégrée — niveau CODIR.",a:["Aucun lien direct","Les revenus namibiens financeront les dividendes dès la FID","Le cash des hydrocarbures actuels finance le dividende pendant que Namibie mûrit","La Namibie remplacera le GNL dans le mix"],c:2,e:"Les hydrocarbures en production financent le dividende (breakeven 40$) pendant que les grands projets (Namibie) préparent la croissance future."},
+  {cat:"finance",q:"Taux d'actualisation DCF pour un major pétrolier intégré ?",hint:"Lien entre WACC et profil de risque sectoriel.",a:["5% — taux sans risque actuel","8-10% — WACC d'un major pétrolier intégré","15% — risque élevé","3% — coût de la dette uniquement"],c:1,e:"WACC 8-10% pour un major pétrolier : taux sans risque (~4%) + prime de marché × bêta sectoriel (~0.8-1.0)."},
+  {cat:"strategie",q:"Différenciateur TotalEnergies vs BP et Shell sur la transition ?",hint:"Choix stratégique distinctif pris en 2023.",a:["TotalEnergies a abandonné les renouvelables","TotalEnergies maintient croissance hydrocarbures ET renouvelables, là où BP/Shell ont ralenti","TotalEnergies a fusionné avec un acteur renouvelable","TotalEnergies se concentre sur le nucléaire"],c:1,e:"BP/Shell ont réduit leurs ambitions renouvelables sous pression des actionnaires. TotalEnergies maintient sa double trajectoire : croissance hydrocarbures (Namibie, GNL) + renouvelables (35 GW 2030)."},
+  {cat:"branches",q:"Qu'est-ce que le protocole ISO 15118 et pourquoi est-il stratégique pour TotalEnergies EV ?",hint:"Lien avec la facturation automatique et l'expérience conducteur.",a:["Standard de prise de recharge en Europe","Protocole d'authentification automatique (Plug & Charge) et de communication intelligente véhicule-borne","Norme de sécurité des bornes en milieu public","Protocole de paiement NFC pour les bornes"],c:1,e:"ISO 15118 = Plug & Charge + V2G. Authentification auto du véhicule, facturation transparente, préparation au Vehicle-to-Grid. Différenciateur fort pour TotalEnergies EV."},
+  {cat:"branches",q:"Quelle est la différence entre le Autocharge et le Plug & Charge ?",hint:"Deux approches d'authentification automatique — une est standardisée.",a:["Ce sont deux noms pour la même chose","Autocharge utilise l'ID du câble (EVSE/MAC), Plug & Charge utilise les certificats PKI (ISO 15118) — plus sécurisé","Autocharge est réservé aux flottes, Plug & Charge aux particuliers","Plug & Charge est la version européenne d'Autocharge"],c:1,e:"Autocharge : identification via MAC address du câble — simple mais moins sécurisé. Plug & Charge (ISO 15118) : certificats PKI embarqués dans le véhicule — standard industriel sécurisé."},
+  {cat:"projet",q:"Comment gérez-vous un projet quand un livrable clé est en retard sur le chemin critique ?",hint:"Question d'entretien chef de projet niveau senior.",a:["Attendre et informer le client","Analyser l'impact, fast-track ou crash les tâches, replanifier et communiquer aux parties prenantes","Escalader immédiatement à la direction","Déprioriser les autres projets"],c:1,e:"En cas de retard sur le chemin critique : 1) Quantifier l'écart. 2) Fast-track (paralléliser) ou Crash (ajouter ressources). 3) Replanifier. 4) Communiquer aux stakeholders avec impact / options / recommandation."},
+  {cat:"projet",q:"Qu'est-ce que la vélocité dans un projet agile ?",hint:"Métrique de capacité de l'équipe.",a:["La vitesse de développement d'un développeur","La quantité de story points réalisée en moyenne par sprint — sert à planifier","Le temps moyen de livraison d'une feature","Le nombre de bugs corrigés par sprint"],c:1,e:"La vélocité = story points livrés en moyenne par sprint. Permet de prédire la capacité future et d'affiner le planning."},
+  {cat:"projet",q:"Qu'est-ce qu'un risk register ?",hint:"Outil fondamental de gestion des risques projet.",a:["Le budget de contingence","Le registre des risques : identification, probabilité, impact, mitigation, responsable","La liste des réunions de suivi","Le log des décisions prises"],c:1,e:"Le risk register identifie chaque risque avec : probabilité × impact = exposition, plan de mitigation et responsable. Mis à jour à chaque sprint/revue."},
+  {cat:"finance",q:"Brent à 50$, breakeven TotalEnergies à 40$ : quelle est la marge disponible et à quoi sert-elle ?",hint:"Logique de résilience financière.",a:["Dividende en danger immédiat","10$/baril de marge — dividende et CAPEX couverts, FCF positif disponible pour rachats","Break-even atteint — résultat nul","Réduction automatique du CAPEX"],c:1,e:"À 50$/bbl avec breakeven 40$ : 10$/bbl de marge. Dividende et CAPEX couverts, FCF restant pour rachats d'actions ou investissements opportunistes."},
+  {cat:"chiffres",q:"Gearing cible à moyen terme pour TotalEnergies ?",hint:"Objectif de structure financière communiqué au marché.",a:["<5%","<20%","<30%","<10%"],c:1,e:"TotalEnergies cible un gearing <20% — 14,7% en 2025, bien dans la cible."},
+  {cat:"projet",q:"Comment priorisez-vous un backlog avec des contraintes conflictuelles (délai, coût, scope) ?",hint:"Triangle contraintes projet — niveau senior.",a:["Toujours prioriser le délai avant tout","Utiliser la valeur métier × effort : maximiser le ratio valeur/effort, en concertation avec le PO et les stakeholders","Laisser l'équipe décider","Prioriser selon le budget disponible uniquement"],c:1,e:"Priorisation backlog : valeur métier (impact) / effort (complexité) = priorité. Techniques : MoSCoW, WSJF, ICE Score. Toujours en concertation avec PO et stakeholders."},
+  {cat:"branches",q:"Qu'est-ce que le Vehicle-to-Grid (V2G) et pourquoi TotalEnergies EV y investit ?",hint:"Utilisation bidirectionnelle de la batterie du véhicule.",a:["Technologie pour recharger plus vite","Capacité d'un VE à restituer de l'énergie au réseau — flexibilité énergétique et revenus pour le conducteur","Système de navigation intégré au chargeur","Standard de connexion entre véhicule et réseau mobile"],c:1,e:"V2G = Vehicle-to-Grid. Le VE peut renvoyer de l'énergie au réseau. Bénéfices : stabilisation réseau, revenus pour le conducteur, optimisation énergetique. Axe stratégique pour TotalEnergies EV."},
 ],
 };
 
-// ── FICHES MÉMO ──
 const MEMO={
   chiffres:[
-    {k:"CFFO 2025",v:"27,8 Mds$",e:"Cash Flow des Opérations — indicateur clé"},
+    {k:"CFFO 2025",v:"27,8 Mds$",e:"Cash Flow des Opérations — indicateur clé n°1"},
     {k:"Résultat net ajusté 2025",v:"15,6 Mds$",e:"Hors éléments exceptionnels"},
     {k:"ROACE 2025",v:"12,6%",e:"Meilleur des majors 4 ans consécutifs"},
     {k:"CAPEX net 2025",v:"17,1 Mds$",e:"Investissements nets"},
@@ -383,392 +358,225 @@ const MEMO={
     {k:"Coût production Upstream",v:"5$/boe",e:"L'un des plus bas de l'industrie"},
     {k:"Breakeven dividende + CAPEX",v:"~40$/baril",e:"Résilience aux cycles bas"},
     {k:"Deal EPH",v:"~14 GW",e:"Capacité électrique acquise en Europe"},
-    {k:"PPAs tech (Google, ByteDance, MS)",v:">4 GW",e:"Convergence énergie × IA"},
+    {k:"PPAs tech",v:">4 GW",e:"Google, ByteDance, Microsoft — datacenters"},
   ],
   finance:[
     {k:"CFFO",v:"Cash Flow des Opérations",e:"Capacité bénéficiaire opérationnelle"},
-    {k:"EBITDA",v:"Earnings Before Interest Taxes D&A",e:"Proxy du cash-flow opérationnel"},
+    {k:"EBITDA",v:"Earnings Before Interest Taxes Depreciation & Amortization",e:"Proxy du cash-flow opérationnel — NE PAS confondre avec Equity"},
     {k:"ROACE",v:"RNOAI / Capitaux Employés Moyens",e:"Efficacité d'utilisation du capital"},
     {k:"Gearing",v:"Dette nette / Capitaux propres",e:"Ratio d'endettement"},
     {k:"WACC / CMPC",v:"Coût moyen pondéré du capital",e:"Taux d'actualisation DCF — ~8-10% pour un major"},
-    {k:"DCF",v:"Discounted Cash Flow",e:"Méthode de valorisation par actualisation des flux futurs"},
+    {k:"DCF",v:"Discounted Cash Flow",e:"Valorisation par actualisation des flux futurs au WACC"},
     {k:"FCF",v:"Cash flow opérationnel - CAPEX",e:"Argent disponible après investissements"},
-    {k:"P/E",v:"Prix action / BPA",e:"Multiple de valorisation — ce que le marché paie pour 1€ de bénéfice"},
+    {k:"P/E",v:"Prix action / BPA",e:"Multiple de valorisation boursière"},
     {k:"boe",v:"Barrel of Oil Equivalent",e:"Unité de comparaison entre énergies"},
     {k:"PPA",v:"Power Purchase Agreement",e:"Contrat d'achat d'électricité long terme"},
   ],
   strategie:[
     {k:"Modèle multi-énergie",v:"Hydrocarbures + Électricité + GNL + Renouvelables",e:"Différenciateur vs BP/Shell"},
     {k:"Projets Namibie",v:"Venus + Mopane",e:">1,5 Mds barils — FID 2026-2028"},
-    {k:"GNL",v:"Gaz Naturel Liquéfié",e:"Axe de croissance stratégique — TotalEnergies leader mondial"},
+    {k:"GNL",v:"Gaz Naturel Liquéfié",e:"Axe de croissance stratégique — leader mondial"},
     {k:"Deal EPH",v:"~14 GW en Europe",e:"Pivot accéléré vers l'électricité"},
     {k:"Programme économies",v:"12,5 Mds$ sur 2026-2030",e:"Discipline des coûts"},
     {k:"Ambition renouvelables",v:"35+ GW en 2030",e:"Financée par les cash-flows hydrocarbures"},
-    {k:"Politique actionnaires",v:"Dividende progressif + rachats",e:"Breakeven ~40$/bbl — signal de confiance"},
+    {k:"Politique actionnaires",v:"Dividende progressif + rachats",e:"Breakeven ~40$/bbl"},
     {k:"Cible CAPEX",v:"13-17 Mds$/an",e:"Équilibre croissance / discipline"},
-    {k:"PPAs datacenters",v:"Google, ByteDance, Microsoft",e:">4 GW — convergence énergie × IA"},
     {k:"FID",v:"Final Investment Decision",e:"Décision finale d'investissement pour un grand projet"},
+    {k:"Breakeven",v:"~40$/baril",e:"Seuil pour couvrir dividende + CAPEX"},
+  ],
+  branches:[
+    {k:"CPO",v:"Charge Point Operator",e:"Installe et opère les bornes de recharge. TotalEnergies est CPO via sa branche EV."},
+    {k:"MSP",v:"Mobility Service Provider",e:"Fournit l'accès aux réseaux de recharge aux conducteurs (app, carte)"},
+    {k:"OCPP",v:"Open Charge Point Protocol",e:"Communication entre borne et CSMS (backend de gestion)"},
+    {k:"OCPI",v:"Open Charge Point Interface",e:"Protocole de roaming entre réseaux CPO/MSP"},
+    {k:"ISO 15118",v:"Plug & Charge",e:"Authentification automatique du VE via certificats PKI — standard industriel"},
+    {k:"Autocharge",v:"Authentification via MAC address",e:"Plus simple qu'ISO 15118 mais moins sécurisé"},
+    {k:"V2G",v:"Vehicle-to-Grid",e:"Le VE restitue de l'énergie au réseau — flexibilité énergétique"},
+    {k:"SAF",v:"Sustainable Aviation Fuel",e:"Carburant durable pour l'aviation — matières résiduelles/renouvelables"},
+    {k:"CSMS",v:"Charging Station Management System",e:"Backend de supervision et gestion des bornes"},
+    {k:"Smart Charging",v:"Recharge intelligente",e:"Optimisation des flux de charge selon signaux réseau, prix, disponibilité"},
+  ],
+  projet:[
+    {k:"Scrum",v:"Framework agile itératif",e:"Sprints + Product Owner + Scrum Master + équipe"},
+    {k:"Sprint",v:"Itération de 1 à 4 semaines",e:"Unité de base Scrum avec livrable potentiellement shippable"},
+    {k:"Product Owner",v:"Responsable vision produit + backlog",e:"Interface métier / équipe — priorise la valeur"},
+    {k:"Backlog",v:"Liste priorisée des tâches/features",e:"Géré par le PO, évolue continuellement"},
+    {k:"Vélocité",v:"Story points livrés par sprint",e:"Capacité de l'équipe — sert à planifier"},
+    {k:"RACI",v:"Responsible / Accountable / Consulted / Informed",e:"Matrice de clarification des rôles sur chaque tâche"},
+    {k:"Chemin critique",v:"Séquence de tâches la plus longue",e:"Tout retard sur ce chemin retarde le projet entier"},
+    {k:"KPI",v:"Key Performance Indicator",e:"Indicateur mesurable d'un objectif — délai, coût, qualité"},
+    {k:"Risk register",v:"Registre des risques",e:"Probabilité × Impact, mitigation, responsable"},
+    {k:"Rétrospective",v:"Cérémonie fin de sprint",e:"L'équipe identifie ce qui a bien/mal fonctionné et planifie des améliorations"},
   ],
 };
 
-// ── STATE ──
-let mode='quiz', curLevel=1, qs=[], cur=0, score=0, catSc={};
-let timerInt, tLeft;
-let fcIdx=0, fcQ=[], fcKnown=0;
-let activeTab='stats', activeMemo='chiffres';
+let mode='quiz',curLevel=1,qs=[],cur=0,score=0,catSc={};
+let timerInt,tLeft;
+let fcIdx=0,fcQ=[],fcKnown=0;
+let activeMemo='chiffres';
 
 function shuffle(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}return r;}
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
 function setMode(m){mode=m;document.getElementById('m-quiz').className='mode-btn'+(m==='quiz'?' on':'');document.getElementById('m-flash').className='mode-btn'+(m==='flash'?' on':'');}
 function toast(msg){const e=document.getElementById('toast');e.textContent=msg;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2500);}
+function toggleDark(){const h=document.documentElement;const d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');document.getElementById('dark-btn').textContent=d?'🌙':'☀️';localStorage.setItem('theme',d?'light':'dark');}
 
-// Dark mode
-function toggleDark(){
-  const html=document.documentElement;
-  const dark=html.getAttribute('data-theme')==='dark';
-  html.setAttribute('data-theme',dark?'light':'dark');
-  document.getElementById('dark-btn').textContent=dark?'🌙':'☀️';
-  localStorage.setItem('theme',dark?'light':'dark');
-}
-
-// ── STORAGE ──
-function getP(){return JSON.parse(localStorage.getItem('tep')||'{"xp":0,"unlocked":[1],"bestScores":{},"sessions":0,"totalCorrect":0,"totalQ":0,"catCorrect":{},"catTotal":{},"history":[],"streak":0,"lastPlayed":null}')}
-function saveP(p){localStorage.setItem('tep',JSON.stringify(p))}
+function getP(){return JSON.parse(localStorage.getItem('tep2')||'{"xp":0,"unlocked":[1],"bestScores":{},"sessions":0,"totalCorrect":0,"totalQ":0,"catCorrect":{},"catTotal":{},"history":[],"streak":0,"lastPlayed":null}')}
+function saveP(p){localStorage.setItem('tep2',JSON.stringify(p))}
 function isUnlocked(lv){return getP().unlocked.includes(lv)}
 function unlockLv(lv){const p=getP();if(!p.unlocked.includes(lv)){p.unlocked.push(lv);saveP(p);return true;}return false;}
 function getBest(lv){return getP().bestScores[lv]||0}
 function saveBest(lv,s){const p=getP();if(!p.bestScores[lv]||s>p.bestScores[lv]){p.bestScores[lv]=s;saveP(p);}}
 function addXP(n){const p=getP();p.xp=(p.xp||0)+n;saveP(p);}
-function updateStreak(){
-  const p=getP();
-  const today=new Date().toDateString();
-  if(p.lastPlayed===today)return;
-  const yesterday=new Date(Date.now()-864e5).toDateString();
-  p.streak=p.lastPlayed===yesterday?(p.streak||0)+1:1;
-  p.lastPlayed=today;
-  saveP(p);
-}
-function recordSession(sc,tot,cats){
-  const p=getP();
-  p.sessions=(p.sessions||0)+1;
-  p.totalCorrect=(p.totalCorrect||0)+sc;
-  p.totalQ=(p.totalQ||0)+tot;
-  Object.entries(cats).forEach(([c,[ok,t]])=>{
-    p.catCorrect=p.catCorrect||{};p.catTotal=p.catTotal||{};
-    p.catCorrect[c]=(p.catCorrect[c]||0)+ok;
-    p.catTotal[c]=(p.catTotal[c]||0)+t;
-  });
-  const d=new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});
-  p.history=p.history||[];
-  p.history.push({d,s:sc,t:tot,lv:curLevel});
-  if(p.history.length>30)p.history=p.history.slice(-30);
-  saveP(p);
-}
+function updateStreak(){const p=getP();const today=new Date().toDateString();if(p.lastPlayed===today)return;const yesterday=new Date(Date.now()-864e5).toDateString();p.streak=p.lastPlayed===yesterday?(p.streak||0)+1:1;p.lastPlayed=today;saveP(p);}
+function recordSession(sc,tot,cats){const p=getP();p.sessions=(p.sessions||0)+1;p.totalCorrect=(p.totalCorrect||0)+sc;p.totalQ=(p.totalQ||0)+tot;Object.entries(cats).forEach(([c,[ok,t]])=>{p.catCorrect=p.catCorrect||{};p.catTotal=p.catTotal||{};p.catCorrect[c]=(p.catCorrect[c]||0)+ok;p.catTotal[c]=(p.catTotal[c]||0)+t;});const d=new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});p.history=p.history||[];p.history.push({d,s:sc,t:tot,lv:curLevel});if(p.history.length>30)p.history=p.history.slice(-30);saveP(p);}
 
-// ── HOME ──
 function renderHome(){
-  // levels
   document.getElementById('levels-grid').innerHTML=LEVELS.map(lv=>{
-    const unlocked=isUnlocked(lv.id);
-    const best=getBest(lv.id);
-    const pct=Math.round(best/10*100);
-    const locked=!unlocked;
+    const unlocked=isUnlocked(lv.id);const best=getBest(lv.id);const pct=Math.round(best/15*100);const locked=!unlocked;
     return`<div class="level-card ${lv.lv}${locked?' locked':''}" onclick="selectLevel(${lv.id})">
       <div class="licon">${lv.icon}</div>
       <div class="linfo">
         <div class="lname">${lv.name}</div>
         <div class="ldesc">${lv.desc}</div>
-        <span class="lmeta" style="background:${lv.color}18;color:${lv.tc}">${locked?'Débloque à '+(LEVELS[lv.id-2]?.threshold||0)+'% niveau précédent':lv.timer+'s par question'}</span>
+        <span class="lmeta" style="background:${lv.color}18;color:${lv.tc}">${locked?'Débloque à '+(LEVELS[lv.id-2]?.threshold||0)+'% niveau précédent':lv.timer+'s / question · 15 questions'}</span>
         ${(!locked&&best>0)?`<div class="lprog"><div class="lbar" style="width:${pct}%;background:${lv.tc}"></div></div>`:''}
       </div>
-      <div class="lright">
-        ${locked?'🔒':`<div class="lscore" style="color:${lv.tc}">${best>0?best+'/10':''}</div><div class="lpct">${best>0?pct+'%':''}</div>`}
-      </div>
+      <div class="lright">${locked?'🔒':`<div class="lscore" style="color:${lv.tc}">${best>0?best+'/15':''}</div><div class="lpct">${best>0?pct+'%':''}</div>`}</div>
     </div>`;
   }).join('');
-
-  // XP
-  const p=getP();
-  const xp=p.xp||0;
-  const maxXp=400;
-  const pct=Math.min(100,Math.round(xp/maxXp*100));
+  const p=getP();const xp=p.xp||0;const maxXp=600;const pp=Math.min(100,Math.round(xp/maxXp*100));
   document.getElementById('xp-val').textContent=xp+' XP';
-  document.getElementById('xp-fill').style.width=pct+'%';
-  const lvName=xp<50?'Débutant':xp<150?'Intermédiaire':xp<300?'Avancé':'Expert';
+  document.getElementById('xp-fill').style.width=pp+'%';
+  const lvName=xp<100?'Débutant':xp<250?'Intermédiaire':xp<450?'Avancé':'Expert';
   document.getElementById('xp-lname').textContent=lvName+' · '+xp+'/'+maxXp+' XP';
-
-  // Streak
   const streak=p.streak||0;
   document.getElementById('streak-text').textContent=streak+' jour'+(streak>1?'s':'')+' consécutif'+(streak>1?'s':'');
-  if(p.lastPlayed){
-    const d=new Date(p.lastPlayed);
-    document.getElementById('last-played').textContent='Dernière session : '+d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});
-  }
-
-  renderStats();
-  renderMemo();
+  if(p.lastPlayed)document.getElementById('last-played').textContent='Dernière : '+new Date(p.lastPlayed).toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});
+  renderStats();renderMemoContent();
 }
 
-function getActiveLevel(){for(let i=LEVELS.length-1;i>=0;i--){if(isUnlocked(LEVELS[i].id))return LEVELS[i].id;}return 1;}
-
-function selectLevel(id){
-  if(!isUnlocked(id)){toast('Niveau verrouillé !');return;}
-  if(mode==='flash'){startFlash(id);return;}
-  startQuiz(id);
-}
-
-// ── TABS ──
 function switchTab(tab){
-  activeTab=tab;
-  document.querySelectorAll('.htab').forEach((b,i)=>{b.className='htab'+((['stats','memo'][i]===tab)?' on':'');});
+  document.querySelectorAll('.htab').forEach((b,i)=>{b.className='htab'+([['stats','memo'][i]===tab?' on':'']);});
   document.getElementById('tab-stats').style.display=tab==='stats'?'flex':'none';
-  document.getElementById('tab-stats').style.flexDirection='column';
-  document.getElementById('tab-stats').style.gap='14px';
   document.getElementById('tab-memo').style.display=tab==='memo'?'block':'none';
 }
 
-// ── STATS ──
 function renderStats(){
-  const p=getP();
-  // chart
-  const h=p.history||[];
-  const last7=h.slice(-7);
+  const p=getP();const h=p.history||[];const last7=h.slice(-7);
   const chartEl=document.getElementById('chart');
-  if(!last7.length){chartEl.innerHTML='<div style="font-size:12px;color:var(--muted);margin:auto">Aucune session encore</div>';return;}
-  const maxPct=100;
-  chartEl.innerHTML=last7.map(e=>{
-    const pct=Math.round(e.s/e.t*100);
-    const lv=LEVELS[e.lv-1];
-    const h=Math.round(pct*0.9);
-    return`<div class="chart-bar-wrap">
-      <div class="chart-bar" style="height:${h}px;background:${lv.tc};opacity:0.85"></div>
-      <div class="chart-label">${e.d}</div>
-    </div>`;
-  }).join('');
-
-  // weak points
-  const cats={chiffres:'📊 Chiffres',finance:'💰 Finance',strategie:'🌍 Stratégie'};
-  const catColors={chiffres:'var(--blue)',finance:'var(--green)',strategie:'var(--orange)'};
+  if(!last7.length){chartEl.innerHTML='<div style="font-size:12px;color:var(--muted);margin:auto">Aucune session encore</div>';}
+  else{chartEl.innerHTML=last7.map(e=>{const pct=Math.round(e.s/e.t*100);const lv=LEVELS[e.lv-1];const h=Math.round(pct*0.9);return`<div class="chart-bar-wrap"><div class="chart-bar" style="height:${h}px;background:${lv.tc};opacity:0.85"></div><div class="chart-label">${e.d}</div></div>`;}).join('');}
+  const catColors={chiffres:'var(--blue)',finance:'var(--green)',strategie:'var(--orange)',branches:'var(--purple)',projet:'var(--teal)'};
   const wp=document.getElementById('weakpoints');
-  const entries=Object.entries(cats).map(([c,lbl])=>{
-    const ok=p.catCorrect?.[c]||0;
-    const tot=p.catTotal?.[c]||0;
-    const pct=tot>0?Math.round(ok/tot*100):null;
-    return{c,lbl,ok,tot,pct};
-  }).filter(e=>e.tot>0).sort((a,b)=>(a.pct??100)-(b.pct??100));
-  if(!entries.length){wp.innerHTML='<div style="font-size:12px;color:var(--muted)">Joue quelques sessions pour voir tes points faibles.</div>';return;}
-  wp.innerHTML=entries.map(e=>`<div class="wp-row">
-    <div class="wp-label">${e.lbl}</div>
-    <div class="wp-bar"><div class="wp-fill" style="width:${e.pct}%;background:${catColors[e.c]}"></div></div>
-    <div class="wp-pct" style="color:${e.pct>=80?'var(--green)':e.pct>=50?'var(--orange)':'var(--red)'}">${e.pct}%</div>
-  </div>`).join('');
-
-  // global stats
+  const entries=Object.entries(CAT_LABELS).map(([c,lbl])=>{const ok=p.catCorrect?.[c]||0;const tot=p.catTotal?.[c]||0;const pct=tot>0?Math.round(ok/tot*100):null;return{c,lbl,ok,tot,pct};}).filter(e=>e.tot>0).sort((a,b)=>(a.pct??100)-(b.pct??100));
+  if(!entries.length){wp.innerHTML='<div style="font-size:12px;color:var(--muted)">Joue quelques sessions pour voir tes points faibles.</div>';}
+  else{wp.innerHTML=entries.map(e=>`<div class="wp-row"><div class="wp-label">${CAT_ICONS[e.c]} ${e.lbl.split(' ')[0]}</div><div class="wp-bar"><div class="wp-fill" style="width:${e.pct}%;background:${catColors[e.c]}"></div></div><div class="wp-pct" style="color:${e.pct>=80?'var(--green)':e.pct>=50?'var(--orange)':'var(--red)'}">${e.pct}%</div></div>`).join('');}
   document.getElementById('st-sessions').textContent=p.sessions||0;
   const gRate=p.totalQ>0?Math.round(p.totalCorrect/p.totalQ*100):0;
   document.getElementById('st-correct').textContent=gRate+'%';
   document.getElementById('st-xp').textContent=p.xp||0;
   const bestLv=Math.max(...(p.unlocked||[1]));
-  document.getElementById('st-best').textContent=LEVELS[bestLv-1].icon+' '+LEVELS[bestLv-1].name;
+  document.getElementById('st-best').textContent=LEVELS[bestLv-1].icon;
 }
 
-// ── MEMO ──
 function switchMemo(cat){
   activeMemo=cat;
   document.querySelectorAll('.mtab').forEach(b=>b.className='mtab');
-  const tabs=document.querySelectorAll('.mtab');
-  const idx={chiffres:0,finance:1,strategie:2}[cat];
-  tabs[idx].className='mtab on';
+  const idx={chiffres:0,finance:1,strategie:2,branches:3,projet:4}[cat];
+  document.querySelectorAll('.mtab')[idx].className='mtab on';
   renderMemoContent();
 }
-function renderMemo(){renderMemoContent();}
 function renderMemoContent(){
-  const items=MEMO[activeMemo];
-  const icons={chiffres:'📊',finance:'💰',strategie:'🌍'};
-  const colors={chiffres:'var(--blue)',finance:'var(--green)',strategie:'var(--orange)'};
-  document.getElementById('memo-content').innerHTML=`
-    <div class="memo-content">
-      <div class="memo-title">${icons[activeMemo]} ${CAT_LABELS[activeMemo]} — Fiche mémo</div>
-      ${items.map(m=>`<div class="memo-item">
-        <div><div class="memo-key">${m.k}</div><div class="memo-exp">${m.e}</div></div>
-        <div class="memo-val" style="color:${colors[activeMemo]}">${m.v}</div>
-      </div>`).join('')}
-    </div>`;
-}
+  const items=MEMO[activeMemo];const c=CAT_TC[activeMemo];
+  document.getElementById('memo-content').innerHTML=`<div class="memo-card">
+    <div class="memo-title">${CAT_ICONS[activeMemo]} ${CAT_LABELS[activeMemo]}</div>
+    ${items.map(m=>`<div class="memo-item"><div><div class="memo-key">${m.k}</div><div class="memo-exp">${m.e}</div></div><div class="memo-val" style="color:${c}">${m.v}</div></div>`).join('')}
+  </div>`;}
 
-// ── QUIZ ──
+function selectLevel(id){if(!isUnlocked(id)){toast('Niveau verrouillé — atteins le seuil au niveau précédent !');return;}if(mode==='flash'){startFlash(id);return;}startQuiz(id);}
+
 function startQuiz(lv){
-  curLevel=lv;
-  const lvConf=LEVELS[lv-1];
+  curLevel=lv;const lvConf=LEVELS[lv-1];
   qs=shuffle(Q[lv]);cur=0;score=0;
-  catSc={chiffres:[0,0],finance:[0,0],strategie:[0,0]};
-  const b=document.getElementById('qlvbadge');
-  b.textContent=lvConf.icon+' '+lvConf.name;
+  catSc={chiffres:[0,0],finance:[0,0],strategie:[0,0],branches:[0,0],projet:[0,0]};
+  const b=document.getElementById('qlvbadge');b.textContent=lvConf.icon+' '+lvConf.name;
   b.style.cssText=`background:${lvConf.color}18;color:${lvConf.tc};font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;`;
-  showScreen('screen-quiz');
-  renderQ();
+  showScreen('screen-quiz');renderQ();
 }
 
 function startTimer(){
-  clearInterval(timerInt);
-  const t=LEVELS[curLevel-1].timer;tLeft=t;
-  const el=document.getElementById('qtimer');
-  el.textContent=tLeft+'s';el.className='qtimer';
-  timerInt=setInterval(()=>{
-    tLeft--;el.textContent=tLeft+'s';
-    if(tLeft<=Math.min(8,Math.floor(t*0.3)))el.className='qtimer hot';
-    if(tLeft<=0){clearInterval(timerInt);timeUp();}
-  },1000);
+  clearInterval(timerInt);const t=LEVELS[curLevel-1].timer;tLeft=t;
+  const el=document.getElementById('qtimer');el.textContent=tLeft+'s';el.className='qtimer';
+  timerInt=setInterval(()=>{tLeft--;el.textContent=tLeft+'s';if(tLeft<=Math.min(8,Math.floor(t*0.3)))el.className='qtimer hot';if(tLeft<=0){clearInterval(timerInt);timeUp();}},1000);
 }
 
 function timeUp(){
-  document.querySelectorAll('.ans').forEach(b=>b.disabled=true);
-  const q=qs[cur];
+  document.querySelectorAll('.ans').forEach(b=>b.disabled=true);const q=qs[cur];
   q._s.forEach((a,i)=>{if(a.o===q.c)document.querySelectorAll('.ans')[i].classList.add('reveal');});
-  showFb(false,'Temps écoulé ! '+q.e);
-  const nb=document.getElementById('btn-next');
-  nb.className='btn-next show';
-  nb.textContent=cur+1<qs.length?'Question suivante →':'Voir mes résultats →';
+  showFb(false,'Temps écoulé ! '+q.e);const nb=document.getElementById('btn-next');
+  nb.className='btn-next show';nb.textContent=cur+1<qs.length?'Question suivante →':'Voir mes résultats →';
 }
 
 function renderQ(){
-  const q=qs[cur];
-  // Animate
-  const qcard=document.getElementById('qcard');
-  qcard.style.animation='none';qcard.offsetHeight;qcard.style.animation='';
-  document.getElementById('pb').style.width=(cur/qs.length*100)+'%';
-  document.getElementById('pb').style.background=LEVELS[curLevel-1].tc;
+  const q=qs[cur];document.getElementById('qcard').style.animation='none';document.getElementById('qcard').offsetHeight;document.getElementById('qcard').style.animation='';
+  document.getElementById('pb').style.width=(cur/qs.length*100)+'%';document.getElementById('pb').style.background=LEVELS[curLevel-1].tc;
   document.getElementById('qnum').textContent=`${cur+1}/${qs.length}`;
-  const badge=document.getElementById('qbadge');
-  badge.textContent=CAT_ICONS[q.cat]+' '+CAT_LABELS[q.cat];
-  badge.className='qbadge '+CAT_COLORS[q.cat];
-  document.getElementById('qtext').textContent=q.q;
-  document.getElementById('qhint').textContent=q.hint;
+  const badge=document.getElementById('qbadge');badge.textContent=CAT_ICONS[q.cat]+' '+CAT_LABELS[q.cat];badge.className='qbadge '+CAT_COLORS[q.cat];
+  document.getElementById('qtext').textContent=q.q;document.getElementById('qhint').textContent=q.hint;
   const sh=q.a.map((a,i)=>({t:a,o:i}));shuffle(sh);q._s=sh;
-  document.getElementById('answers').innerHTML=sh.map((a,i)=>`
-    <button class="ans" onclick="answer(${i})">
-      <span class="ansl">${String.fromCharCode(65+i)}</span>${a.t}
-    </button>`).join('');
-  document.getElementById('fb').className='fb';
-  document.getElementById('btn-next').className='btn-next';
+  document.getElementById('answers').innerHTML=sh.map((a,i)=>`<button class="ans" onclick="answer(${i})"><span class="ansl">${String.fromCharCode(65+i)}</span>${a.t}</button>`).join('');
+  document.getElementById('fb').className='fb';document.getElementById('btn-next').className='btn-next';
   startTimer();
 }
 
 function answer(idx){
-  clearInterval(timerInt);
-  const q=qs[cur];const btns=document.querySelectorAll('.ans');
-  btns.forEach(b=>b.disabled=true);
+  clearInterval(timerInt);const q=qs[cur];const btns=document.querySelectorAll('.ans');btns.forEach(b=>b.disabled=true);
   const ok=q._s[idx].o===q.c;catSc[q.cat][1]++;
   if(ok){btns[idx].classList.add('correct');score++;catSc[q.cat][0]++;}
   else{btns[idx].classList.add('wrong');q._s.forEach((a,i)=>{if(a.o===q.c)btns[i].classList.add('reveal');});}
-  showFb(ok,(ok?'✓ ':'✗ ')+q.e);
-  const nb=document.getElementById('btn-next');
-  nb.className='btn-next show';
-  nb.textContent=cur+1<qs.length?'Question suivante →':'Voir mes résultats →';
+  showFb(ok,(ok?'✓ ':'✗ ')+q.e);const nb=document.getElementById('btn-next');
+  nb.className='btn-next show';nb.textContent=cur+1<qs.length?'Question suivante →':'Voir mes résultats →';
 }
 
 function showFb(ok,txt){const el=document.getElementById('fb');el.className='fb show '+(ok?'ok':'ko');el.textContent=txt;}
 function nextQ(){cur++;if(cur>=qs.length)showResult();else renderQ();}
 
 function showResult(){
-  clearInterval(timerInt);
-  const pct=Math.round(score/qs.length*100);
-  const lvConf=LEVELS[curLevel-1];
-  saveBest(curLevel,score);
-  const xpGained=score*5+(pct>=70?20:0)+(pct>=90?30:0);
-  addXP(xpGained);
-  recordSession(score,qs.length,catSc);
-  updateStreak();
-
+  clearInterval(timerInt);const pct=Math.round(score/qs.length*100);const lvConf=LEVELS[curLevel-1];
+  saveBest(curLevel,score);const xpGained=score*5+(pct>=70?20:0)+(pct>=90?30:0);addXP(xpGained);
+  recordSession(score,qs.length,catSc);updateStreak();
   let em,ti,su;
   if(pct>=90){em='🏆';ti='Parfait !';su="Score exceptionnel. Tu maîtrises ce niveau.";}
   else if(pct>=70){em='💪';ti='Bon niveau';su="Bonne maîtrise. Rejoue pour viser 90%+.";}
-  else if(pct>=50){em='📚';ti='À consolider';su="Des lacunes à combler. Revois les feedbacks.";}
-  else{em='🔁';ti='À retravailler';su="Recommence après avoir revu la fiche mémo.";}
-
-  document.getElementById('remoji').textContent=em;
-  document.getElementById('rtitle').textContent=ti;
-  document.getElementById('rscore').style.color=lvConf.tc;
-  document.getElementById('rscore').textContent=score+'/'+qs.length+' ('+pct+'%)';
-  document.getElementById('rsub').textContent=su+'\n+'+xpGained+' XP gagnés';
-
-  // Unlock check
-  const nextLv=curLevel+1;
-  const ub=document.getElementById('unlock-banner');
-  if(nextLv<=4&&pct>=lvConf.threshold&&!isUnlocked(nextLv)){
-    const did=unlockLv(nextLv);
-    if(did){
-      const nc=LEVELS[nextLv-1];
-      ub.style.display='block';
-      document.getElementById('ulicon').textContent='🔓';
-      document.getElementById('ultitle').textContent='Niveau '+nc.name+' débloqué !';
-      document.getElementById('uldesc').textContent='Tu peux maintenant accéder aux questions de niveau '+nc.name.toLowerCase()+'.';
-      launchConfetti();
-    } else ub.style.display='none';
-  } else ub.style.display='none';
-
-  const cats={chiffres:'📊 Chiffres',finance:'💰 Finance',strategie:'🌍 Stratégie'};
-  document.getElementById('bd').innerHTML=Object.entries(catSc).filter(([,v])=>v[1]>0).map(([c,[ok,tot]])=>{
-    const p=tot>0?Math.round(ok/tot*100):0;
-    const cl=p>=80?'vg':p>=50?'vm':'vb';
-    return`<div class="bdrow"><span class="bdlabel">${cats[c]}</span><span class="bdval ${cl}">${ok}/${tot} (${p}%)</span></div>`;
-  }).join('');
-
+  else if(pct>=50){em='📚';ti='À consolider';su="Des lacunes. Revois la fiche mémo et rejoue.";}
+  else{em='🔁';ti='À retravailler';su="Recommence après avoir relu la fiche mémo.";}
+  document.getElementById('remoji').textContent=em;document.getElementById('rtitle').textContent=ti;
+  document.getElementById('rscore').style.color=lvConf.tc;document.getElementById('rscore').textContent=score+'/'+qs.length+' ('+pct+'%)';
+  document.getElementById('rsub').textContent=su+' +'+xpGained+' XP';
+  const nextLv=curLevel+1;const ub=document.getElementById('unlock-banner');
+  if(nextLv<=4&&pct>=lvConf.threshold&&!isUnlocked(nextLv)){const did=unlockLv(nextLv);if(did){const nc=LEVELS[nextLv-1];ub.style.display='block';document.getElementById('ulicon').textContent='🔓';document.getElementById('ultitle').textContent='Niveau '+nc.name+' débloqué !';document.getElementById('uldesc').textContent='Tu accèdes maintenant au niveau '+nc.name.toLowerCase()+'.';launchConfetti();}else ub.style.display='none';}else ub.style.display='none';
+  document.getElementById('bd').innerHTML=Object.entries(catSc).filter(([,v])=>v[1]>0).map(([c,[ok,tot]])=>{const p=tot>0?Math.round(ok/tot*100):0;const cl=p>=80?'vg':p>=50?'vm':'vb';return`<div class="bdrow"><span class="bdlabel">${CAT_ICONS[c]} ${CAT_LABELS[c]}</span><span class="bdval ${cl}">${ok}/${tot} (${p}%)</span></div>`;}).join('');
   showScreen('screen-result');
 }
 
-// ── CONFETTI ──
-function launchConfetti(){
-  const colors=['#E8002D','#F5800A','#F5C400','#00A550','#0064A8'];
-  const wrap=document.getElementById('confetti');
-  wrap.innerHTML='';
-  for(let i=0;i<60;i++){
-    const el=document.createElement('div');
-    el.className='confetti-piece';
-    el.style.cssText=`left:${Math.random()*100}%;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;animation-delay:${Math.random()*0.8}s;animation-duration:${2.5+Math.random()*1.5}s;border-radius:${Math.random()>0.5?'50%':'2px'}`;
-    wrap.appendChild(el);
-  }
-  setTimeout(()=>wrap.innerHTML='',5000);
-}
+function launchConfetti(){const colors=['#E8002D','#F5800A','#F5C400','#00A550','#0064A8'];const wrap=document.getElementById('confetti');wrap.innerHTML='';for(let i=0;i<60;i++){const el=document.createElement('div');el.className='confetti-piece';el.style.cssText=`left:${Math.random()*100}%;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;animation-delay:${Math.random()*0.8}s;animation-duration:${2.5+Math.random()*1.5}s;border-radius:${Math.random()>0.5?'50%':'2px'}`;wrap.appendChild(el);}setTimeout(()=>wrap.innerHTML='',5000);}
 
 function retryLevel(){startQuiz(curLevel);}
 function goHome(){renderHome();showScreen('screen-home');}
 
-// ── FLASH ──
-function startFlash(lv){
-  curLevel=lv||1;
-  fcQ=shuffle(Q[curLevel]);fcIdx=0;fcKnown=0;
-  showScreen('screen-flash');renderFlash();
-}
-function renderFlash(){
-  const q=fcQ[fcIdx];
-  document.getElementById('fcfront').style.display='flex';
-  document.getElementById('fcback').style.display='none';
-  const b=document.getElementById('fcbadge');b.textContent=CAT_ICONS[q.cat]+' '+CAT_LABELS[q.cat];b.className='qbadge '+CAT_COLORS[q.cat];
-  document.getElementById('fcq').textContent=q.q;
-  document.getElementById('fca').textContent=q.a[q.c];
-  document.getElementById('fccount').textContent=`Carte ${fcIdx+1}/${fcQ.length} · ${fcKnown} connues · Niveau ${LEVELS[curLevel-1].name}`;
-}
-function flipCard(){
-  const fr=document.getElementById('fcfront'),bk=document.getElementById('fcback');
-  const flipped=bk.style.display==='flex';
-  fr.style.display=flipped?'flex':'none';
-  bk.style.display=flipped?'none':'flex';
-}
-function fcNext(k){
-  if(k)fcKnown++;fcIdx++;
-  if(fcIdx>=fcQ.length){toast(`Fini ! ${fcKnown}/${fcQ.length} connues.`);setTimeout(()=>{fcIdx=0;fcKnown=0;fcQ=shuffle(Q[curLevel]);renderFlash();},1500);return;}
-  renderFlash();
-}
+function startFlash(lv){curLevel=lv||1;fcQ=shuffle(Q[curLevel]);fcIdx=0;fcKnown=0;showScreen('screen-flash');renderFlash();}
+function renderFlash(){const q=fcQ[fcIdx];document.getElementById('fcfront').style.display='flex';document.getElementById('fcback').style.display='none';const b=document.getElementById('fcbadge');b.textContent=CAT_ICONS[q.cat]+' '+CAT_LABELS[q.cat];b.className='qbadge '+CAT_COLORS[q.cat];document.getElementById('fcq').textContent=q.q;document.getElementById('fca').textContent=q.a[q.c];document.getElementById('fccount').textContent=`Carte ${fcIdx+1}/${fcQ.length} · ${fcKnown} connues · ${LEVELS[curLevel-1].name}`;}
+function flipCard(){const fr=document.getElementById('fcfront'),bk=document.getElementById('fcback');const f=bk.style.display==='flex';fr.style.display=f?'flex':'none';bk.style.display=f?'none':'flex';}
+function fcNext(k){if(k)fcKnown++;fcIdx++;if(fcIdx>=fcQ.length){toast(`Fini ! ${fcKnown}/${fcQ.length} connues.`);setTimeout(()=>{fcIdx=0;fcKnown=0;fcQ=shuffle(Q[curLevel]);renderFlash();},1500);return;}renderFlash();}
 
-// ── INIT ──
 const savedTheme=localStorage.getItem('theme')||'light';
 document.documentElement.setAttribute('data-theme',savedTheme);
 document.getElementById('dark-btn').textContent=savedTheme==='dark'?'☀️':'🌙';
-renderHome();
 document.getElementById('tab-stats').style.display='flex';
 document.getElementById('tab-stats').style.flexDirection='column';
 document.getElementById('tab-stats').style.gap='14px';
+renderHome();
 </script>
 </body>
 </html>
