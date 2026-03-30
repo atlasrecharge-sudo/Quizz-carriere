@@ -8,226 +8,144 @@
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   :root {
-    --red:    #E8002D;
-    --orange: #F5800A;
-    --yellow: #F5C400;
-    --green:  #00A550;
-    --blue:   #0064A8;
-    --text:   #0D1117;
-    --muted:  #6B7280;
-    --border: rgba(0,0,0,0.08);
-    --white:  #FFFFFF;
-    --bg:     #F4F6FA;
+    --red:#E8002D; --orange:#F5800A; --yellow:#F5C400; --green:#00A550; --blue:#0064A8;
+    --text:#0D1117; --muted:#6B7280; --border:rgba(0,0,0,0.08); --white:#FFFFFF; --bg:#F4F6FA;
   }
-  html { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); }
-  body { min-height: 100vh; display: flex; justify-content: center; background: var(--bg); }
+  html { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); }
+  body { min-height:100vh; display:flex; justify-content:center; background:var(--bg); }
 
-  /* ── TOP BAR ── */
+  /* TOP BAR */
   .topbar {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    height: 56px;
-    background: rgba(255,255,255,0.95);
-    border-bottom: 1px solid var(--border);
-    backdrop-filter: blur(12px);
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 20px;
+    position:fixed; top:0; left:0; right:0; z-index:100; height:56px;
+    background:rgba(255,255,255,0.96); border-bottom:1px solid var(--border);
+    backdrop-filter:blur(12px); display:flex; align-items:center;
+    justify-content:space-between; padding:0 20px;
   }
-  .topbar-logo { display: flex; align-items: center; gap: 10px; }
+  .topbar-logo { display:flex; align-items:center; gap:10px; }
   .topbar-icon {
-    width: 32px; height: 32px; border-radius: 9px;
-    background: linear-gradient(135deg, var(--red) 0%, var(--orange) 100%);
-    display: flex; align-items: center; justify-content: center;
-    color: white; font-size: 14px; font-weight: 900;
+    width:32px; height:32px; border-radius:9px;
+    background:linear-gradient(135deg,var(--red),var(--orange));
+    display:flex; align-items:center; justify-content:center;
+    color:white; font-size:14px; font-weight:900;
   }
-  .topbar-name { font-size: 14px; font-weight: 800; color: var(--text); }
-  .topbar-sub  { font-size: 10px; color: var(--muted); }
-  .mode-toggle { display: flex; gap: 6px; }
-  .mode-btn {
-    padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: 700;
-    font-family: inherit; border: 1.5px solid var(--border);
-    background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s;
+  .topbar-name { font-size:14px; font-weight:800; color:var(--text); }
+  .topbar-sub  { font-size:10px; color:var(--muted); }
+  .mode-toggle { display:flex; gap:6px; }
+  .mode-btn { padding:5px 13px; border-radius:20px; font-size:11px; font-weight:700; font-family:inherit; border:1.5px solid var(--border); background:transparent; color:var(--muted); cursor:pointer; transition:all 0.15s; }
+  .mode-btn.on { background:var(--orange); color:white; border-color:var(--orange); }
+
+  .app { width:100%; max-width:560px; padding:72px 16px 60px; }
+  .screen { display:none; flex-direction:column; gap:16px; }
+  .screen.active { display:flex; }
+  .card { background:var(--white); border:1px solid var(--border); border-radius:18px; padding:22px; box-shadow:0 1px 8px rgba(0,0,0,0.05); }
+
+  /* STRIPE */
+  .stripe { display:flex; height:5px; border-radius:100px; overflow:hidden; margin-bottom:18px; gap:3px; }
+  .stripe div { flex:1; border-radius:100px; }
+
+  /* LEVEL CARDS */
+  .levels-grid { display:flex; flex-direction:column; gap:10px; }
+  .level-card {
+    border-radius:16px; border:2px solid var(--border); padding:16px 18px;
+    cursor:pointer; transition:all 0.15s; position:relative; overflow:hidden;
+    display:flex; align-items:center; gap:14px; background:var(--white);
   }
-  .mode-btn.on { background: var(--orange); color: white; border-color: var(--orange); }
+  .level-card:active:not(.locked) { opacity:0.85; }
+  .level-card.locked { opacity:0.5; cursor:not-allowed; }
+  .level-card.current { border-color:var(--orange); box-shadow:0 0 0 3px rgba(245,128,10,0.12); }
+  .level-icon { font-size:28px; flex-shrink:0; }
+  .level-info { flex:1; }
+  .level-name { font-size:15px; font-weight:800; color:var(--text); margin-bottom:2px; }
+  .level-desc { font-size:12px; color:var(--muted); margin-bottom:6px; }
+  .level-meta { display:flex; gap:8px; align-items:center; }
+  .lm-badge { font-size:10px; font-weight:700; padding:2px 8px; border-radius:20px; }
+  .level-lock { font-size:18px; flex-shrink:0; }
+  .level-prog { height:4px; border-radius:100px; background:var(--bg); overflow:hidden; margin-top:6px; }
+  .level-prog-bar { height:100%; border-radius:100px; transition:width 0.4s; }
 
-  /* ── CONTENT ── */
-  .app { width: 100%; max-width: 560px; padding: 72px 16px 60px; }
+  /* COLORS PER LEVEL */
+  .lv1 { border-color:rgba(0,165,80,0.3); }
+  .lv1 .level-name { color:var(--green); }
+  .lv1.current { border-color:var(--green); box-shadow:0 0 0 3px rgba(0,165,80,0.1); }
+  .lv2 { border-color:rgba(0,100,168,0.3); }
+  .lv2 .level-name { color:var(--blue); }
+  .lv2.current { border-color:var(--blue); box-shadow:0 0 0 3px rgba(0,100,168,0.1); }
+  .lv3 { border-color:rgba(245,128,10,0.3); }
+  .lv3 .level-name { color:var(--orange); }
+  .lv3.current { border-color:var(--orange); box-shadow:0 0 0 3px rgba(245,128,10,0.1); }
+  .lv4 { border-color:rgba(232,0,45,0.3); }
+  .lv4 .level-name { color:var(--red); }
+  .lv4.current { border-color:var(--red); box-shadow:0 0 0 3px rgba(232,0,45,0.1); }
 
-  /* ── SCREENS ── */
-  .screen { display: none; flex-direction: column; gap: 16px; }
-  .screen.active { display: flex; }
+  .xp-bar { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:16px 18px; }
+  .xp-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted); margin-bottom:10px; }
+  .xp-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+  .xp-label { font-size:13px; font-weight:700; color:var(--text); }
+  .xp-val { font-size:13px; color:var(--muted); }
+  .xp-track { height:8px; border-radius:100px; background:var(--bg); overflow:hidden; }
+  .xp-fill { height:100%; border-radius:100px; transition:width 0.5s; background:linear-gradient(90deg,var(--orange),var(--red)); }
 
-  /* ── CARDS ── */
-  .card {
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: 18px; padding: 22px;
-    box-shadow: 0 1px 8px rgba(0,0,0,0.05);
-  }
+  /* QUIZ */
+  .quiz-header { background:white; border:1px solid var(--border); border-radius:16px; padding:14px 18px; box-shadow:0 1px 6px rgba(0,0,0,0.04); }
+  .quiz-meta { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+  .q-num { font-size:12px; color:var(--muted); font-weight:600; }
+  .q-timer { font-size:12px; font-weight:800; padding:3px 12px; border-radius:20px; background:rgba(0,100,168,0.1); color:var(--blue); min-width:46px; text-align:center; transition:all 0.3s; }
+  .q-timer.hot { background:rgba(232,0,45,0.1); color:var(--red); }
+  .q-level-badge { font-size:10px; font-weight:700; padding:2px 10px; border-radius:20px; }
+  .prog-wrap { background:var(--bg); border-radius:100px; height:4px; overflow:hidden; }
+  .prog-bar { height:100%; border-radius:100px; transition:width 0.4s; }
+  .q-card { background:white; border:1px solid var(--border); border-radius:18px; padding:22px 20px; box-shadow:0 1px 8px rgba(0,0,0,0.05); }
+  .q-badge { display:inline-flex; align-items:center; gap:6px; font-size:10px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; padding:4px 12px; border-radius:20px; margin-bottom:14px; }
+  .b-chiffres { background:rgba(0,100,168,0.1); color:var(--blue); }
+  .b-finance  { background:rgba(0,165,80,0.1); color:var(--green); }
+  .b-strategie{ background:rgba(245,128,10,0.1); color:var(--orange); }
+  .q-text { font-size:17px; font-weight:800; color:var(--text); line-height:1.4; margin-bottom:6px; }
+  .q-hint { font-size:12px; color:var(--muted); line-height:1.5; margin-bottom:18px; }
+  .answers { display:flex; flex-direction:column; gap:9px; }
+  .ans { width:100%; background:var(--bg); border:1.5px solid var(--border); border-radius:12px; padding:13px 14px; text-align:left; font-family:inherit; font-size:14px; font-weight:500; color:var(--text); cursor:pointer; display:flex; align-items:center; gap:10px; line-height:1.4; transition:border-color 0.15s, background 0.15s; }
+  .ans:hover:not(:disabled) { border-color:var(--orange); background:rgba(245,128,10,0.04); }
+  .ans:disabled { cursor:default; }
+  .ans.correct { border-color:var(--green); background:rgba(0,165,80,0.07); }
+  .ans.wrong   { border-color:var(--red);   background:rgba(232,0,45,0.05); }
+  .ans.reveal  { border-color:var(--green); background:rgba(0,165,80,0.05); }
+  .ans-l { width:26px; height:26px; border-radius:7px; flex-shrink:0; border:1.5px solid var(--border); background:white; font-size:11px; font-weight:800; color:var(--muted); display:flex; align-items:center; justify-content:center; }
+  .correct .ans-l { background:var(--green); color:white; border-color:var(--green); }
+  .wrong   .ans-l { background:var(--red);   color:white; border-color:var(--red); }
+  .reveal  .ans-l { background:var(--green); color:white; border-color:var(--green); }
+  .fb { border-radius:11px; padding:13px 15px; font-size:13px; line-height:1.6; display:none; margin-top:12px; }
+  .fb.show { display:block; }
+  .fb.ok { background:rgba(0,165,80,0.08); border:1px solid rgba(0,165,80,0.2); color:#007A3A; }
+  .fb.ko { background:rgba(232,0,45,0.06); border:1px solid rgba(232,0,45,0.2); color:var(--red); }
+  .btn-next { width:100%; background:white; border:1.5px solid rgba(245,128,10,0.35); border-radius:13px; padding:14px; font-size:14px; font-weight:700; font-family:inherit; color:var(--orange); cursor:pointer; display:none; box-shadow:0 1px 6px rgba(0,0,0,0.04); }
+  .btn-next.show { display:block; }
 
-  /* ── HOME ── */
-  .hero-title { font-size: 28px; font-weight: 900; color: var(--text); letter-spacing: -0.02em; margin-bottom: 6px; }
-  .hero-title mark { background: none; color: var(--red); }
-  .hero-sub { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
-
-  /* Color stripe */
-  .stripe { display: flex; height: 5px; border-radius: 100px; overflow: hidden; margin-bottom: 20px; gap: 3px; }
-  .stripe div { flex: 1; border-radius: 100px; }
-
-  .cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 18px; }
-  .cat-card {
-    border-radius: 14px; padding: 16px 12px; text-align: center;
-    border: 1.5px solid transparent; position: relative; overflow: hidden;
-  }
-  .cat-card::before { content: ''; position: absolute; inset: 0; opacity: 0.07; }
-  .cc1 { border-color: var(--blue); }
-  .cc1::before { background: var(--blue); }
-  .cc2 { border-color: var(--green); }
-  .cc2::before { background: var(--green); }
-  .cc3 { border-color: var(--orange); }
-  .cc3::before { background: var(--orange); }
-  .cat-card-icon { font-size: 24px; margin-bottom: 6px; display: block; position: relative; }
-  .cat-card-name { font-size: 11px; font-weight: 700; color: var(--text); position: relative; }
-  .cat-card-count { font-size: 10px; color: var(--muted); position: relative; }
-
-  .btn-go {
-    width: 100%; background: var(--red); color: white;
-    border: none; border-radius: 13px; padding: 15px;
-    font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer;
-  }
-  .btn-go:active { opacity: 0.85; }
-
-  /* history */
-  .hist-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 10px; }
-  .hist-empty { font-size: 13px; color: var(--muted); }
-  .hist-list { display: flex; flex-direction: column; }
-  .hist-row {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px;
-  }
-  .hist-row:last-child { border-bottom: none; }
-  .hist-date { color: var(--muted); font-size: 11px; }
-  .hg { color: var(--green); font-weight: 800; }
-  .hm { color: var(--orange); font-weight: 800; }
-  .hb { color: var(--red); font-weight: 800; }
-
-  /* ── QUIZ ── */
-  .quiz-header {
-    background: white; border: 1px solid var(--border);
-    border-radius: 16px; padding: 14px 18px;
-    box-shadow: 0 1px 6px rgba(0,0,0,0.04);
-  }
-  .quiz-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .q-num { font-size: 12px; color: var(--muted); font-weight: 600; }
-  .q-timer {
-    font-size: 12px; font-weight: 800; padding: 3px 12px; border-radius: 20px;
-    background: rgba(0,100,168,0.1); color: var(--blue); min-width: 46px; text-align: center;
-    transition: background 0.3s, color 0.3s;
-  }
-  .q-timer.hot { background: rgba(232,0,45,0.1); color: var(--red); }
-  .prog-wrap { background: var(--bg); border-radius: 100px; height: 4px; overflow: hidden; }
-  .prog-bar { height: 100%; border-radius: 100px; transition: width 0.4s; }
-
-  .q-card { background: white; border: 1px solid var(--border); border-radius: 18px; padding: 22px 20px; box-shadow: 0 1px 8px rgba(0,0,0,0.05); }
-  .q-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
-    padding: 4px 12px; border-radius: 20px; margin-bottom: 14px;
-  }
-  .b-chiffres { background: rgba(0,100,168,0.1); color: var(--blue); }
-  .b-finance  { background: rgba(0,165,80,0.1); color: var(--green); }
-  .b-strategie{ background: rgba(245,128,10,0.1); color: var(--orange); }
-
-  .q-text { font-size: 17px; font-weight: 800; color: var(--text); line-height: 1.4; margin-bottom: 6px; }
-  .q-hint { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 18px; }
-
-  .answers { display: flex; flex-direction: column; gap: 9px; }
-  .ans {
-    width: 100%; background: var(--bg); border: 1.5px solid var(--border);
-    border-radius: 12px; padding: 13px 14px;
-    text-align: left; font-family: inherit; font-size: 14px; font-weight: 500; color: var(--text);
-    cursor: pointer; display: flex; align-items: center; gap: 10px; line-height: 1.4;
-    transition: border-color 0.15s, background 0.15s;
-  }
-  .ans:hover:not(:disabled) { border-color: var(--orange); background: rgba(245,128,10,0.04); }
-  .ans:disabled { cursor: default; }
-  .ans.correct { border-color: var(--green); background: rgba(0,165,80,0.07); }
-  .ans.wrong   { border-color: var(--red);   background: rgba(232,0,45,0.05); }
-  .ans.reveal  { border-color: var(--green); background: rgba(0,165,80,0.05); }
-  .ans-l {
-    width: 26px; height: 26px; border-radius: 7px; flex-shrink: 0;
-    border: 1.5px solid var(--border); background: white;
-    font-size: 11px; font-weight: 800; color: var(--muted);
-    display: flex; align-items: center; justify-content: center;
-  }
-  .correct .ans-l { background: var(--green); color: white; border-color: var(--green); }
-  .wrong   .ans-l { background: var(--red);   color: white; border-color: var(--red); }
-  .reveal  .ans-l { background: var(--green); color: white; border-color: var(--green); }
-
-  .fb { border-radius: 11px; padding: 13px 15px; font-size: 13px; line-height: 1.6; display: none; margin-top: 12px; }
-  .fb.show { display: block; }
-  .fb.ok { background: rgba(0,165,80,0.08); border: 1px solid rgba(0,165,80,0.2); color: #007A3A; }
-  .fb.ko { background: rgba(232,0,45,0.06); border: 1px solid rgba(232,0,45,0.2); color: var(--red); }
-
-  .btn-next {
-    width: 100%; background: white; border: 1.5px solid rgba(245,128,10,0.35);
-    border-radius: 13px; padding: 14px; font-size: 14px; font-weight: 700;
-    font-family: inherit; color: var(--orange); cursor: pointer; display: none;
-    box-shadow: 0 1px 6px rgba(0,0,0,0.04);
-  }
-  .btn-next.show { display: block; }
-
-  /* ── FLASH ── */
-  .flashcard {
-    background: white; border: 1px solid var(--border); border-radius: 20px;
-    padding: 40px 22px 32px; box-shadow: 0 1px 10px rgba(0,0,0,0.06);
-    text-align: center; min-height: 260px;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
-    cursor: pointer;
-  }
-  .fc-front { display: flex; flex-direction: column; gap: 12px; align-items: center; }
-  .fc-back  { display: none; flex-direction: column; gap: 10px; align-items: center; }
-  .flashcard.flipped .fc-front { display: none; }
-  .flashcard.flipped .fc-back  { display: flex; }
-  .fc-q { font-size: 18px; font-weight: 800; color: var(--text); line-height: 1.4; }
-  .fc-a { font-size: 16px; font-weight: 700; color: var(--green); line-height: 1.5; }
-  .fc-tap { font-size: 11px; color: #bbb; margin-top: 4px; }
-  .fc-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); }
-  .fc-count { font-size: 12px; color: var(--muted); text-align: center; }
-  .fc-nav { display: flex; gap: 10px; }
-  .fc-btn {
-    flex: 1; padding: 13px; border-radius: 12px; font-size: 13px; font-weight: 700;
-    font-family: inherit; border: 1.5px solid var(--border); cursor: pointer; background: white;
-  }
-  .fc-ok { color: var(--green); border-color: var(--green); background: rgba(0,165,80,0.05); }
-  .fc-ko { color: var(--red); border-color: var(--red); background: rgba(232,0,45,0.04); }
-
-  /* ── RESULT ── */
-  .result-top { text-align: center; }
-  .r-emoji { font-size: 50px; margin-bottom: 6px; }
-  .r-title { font-size: 26px; font-weight: 900; color: var(--text); margin-bottom: 4px; }
-  .r-score { font-size: 54px; font-weight: 900; color: var(--red); letter-spacing: -0.03em; line-height: 1; }
-  .r-sub { font-size: 13px; color: var(--muted); margin-top: 8px; line-height: 1.6; }
-
-  .bd-card { background: white; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: 0 1px 6px rgba(0,0,0,0.04); }
-  .bd-row { display: flex; justify-content: space-between; align-items: center; padding: 13px 18px; border-bottom: 1px solid var(--border); font-size: 13px; }
-  .bd-row:last-child { border-bottom: none; }
-  .bd-label { color: var(--muted); }
-  .bd-val { font-weight: 800; }
-  .vg { color: var(--green); }
-  .vm { color: var(--orange); }
-  .vb { color: var(--red); }
-
-  .btn-share { width: 100%; background: var(--blue); color: white; border: none; border-radius: 13px; padding: 14px; font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer; margin-bottom: 8px; }
-  .btn-retry { width: 100%; background: white; color: var(--red); border: 1.5px solid var(--red); border-radius: 13px; padding: 14px; font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer; }
+  /* RESULT */
+  .result-top { text-align:center; }
+  .r-emoji { font-size:50px; margin-bottom:6px; }
+  .r-title { font-size:26px; font-weight:900; color:var(--text); margin-bottom:4px; }
+  .r-score { font-size:54px; font-weight:900; letter-spacing:-0.03em; line-height:1; }
+  .r-sub { font-size:13px; color:var(--muted); margin-top:8px; line-height:1.6; }
+  .unlock-banner { background:linear-gradient(135deg,rgba(245,128,10,0.1),rgba(232,0,45,0.08)); border:1.5px solid rgba(245,128,10,0.25); border-radius:14px; padding:16px 18px; text-align:center; }
+  .unlock-icon { font-size:28px; margin-bottom:6px; }
+  .unlock-title { font-size:15px; font-weight:800; color:var(--orange); margin-bottom:4px; }
+  .unlock-desc { font-size:12px; color:var(--muted); }
+  .bd-card { background:white; border:1px solid var(--border); border-radius:16px; overflow:hidden; box-shadow:0 1px 6px rgba(0,0,0,0.04); }
+  .bd-row { display:flex; justify-content:space-between; align-items:center; padding:13px 18px; border-bottom:1px solid var(--border); font-size:13px; }
+  .bd-row:last-child { border-bottom:none; }
+  .bd-label { color:var(--muted); }
+  .bd-val { font-weight:800; }
+  .vg { color:var(--green); } .vm { color:var(--orange); } .vb { color:var(--red); }
+  .btn-back { width:100%; background:white; color:var(--text); border:1.5px solid var(--border); border-radius:13px; padding:14px; font-size:14px; font-weight:700; font-family:inherit; cursor:pointer; }
+  .btn-retry { width:100%; background:var(--orange); color:white; border:none; border-radius:13px; padding:14px; font-size:14px; font-weight:700; font-family:inherit; cursor:pointer; margin-bottom:8px; }
 
   /* TOAST */
-  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--text); color: white; padding: 11px 20px; border-radius: 11px; font-size: 13px; font-weight: 600; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 999; white-space: nowrap; }
-  .toast.show { opacity: 1; }
+  .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:var(--text); color:white; padding:11px 20px; border-radius:11px; font-size:13px; font-weight:600; opacity:0; pointer-events:none; transition:opacity 0.3s; z-index:999; white-space:nowrap; }
+  .toast.show { opacity:1; }
 </style>
 </head>
 <body>
 <div class="toast" id="toast"></div>
 
-<!-- TOP BAR -->
 <header class="topbar">
   <div class="topbar-logo">
     <div class="topbar-icon">T</div>
@@ -248,36 +166,21 @@
   <div class="screen active" id="screen-home">
     <div class="card">
       <div class="stripe">
-        <div style="background:var(--red)"></div>
-        <div style="background:var(--orange)"></div>
-        <div style="background:var(--yellow)"></div>
-        <div style="background:var(--green)"></div>
+        <div style="background:var(--red)"></div><div style="background:var(--orange)"></div>
+        <div style="background:var(--yellow)"></div><div style="background:var(--green)"></div>
         <div style="background:var(--blue)"></div>
       </div>
-      <h1 class="hero-title">Prépare ton <mark>entretien RH</mark></h1>
-      <p class="hero-sub">3 modules · 30 questions · Score + feedback + historique</p>
-      <div class="cat-grid">
-        <div class="cat-card cc1">
-          <span class="cat-card-icon">📊</span>
-          <div class="cat-card-name">Chiffres TotalEnergies</div>
-          <div class="cat-card-count">10 questions</div>
-        </div>
-        <div class="cat-card cc2">
-          <span class="cat-card-icon">💰</span>
-          <div class="cat-card-name">Finance Corporate</div>
-          <div class="cat-card-count">10 questions</div>
-        </div>
-        <div class="cat-card cc3">
-          <span class="cat-card-icon">🌍</span>
-          <div class="cat-card-name">Stratégie Groupe</div>
-          <div class="cat-card-count">10 questions</div>
-        </div>
-      </div>
-      <button class="btn-go" onclick="startQuiz()">Commencer →</button>
+      <h1 style="font-size:26px;font-weight:900;letter-spacing:-0.02em;margin-bottom:6px">Quiz <span style="color:var(--red)">TotalEnergies</span></h1>
+      <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:18px">4 niveaux progressifs · Débloque en progressant · 10 questions par niveau</p>
+      <div class="levels-grid" id="levels-grid"></div>
     </div>
-    <div class="card">
-      <div class="hist-title">Mes derniers scores</div>
-      <div id="hist-content"><div class="hist-empty">Aucun score enregistré.</div></div>
+    <div class="card" id="xp-card">
+      <div class="xp-title">Progression globale</div>
+      <div class="xp-row">
+        <span class="xp-label" id="xp-level-name">Débutant</span>
+        <span class="xp-val" id="xp-val">0 XP</span>
+      </div>
+      <div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
     </div>
   </div>
 
@@ -285,8 +188,11 @@
   <div class="screen" id="screen-quiz">
     <div class="quiz-header">
       <div class="quiz-meta">
-        <span class="q-num" id="q-num">1 / 30</span>
-        <span class="q-timer" id="q-timer">30s</span>
+        <span class="q-num" id="q-num">1/10</span>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="q-level-badge" id="q-level-badge"></span>
+          <span class="q-timer" id="q-timer">30s</span>
+        </div>
       </div>
       <div class="prog-wrap"><div class="prog-bar" id="prog-bar" style="width:0%"></div></div>
     </div>
@@ -302,21 +208,21 @@
 
   <!-- FLASH -->
   <div class="screen" id="screen-flash">
-    <div class="flashcard" id="flashcard" onclick="flipCard()">
-      <div class="fc-front">
+    <div style="background:white;border:1px solid var(--border);border-radius:20px;padding:40px 22px 32px;box-shadow:0 1px 10px rgba(0,0,0,0.06);text-align:center;min-height:260px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;cursor:pointer" id="flashcard" onclick="flipCard()">
+      <div id="fc-front" style="display:flex;flex-direction:column;gap:12px;align-items:center">
         <span class="q-badge" id="fc-badge"></span>
-        <div class="fc-q" id="fc-q"></div>
-        <div class="fc-tap">Appuie pour voir la réponse</div>
+        <div id="fc-q" style="font-size:18px;font-weight:800;color:var(--text);line-height:1.4"></div>
+        <div style="font-size:11px;color:#bbb;margin-top:4px">Appuie pour voir la réponse</div>
       </div>
-      <div class="fc-back">
-        <div class="fc-lbl">Réponse</div>
-        <div class="fc-a" id="fc-a"></div>
+      <div id="fc-back" style="display:none;flex-direction:column;gap:10px;align-items:center">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted)">Réponse</div>
+        <div id="fc-a" style="font-size:16px;font-weight:700;color:var(--green);line-height:1.5"></div>
       </div>
     </div>
-    <div class="fc-count" id="fc-count">Carte 1/30</div>
-    <div class="fc-nav">
-      <button class="fc-btn fc-ko" onclick="fcNext(false)">Je ne savais pas</button>
-      <button class="fc-btn fc-ok" onclick="fcNext(true)">Je savais !</button>
+    <div style="font-size:12px;color:var(--muted);text-align:center" id="fc-count">Carte 1/30</div>
+    <div style="display:flex;gap:10px">
+      <button onclick="fcNext(false)" style="flex:1;padding:13px;border-radius:12px;font-size:13px;font-weight:700;font-family:inherit;border:1.5px solid var(--red);background:rgba(232,0,45,0.04);color:var(--red);cursor:pointer">Je ne savais pas</button>
+      <button onclick="fcNext(true)" style="flex:1;padding:13px;border-radius:12px;font-size:13px;font-weight:700;font-family:inherit;border:1.5px solid var(--green);background:rgba(0,165,80,0.05);color:var(--green);cursor:pointer">Je savais !</button>
     </div>
   </div>
 
@@ -324,10 +230,8 @@
   <div class="screen" id="screen-result">
     <div class="card result-top">
       <div class="stripe">
-        <div style="background:var(--red)"></div>
-        <div style="background:var(--orange)"></div>
-        <div style="background:var(--yellow)"></div>
-        <div style="background:var(--green)"></div>
+        <div style="background:var(--red)"></div><div style="background:var(--orange)"></div>
+        <div style="background:var(--yellow)"></div><div style="background:var(--green)"></div>
         <div style="background:var(--blue)"></div>
       </div>
       <div class="r-emoji" id="r-emoji"></div>
@@ -335,98 +239,173 @@
       <div class="r-score" id="r-score"></div>
       <div class="r-sub" id="r-sub"></div>
     </div>
+    <div class="unlock-banner" id="unlock-banner" style="display:none">
+      <div class="unlock-icon" id="unlock-icon"></div>
+      <div class="unlock-title" id="unlock-title"></div>
+      <div class="unlock-desc" id="unlock-desc"></div>
+    </div>
     <div class="bd-card" id="bd"></div>
-    <button class="btn-share" onclick="share()">Partager mon score</button>
-    <button class="btn-retry" onclick="startQuiz()">Rejouer</button>
+    <button class="btn-retry" onclick="retryLevel()">Rejouer ce niveau</button>
+    <button class="btn-back" onclick="goHome()">Retour aux niveaux</button>
   </div>
 
 </div>
 
 <script>
-const Q = [
-  // ── CHIFFRES (10) ──
-  {cat:"chiffres",q:"Quel était le CFFO (Cash Flow des Opérations) de TotalEnergies en 2025 ?",hint:"Indicateur clé de la capacité bénéficiaire opérationnelle.",a:["22,3 Mds$","27,8 Mds$","31,4 Mds$","19,6 Mds$"],c:1,e:"CFFO 2025 : 27,8 Mds$. À citer en priorité en entretien."},
-  {cat:"chiffres",q:"Quel est le résultat net ajusté de TotalEnergies pour 2025 ?",hint:"Exclut les éléments exceptionnels.",a:["12,1 Mds$","18,3 Mds$","15,6 Mds$","21,2 Mds$"],c:2,e:"Résultat net ajusté 2025 : 15,6 Mds$."},
-  {cat:"chiffres",q:"Quel est le ROACE de TotalEnergies en 2025 ?",hint:"Return On Average Capital Employed.",a:["9,4% — dans la moyenne des majors","12,6% — meilleur des majors 4 ans","15,1% — record historique","10,8% — en progression"],c:1,e:"ROACE 12,6%, meilleur des majors 4 ans consécutifs."},
-  {cat:"chiffres",q:"Quel est le CAPEX net de TotalEnergies en 2025 ?",hint:"Capital Expenditure — investissements nets.",a:["14,2 Mds$","17,1 Mds$","20,5 Mds$","11,8 Mds$"],c:1,e:"CAPEX net 2025 : 17,1 Mds$."},
-  {cat:"chiffres",q:"Quelle était la performance boursière de TotalEnergies en 2025 ?",hint:"À comparer avec les autres majors.",a:["+8%","+14%","+20%","+31%"],c:2,e:"+20% en 2025."},
-  {cat:"chiffres",q:"Quel est le gearing de TotalEnergies fin 2025 ?",hint:"Ratio dette nette / capitaux propres.",a:["8,2%","14,7%","22,1%","31,5%"],c:1,e:"Gearing 14,7% — faible, signe de solidité financière."},
-  {cat:"chiffres",q:"Quel est le coût de production Upstream de TotalEnergies en 2025 ?",hint:"Exprimé en $/boe — très compétitif parmi les majors.",a:["3$/boe","5$/boe","8$/boe","12$/boe"],c:1,e:"5$/boe — l'un des plus bas de l'industrie."},
-  {cat:"chiffres",q:"Combien de GW de capacités électriques TotalEnergies a-t-il acquis via le deal EPH ?",hint:"Acquisition stratégique en Europe.",a:["5 GW","10 GW","14 GW","20 GW"],c:2,e:"~14 GW de capacité électrique en Europe via EPH."},
-  {cat:"chiffres",q:"Quel est l'objectif du programme d'économies de TotalEnergies sur 2026-2030 ?",hint:"Annoncé pour améliorer la compétitivité du groupe.",a:["5 Mds$","8,5 Mds$","12,5 Mds$","20 Mds$"],c:2,e:"12,5 Mds$ d'économies sur 2026-2030."},
-  {cat:"chiffres",q:"Combien de GW de PPAs TotalEnergies a-t-il signé avec les géants tech (Google, ByteDance, Microsoft) ?",hint:"Contrats d'achat d'électricité pour alimenter des datacenters.",a:[">1 GW",">2 GW",">4 GW",">10 GW"],c:2,e:">4 GW de PPAs signés avec Google, ByteDance et Microsoft."},
-
-  // ── FINANCE (10) ──
-  {cat:"finance",q:"Qu'est-ce que le gearing ?",hint:"Ratio d'endettement très utilisé dans les groupes pétroliers.",a:["Ratio dividende / bénéfice par action","Dette nette / capitaux propres","EBITDA / chiffre d'affaires","Coût moyen pondéré du capital"],c:1,e:"Gearing = Dette nette / Capitaux propres. TotalEnergies : 14,7% en 2025."},
-  {cat:"finance",q:"Que mesure le ROACE ?",hint:"Indicateur phare de rentabilité pour les groupes pétroliers.",a:["Rentabilité des actions cotées","Retour sur les capitaux employés en moyenne","Rentabilité nette après impôts","Ratio de couverture des intérêts"],c:1,e:"Return On Average Capital Employed = résultat net opérationnel / capitaux employés moyens."},
-  {cat:"finance",q:"Qu'est-ce qu'un PPA dans le contexte énergie ?",hint:"TotalEnergies en a signé plusieurs avec des géants tech.",a:["Planned Production Agreement","Power Purchase Agreement","Petroleum Production Allocation","Portfolio Performance Assessment"],c:1,e:"PPA = Power Purchase Agreement. Contrat d'achat d'électricité long terme."},
-  {cat:"finance",q:"Qu'est-ce que le boe ?",hint:"TotalEnergies affiche un coût de production à 5 de cette unité.",a:["Balance of Earnings","Barrel of Oil Equivalent","Base Operating Expenditure","Budget of Operations Estimate"],c:1,e:"boe = Barrel of Oil Equivalent. Unité commune pour comparer différentes sources d'énergie."},
-  {cat:"finance",q:"Qu'est-ce que le WACC / CMPC ?",hint:"Utilisé pour actualiser les flux dans une valorisation DCF.",a:["Coût moyen pondéré du capital (dettes + fonds propres)","Ratio de couverture de la dette","Taux de croissance à long terme","Capitalisation boursière normalisée"],c:0,e:"WACC = Weighted Average Cost of Capital. Taux de rentabilité minimum exigé par les financeurs."},
-  {cat:"finance",q:"Qu'est-ce qu'un DCF ?",hint:"Méthode de valorisation fondamentale en finance corporate.",a:["Debt Coverage Factor","Discounted Cash Flow — flux de trésorerie actualisés","Dividend Capitalization Formula","Depreciation & Cost Factor"],c:1,e:"DCF = Discounted Cash Flow. Valorise une entreprise en actualisant ses flux futurs au WACC."},
-  {cat:"finance",q:"Qu'est-ce que l'EBITDA ?",hint:"Solde intermédiaire de gestion proxy du cash-flow opérationnel.",a:["Earnings Before Interest, Taxes, Depreciation & Amortization","Equity Base Including Tax and Dividend Allocation","Estimated Budget Including Total Debt Amount","Earnings Before Income Tax Distribution Assessment"],c:0,e:"EBITDA = Résultat avant intérêts, impôts, amortissements et provisions. Très utilisé pour comparer entreprises."},
-  {cat:"finance",q:"Quelle est la différence entre résultat net et résultat net ajusté ?",hint:"L'ajusté reflète la performance récurrente.",a:["Aucune différence — termes synonymes","L'ajusté exclut les éléments exceptionnels (dépréciations, plus-values...)","L'ajusté inclut les dividendes reçus des filiales","L'ajusté est calculé avant impôts"],c:1,e:"Le résultat net ajusté exclut les éléments non récurrents (dépréciations, gains/pertes de cession) pour refléter la performance opérationnelle."},
-  {cat:"finance",q:"Qu'est-ce que le Free Cash Flow (FCF) ?",hint:"Différence entre deux grands agrégats financiers.",a:["Résultat net - dividendes versés","Cash flow opérationnel - CAPEX","EBITDA - intérêts financiers","Chiffre d'affaires - coûts opérationnels"],c:1,e:"FCF = Cash flow opérationnel - CAPEX. Mesure l'argent disponible après investissements. Crucial pour la politique de dividendes."},
-  {cat:"finance",q:"Qu'est-ce que le ratio Price/Earnings (P/E) ?",hint:"Ratio de valorisation boursière le plus utilisé.",a:["Prix de l'action / Bénéfice par action","EBITDA / capitalisation boursière","Dividende / cours de bourse","Chiffre d'affaires / nombre d'actions"],c:0,e:"P/E = Prix de l'action / Bénéfice par action (BPA). Indique combien le marché est prêt à payer pour 1€ de bénéfice."},
-
-  // ── STRATÉGIE (10) ──
-  {cat:"strategie",q:"Quels sont les deux projets majeurs de TotalEnergies en Namibie ?",hint:"+1,5 milliards de barils de réserves potentielles.",a:["Projet Oryx et Kalahari","Projet Venus et Mopane","Projet Namib et Atlantic","Projet Orange et Kudu"],c:1,e:"Projets Venus et Mopane — >1,5 Mds barils. FID attendues 2026-2028."},
-  {cat:"strategie",q:"Avec quelles entreprises TotalEnergies a-t-il signé des PPAs pour datacenters ?",hint:"3 géants tech, >4 GW au total.",a:["Amazon, Meta, Apple","Google, ByteDance, Microsoft","Netflix, Salesforce, Oracle","IBM, SAP, Tesla"],c:1,e:"Google, ByteDance et Microsoft — convergence énergie × IA."},
-  {cat:"strategie",q:"Qu'est-ce que la stratégie 'multi-énergie' de TotalEnergies ?",hint:"Différenciateur clé vs les autres majors.",a:["Sortie totale des hydrocarbures d'ici 2035","Hydrocarbures (cash machine) financent l'électricité et les renouvelables","Focalisation exclusive sur le GNL","Recentrage sur l'upstream pétrole uniquement"],c:1,e:"Modèle multi-énergie : maintenir les hydrocarbures pour financer la croissance dans l'électricité, le GNL et les renouvelables."},
-  {cat:"strategie",q:"Qu'est-ce que le deal EPH apporte à TotalEnergies ?",hint:"Acquisition dans l'électricité en Europe.",a:["Rachat d'un portefeuille solaire en Espagne","~14 GW de capacité électrique en Europe","Partenariat EDF sur le nucléaire","Fusion avec une major gazière européenne"],c:1,e:"Deal EPH : ~14 GW de capacité électrique en Europe. Accélère le pivot vers l'électricité."},
-  {cat:"strategie",q:"Quelle est la cible CAPEX annuel de TotalEnergies à moyen terme ?",hint:"Entre investir et maintenir la discipline financière.",a:["<10 Mds$","13-17 Mds$","20-25 Mds$",">30 Mds$"],c:1,e:"Cible CAPEX : 13-17 Mds$/an — équilibre entre croissance et discipline financière."},
-  {cat:"strategie",q:"Qu'est-ce que le GNL dans la stratégie TotalEnergies ?",hint:"Gaz sous forme liquide — pivot stratégique du groupe.",a:["Gaz Naturel Liquéfié — axe majeur de croissance","Gestion Numérique des Liquidités","Garantie de Non-Livraison","Gestion des Niveaux de Liquidité"],c:0,e:"GNL = Gaz Naturel Liquéfié. TotalEnergies est l'un des leaders mondiaux du GNL — pivot vers une énergie moins carbonée que le pétrole."},
-  {cat:"strategie",q:"Quel est l'horizon de la FID (Final Investment Decision) pour les projets namibiens ?",hint:"Venus et Mopane — décisions majeures attendues.",a:["Déjà prises en 2024","2026-2028","2030-2032","Indéfini — études en cours"],c:1,e:"FID attendues entre 2026 et 2028 pour Venus et Mopane — plus de 1,5 Mds barils de réserves potentielles."},
-  {cat:"strategie",q:"Quelle est la politique de rémunération des actionnaires de TotalEnergies ?",hint:"Mix dividende + rachats d'actions.",a:["Dividende uniquement, pas de rachat d'actions","Dividende progressif + rachats d'actions selon le prix du pétrole","Pas de dividende — réinvestissement total","Dividende fixe indépendant des résultats"],c:1,e:"TotalEnergies maintient un dividende progressif + rachats d'actions variables selon le contexte de marché (breakeven ~40$/bbl)."},
-  {cat:"strategie",q:"Quel est le breakeven (prix seuil) de TotalEnergies pour couvrir dividende + CAPEX ?",hint:"Indicateur de résilience financière aux cycles pétroliers.",a:["~20$/baril","~40$/baril","~65$/baril","~80$/baril"],c:1,e:"Breakeven ~40$/baril — permet de maintenir le dividende et le CAPEX même en environnement de prix bas."},
-  {cat:"strategie",q:"Quel est le positionnement de TotalEnergies sur le marché de l'électricité renouvelable ?",hint:"Ambition chiffrée à l'horizon 2030.",a:["Présence symbolique, <5 GW","En construction avec cible 35+ GW en 2030","Leader mondial avec >100 GW","Retrait stratégique au profit du GNL"],c:1,e:"TotalEnergies vise 35+ GW de capacité renouvelable d'ici 2030, financés par les cash flows hydrocarbures."},
+// ── LEVELS CONFIG ──
+const LEVELS = [
+  {id:1, name:"Débutant",     icon:"🌱", color:"var(--green)",  timer:40, threshold:0,  unlock:0,  lv:"lv1", desc:"Questions fondamentales — définitions et ordres de grandeur"},
+  {id:2, name:"Intermédiaire",icon:"📘", color:"var(--blue)",   timer:30, threshold:60, unlock:1,  lv:"lv2", desc:"Comprendre les mécanismes financiers et stratégiques"},
+  {id:3, name:"Avancé",       icon:"🔥", color:"var(--orange)", timer:25, threshold:70, unlock:2,  lv:"lv3", desc:"Maîtrise des indicateurs et de la stratégie du groupe"},
+  {id:4, name:"Expert",       icon:"🏆", color:"var(--red)",    timer:15, threshold:80, unlock:3,  lv:"lv4", desc:"Niveau entretien RH Groupe — précision et rapidité exigées"},
 ];
 
-const CAT_LABELS = {chiffres:"Chiffres TotalEnergies",finance:"Finance Corporate",strategie:"Stratégie Groupe"};
-const CAT_ICONS = {chiffres:"📊",finance:"💰",strategie:"🌍"};
-const CAT_COLORS = {chiffres:"b-chiffres",finance:"b-finance",strategie:"b-strategie"};
-const PROG_COLORS = {chiffres:"var(--blue)",finance:"var(--green)",strategie:"var(--orange)"};
+// ── QUESTIONS par niveau ──
+const Q = {
+  1: [ // DÉBUTANT — définitions, notions de base
+    {cat:"chiffres",q:"Quel est le CFFO de TotalEnergies en 2025 ?",hint:"Cash Flow des Opérations — chiffre à citer absolument.",a:["22,3 Mds$","27,8 Mds$","31,4 Mds$","19,6 Mds$"],c:1,e:"CFFO 2025 : 27,8 Mds$."},
+    {cat:"chiffres",q:"Quelle était la performance boursière de TotalEnergies en 2025 ?",hint:"À comparer avec les autres majors.",a:["+8%","+14%","+20%","+31%"],c:2,e:"+20% en 2025."},
+    {cat:"chiffres",q:"Quel est le gearing de TotalEnergies fin 2025 ?",hint:"Dette nette / capitaux propres.",a:["8,2%","14,7%","22,1%","31,5%"],c:1,e:"Gearing 14,7% — faible, signe de solidité."},
+    {cat:"finance",q:"Qu'est-ce que le gearing ?",hint:"Ratio d'endettement fondamental.",a:["Ratio dividende / BPA","Dette nette / capitaux propres","EBITDA / CA","Coût du capital"],c:1,e:"Gearing = Dette nette / Capitaux propres."},
+    {cat:"finance",q:"Que signifie l'acronyme EBITDA ?",hint:"Solde intermédiaire de gestion très utilisé.",a:["Earnings Before Interest Taxes Depreciation Amortization","Equity Base Including Tax Distribution Account","Estimated Budget Including Total Debt Amount","Earnings Before Income Tax Distribution Assessment"],c:0,e:"EBITDA = Résultat avant intérêts, impôts, amortissements. Proxy du cash-flow opérationnel."},
+    {cat:"finance",q:"Qu'est-ce qu'un PPA ?",hint:"TotalEnergies en a signé avec Google, ByteDance, Microsoft.",a:["Planned Production Agreement","Power Purchase Agreement","Petroleum Production Allocation","Portfolio Performance Assessment"],c:1,e:"PPA = Power Purchase Agreement. Contrat d'achat d'électricité long terme."},
+    {cat:"strategie",q:"Quels sont les deux projets majeurs de TotalEnergies en Namibie ?",hint:">1,5 Mds barils de réserves potentielles.",a:["Oryx et Kalahari","Venus et Mopane","Namib et Atlantic","Orange et Kudu"],c:1,e:"Projets Venus et Mopane."},
+    {cat:"strategie",q:"Quelle est la stratégie de TotalEnergies face à la transition énergétique ?",hint:"Modèle différencié des autres majors.",a:["Sortie totale des hydrocarbures d'ici 2035","Hydrocarbures financent l'électricité et les renouvelables","Focalisation exclusive sur le GNL","Recentrage sur l'upstream uniquement"],c:1,e:"Modèle multi-énergie : hydrocarbures (cash machine) financent la croissance dans l'électricité et les renouvelables."},
+    {cat:"chiffres",q:"Quel est le coût de production Upstream de TotalEnergies en 2025 ?",hint:"L'un des plus bas de l'industrie.",a:["3$/boe","5$/boe","8$/boe","12$/boe"],c:1,e:"5$/boe — très compétitif."},
+    {cat:"strategie",q:"Qu'est-ce que le GNL ?",hint:"Axe majeur de la stratégie de transition TotalEnergies.",a:["Gaz Naturel Liquéfié","Gestion Numérique des Liquidités","Garantie de Non-Livraison","Gestion des Niveaux de Liquidité"],c:0,e:"GNL = Gaz Naturel Liquéfié. TotalEnergies est l'un des leaders mondiaux."},
+  ],
+  2: [ // INTERMÉDIAIRE
+    {cat:"chiffres",q:"Quel est le résultat net ajusté de TotalEnergies pour 2025 ?",hint:"Exclut les éléments exceptionnels.",a:["12,1 Mds$","18,3 Mds$","15,6 Mds$","21,2 Mds$"],c:2,e:"Résultat net ajusté 2025 : 15,6 Mds$."},
+    {cat:"chiffres",q:"Quel est le CAPEX net de TotalEnergies en 2025 ?",hint:"Investissements nets du groupe.",a:["14,2 Mds$","17,1 Mds$","20,5 Mds$","11,8 Mds$"],c:1,e:"CAPEX net 2025 : 17,1 Mds$."},
+    {cat:"finance",q:"Que mesure le ROACE ?",hint:"Indicateur phare pour les groupes pétroliers intégrés.",a:["Rentabilité des actions cotées","Retour sur capitaux employés en moyenne","Rentabilité nette après impôts","Ratio de couverture des intérêts"],c:1,e:"Return On Average Capital Employed = résultat net opérationnel / capitaux employés moyens."},
+    {cat:"finance",q:"Qu'est-ce que le boe ?",hint:"Unité commune pour comparer différentes sources d'énergie.",a:["Balance of Earnings","Barrel of Oil Equivalent","Base Operating Expenditure","Budget of Operations Estimate"],c:1,e:"boe = Barrel of Oil Equivalent."},
+    {cat:"finance",q:"Quelle est la différence entre résultat net et résultat net ajusté ?",hint:"L'ajusté reflète la performance récurrente.",a:["Aucune différence","L'ajusté exclut les éléments exceptionnels (dépréciations, plus-values...)","L'ajusté inclut les dividendes reçus","L'ajusté est calculé avant impôts"],c:1,e:"Le résultat net ajusté exclut les éléments non récurrents pour refléter la performance opérationnelle."},
+    {cat:"strategie",q:"Quel est l'objectif du programme d'économies de TotalEnergies sur 2026-2030 ?",hint:"Programme massif de discipline des coûts.",a:["5 Mds$","8,5 Mds$","12,5 Mds$","20 Mds$"],c:2,e:"12,5 Mds$ d'économies sur 2026-2030."},
+    {cat:"strategie",q:"Combien de GW de capacités TotalEnergies a-t-il acquis via le deal EPH ?",hint:"Acquisition stratégique dans l'électricité en Europe.",a:["5 GW","10 GW","14 GW","20 GW"],c:2,e:"~14 GW de capacité électrique en Europe via EPH."},
+    {cat:"strategie",q:"Avec quelles entreprises TotalEnergies a signé des PPAs pour datacenters ?",hint:">4 GW au total.",a:["Amazon, Meta, Apple","Google, ByteDance, Microsoft","Netflix, Salesforce, Oracle","IBM, SAP, Tesla"],c:1,e:"Google, ByteDance et Microsoft (>4 GW)."},
+    {cat:"finance",q:"Qu'est-ce qu'un DCF ?",hint:"Méthode de valorisation fondamentale.",a:["Debt Coverage Factor","Discounted Cash Flow","Dividend Capitalization Formula","Depreciation & Cost Factor"],c:1,e:"DCF = Discounted Cash Flow. Valorise une entreprise en actualisant ses flux futurs au WACC."},
+    {cat:"finance",q:"Qu'est-ce que le Free Cash Flow (FCF) ?",hint:"Différence entre deux grands agrégats financiers.",a:["Résultat net - dividendes","Cash flow opérationnel - CAPEX","EBITDA - intérêts","CA - coûts opérationnels"],c:1,e:"FCF = Cash flow opérationnel - CAPEX. Argent disponible après investissements."},
+  ],
+  3: [ // AVANCÉ
+    {cat:"chiffres",q:"Quel est le ROACE de TotalEnergies en 2025 et en quoi est-il remarquable ?",hint:"Comparaison avec les majors pétrolières.",a:["9,4% — dans la moyenne","12,6% — meilleur des majors 4 ans consécutifs","15,1% — record historique","10,8% — en progression"],c:1,e:"ROACE 12,6%, meilleur des majors 4 ans consécutifs."},
+    {cat:"finance",q:"Qu'est-ce que le WACC / CMPC ?",hint:"Taux utilisé dans les valorisations DCF.",a:["Coût moyen pondéré du capital (dettes + fonds propres)","Ratio de couverture de la dette","Taux de croissance long terme","Capitalisation boursière normalisée"],c:0,e:"WACC = Weighted Average Cost of Capital. Taux de rentabilité minimum exigé par les financeurs."},
+    {cat:"finance",q:"Qu'est-ce que le ratio Price/Earnings (P/E) ?",hint:"Ratio de valorisation boursière le plus utilisé.",a:["Prix de l'action / Bénéfice par action","EBITDA / capitalisation boursière","Dividende / cours de bourse","CA / nombre d'actions"],c:0,e:"P/E = Prix de l'action / BPA. Indique combien le marché paie pour 1€ de bénéfice."},
+    {cat:"strategie",q:"Quel est l'horizon de la FID pour les projets namibiens Venus et Mopane ?",hint:"Final Investment Decision — décision majeure d'investissement.",a:["Déjà prises en 2024","2026-2028","2030-2032","Indéfini"],c:1,e:"FID attendues entre 2026 et 2028."},
+    {cat:"strategie",q:"Quelle est la cible CAPEX annuel de TotalEnergies à moyen terme ?",hint:"Entre investir et maintenir la discipline financière.",a:["<10 Mds$","13-17 Mds$","20-25 Mds$",">30 Mds$"],c:1,e:"Cible CAPEX : 13-17 Mds$/an."},
+    {cat:"strategie",q:"Quel est le breakeven de TotalEnergies pour couvrir dividende + CAPEX ?",hint:"Indicateur de résilience aux cycles pétroliers.",a:["~20$/baril","~40$/baril","~65$/baril","~80$/baril"],c:1,e:"Breakeven ~40$/baril — permet de maintenir le dividende même en prix bas."},
+    {cat:"chiffres",q:"Combien de GW de PPAs TotalEnergies a-t-il signé avec les géants tech ?",hint:"Google, ByteDance, Microsoft — datacenters.",a:[">1 GW",">2 GW",">4 GW",">10 GW"],c:2,e:">4 GW de PPAs pour alimenter des datacenters."},
+    {cat:"finance",q:"Qu'est-ce que le dividende progressif de TotalEnergies ?",hint:"Engagement envers les actionnaires même en période de prix bas.",a:["Dividende variable selon le résultat net","Dividende augmentant chaque année, maintenu même en cycle bas","Dividende fixe depuis 10 ans","Dividende distribué uniquement si prix du pétrole >60$"],c:1,e:"TotalEnergies s'engage sur un dividende croissant + rachats d'actions variables selon le contexte."},
+    {cat:"strategie",q:"Quelle est la politique de rémunération des actionnaires de TotalEnergies ?",hint:"Mix deux composantes.",a:["Dividende uniquement","Dividende progressif + rachats d'actions selon le prix du pétrole","Pas de dividende — réinvestissement total","Dividende fixe indépendant des résultats"],c:1,e:"Dividende progressif + rachats d'actions variables (breakeven ~40$/bbl)."},
+    {cat:"strategie",q:"Quel est le positionnement de TotalEnergies sur les renouvelables à horizon 2030 ?",hint:"Ambition chiffrée en GW.",a:["Présence symbolique <5 GW","35+ GW en 2030","Leader mondial >100 GW","Retrait au profit du GNL"],c:1,e:"TotalEnergies vise 35+ GW de capacité renouvelable d'ici 2030."},
+  ],
+  4: [ // EXPERT — précision + rapidité (15s)
+    {cat:"chiffres",q:"Citez 3 chiffres clés TotalEnergies 2025 en moins de 10 secondes.",hint:"CFFO, résultat net ajusté, ROACE — les 3 essentiels.",a:["CFFO 27,8 Mds$ / RN ajusté 15,6 Mds$ / ROACE 12,6%","CFFO 22,3 Mds$ / RN ajusté 18 Mds$ / ROACE 10%","CFFO 31 Mds$ / RN ajusté 15,6 Mds$ / ROACE 14%","CFFO 27,8 Mds$ / RN ajusté 12 Mds$ / ROACE 12,6%"],c:0,e:"Les 3 essentiels : CFFO 27,8 Mds$ — RN ajusté 15,6 Mds$ — ROACE 12,6%."},
+    {cat:"finance",q:"Comment calculer le ROACE à partir des états financiers ?",hint:"Formule exacte — niveau entretien financier.",a:["Résultat net / Total actif","Résultat net opérationnel après impôts / Capitaux employés moyens","EBITDA / Dette nette","FCF / Capitalisation boursière"],c:1,e:"ROACE = RNOAI (Résultat Net Opérationnel Après Impôts) / Capitaux Employés Moyens."},
+    {cat:"finance",q:"Si le WACC est de 8% et qu'un projet génère un ROACE de 12%, que peut-on conclure ?",hint:"Comparaison ROACE vs WACC.",a:["Le projet détruit de la valeur","Le projet crée de la valeur (ROACE > WACC)","Le projet est neutre","On ne peut pas conclure sans le FCF"],c:1,e:"ROACE (12%) > WACC (8%) → le projet crée de la valeur économique. C'est l'essence de la création de valeur."},
+    {cat:"strategie",q:"Quel est le lien entre la stratégie namibienne et la politique de dividende de TotalEnergies ?",hint:"Réflexion stratégique intégrée — niveau CODIR.",a:["Aucun lien direct","Les revenus namibiens financeront les dividendes futurs dès la FID","Le cash des hydrocarbures existants finance le dividende pendant que Namibie matûrit","La Namibie remplacera le GNL dans le mix"],c:2,e:"Les hydrocarbures en production financent le dividende (breakeven 40$) pendant que les grands projets (Namibie) préparent la croissance future."},
+    {cat:"chiffres",q:"Quel est le gearing cible de TotalEnergies à moyen terme ?",hint:"Objectif de structure financière communiqué au marché.",a:["<5%","<20%","<30%","<10%"],c:1,e:"TotalEnergies cible un gearing <20% — 14,7% en 2025, dans la cible."},
+    {cat:"finance",q:"Qu'implique un breakeven à 40$/baril pour TotalEnergies si le Brent chute à 50$ ?",hint:"Marge de sécurité financière.",a:["Dividende en danger immédiat","10$/baril de marge — dividende et CAPEX couverts, FCF positif","Break-even atteint — résultat nul","Réduction automatique du CAPEX"],c:1,e:"À 50$/bbl avec breakeven 40$, il reste 10$/bbl de marge. Dividende et CAPEX couverts, FCF positif disponible pour rachats."},
+    {cat:"strategie",q:"Pourquoi TotalEnergies maintient-il une production d'hydrocarbures élevée alors que la transition est en cours ?",hint:"Logique financière et stratégique du modèle multi-énergie.",a:["Par dépendance aux actifs passés","Pour financer l'électricité et les renouvelables via le cash-flow — le groupe a besoin des deux","Pour satisfaire les actionnaires uniquement","Faute d'opportunités dans les renouvelables"],c:1,e:"Les hydrocarbures génèrent le cash (CFFO 27,8 Mds$) qui finance l'électricité, le GNL et les renouvelables. Logique de transition financée de l'intérieur."},
+    {cat:"finance",q:"Dans une valorisation DCF de TotalEnergies, quel taux d'actualisation utiliseriez-vous et pourquoi ?",hint:"Lien entre WACC et risque sectoriel.",a:["5% — taux sans risque actuel","8-10% — WACC d'un major pétrolier intégré (risque sectoriel + prime de marché)","15% — risque élevé du secteur","3% — coût de la dette uniquement"],c:1,e:"WACC 8-10% pour un major pétrolier intégré : taux sans risque (~4%) + prime de marché × bêta sectoriel (~0.8-1.0)."},
+    {cat:"strategie",q:"Comment TotalEnergies se différencie-t-il de BP et Shell sur la stratégie de transition ?",hint:"TotalEnergies a choisi une voie distincte en 2023.",a:["TotalEnergies a abandonné les renouvelables","TotalEnergies maintient la croissance hydrocarbures ET les renouvelables, là où BP/Shell ont ralenti les deux","TotalEnergies a fusionné avec un acteur renouvelable","TotalEnergies se concentre sur le nucléaire"],c:1,e:"BP et Shell ont réduit leurs ambitions renouvelables sous pression des actionnaires. TotalEnergies maintient sa double trajectoire : croissance hydrocarbures (Namibie, GNL) + renouvelables (35 GW 2030)."},
+    {cat:"chiffres",q:"Quel est le ROACE minimum que TotalEnergies exige pour valider un nouveau projet d'investissement ?",hint:"Lié au WACC et à la création de valeur.",a:["5%","Supérieur au WACC du groupe (~8-10%)","15% minimum","20% pour les projets Upstream"],c:1,e:"TotalEnergies exige un ROACE supérieur au WACC (~8-10%) pour tout nouveau projet — condition sine qua non de création de valeur."},
+  ],
+};
 
-let mode='quiz', qs=[], cur=0, score=0, catSc={};
+const CAT_LABELS = {chiffres:"Chiffres TotalEnergies",finance:"Finance Corporate",strategie:"Stratégie Groupe"};
+const CAT_ICONS  = {chiffres:"📊",finance:"💰",strategie:"🌍"};
+const CAT_COLORS = {chiffres:"b-chiffres",finance:"b-finance",strategie:"b-strategie"};
+const PROG_COLORS= {chiffres:"var(--blue)",finance:"var(--green)",strategie:"var(--orange)"};
+
+let mode='quiz', currentLevel=1, qs=[], cur=0, score=0, catSc={};
 let timerInt, tLeft;
 let fcIdx=0, fcQ=[], fcKnown=0;
+
+// ── STORAGE ──
+function getProgress(){return JSON.parse(localStorage.getItem('te_progress')||'{"xp":0,"unlocked":[1],"bestScores":{}}');}
+function saveProgress(p){localStorage.setItem('te_progress',JSON.stringify(p));}
+
+function getXP(){return getProgress().xp;}
+function addXP(n){const p=getProgress();p.xp=(p.xp||0)+n;saveProgress(p);}
+function isUnlocked(lv){return getProgress().unlocked.includes(lv);}
+function unlockLevel(lv){const p=getProgress();if(!p.unlocked.includes(lv)){p.unlocked.push(lv);saveProgress(p);return true;}return false;}
+function getBestScore(lv){return getProgress().bestScores[lv]||0;}
+function saveBestScore(lv,s){const p=getProgress();if(!p.bestScores[lv]||s>p.bestScores[lv]){p.bestScores[lv]=s;saveProgress(p);}}
 
 function shuffle(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}return r;}
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
 function setMode(m){mode=m;document.getElementById('m-quiz').className='mode-btn'+(m==='quiz'?' on':'');document.getElementById('m-flash').className='mode-btn'+(m==='flash'?' on':'');}
 function toast(msg){const e=document.getElementById('toast');e.textContent=msg;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2500);}
 
-// History
-function loadHistory(){
-  const h=JSON.parse(localStorage.getItem('qh')||'[]');
-  const el=document.getElementById('hist-content');
-  if(!h.length){el.innerHTML='<div class="hist-empty">Aucun score enregistré.</div>';return;}
-  el.innerHTML='<div class="hist-list">'+h.slice(-5).reverse().map(e=>{
-    const p=Math.round(e.s/e.t*100);
-    const c=p>=80?'hg':p>=50?'hm':'hb';
-    return`<div class="hist-row"><span class="hist-date">${e.d}</span><span class="${c}">${e.s}/${e.t} (${p}%)</span></div>`;
-  }).join('')+'</div>';
-}
-function saveHistory(s,t){
-  const h=JSON.parse(localStorage.getItem('qh')||'[]');
-  const d=new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
-  h.push({s,t,d});localStorage.setItem('qh',JSON.stringify(h.slice(-20)));
+// ── HOME ──
+function renderHome(){
+  const lvls=LEVELS;
+  document.getElementById('levels-grid').innerHTML=lvls.map(lv=>{
+    const unlocked=isUnlocked(lv.id);
+    const best=getBestScore(lv.id);
+    const pct=Math.round(best/10*100);
+    const cls=`level-card ${lv.lv}${!unlocked?' locked':''}${lv.id===getActiveLevel()?' current':''}`;
+    const lockIcon=!unlocked?`<div class="level-lock">🔒</div>`:`<div class="level-lock" style="color:${lv.color}">${best>0?pct+'%':''}</div>`;
+    const progHtml=unlocked&&best>0?`<div class="level-prog"><div class="level-prog-bar" style="width:${pct}%;background:${lv.color}"></div></div>`:'';
+    const reqTxt=!unlocked?`Débloqué à ${LEVELS[lv.id-2].threshold}% au niveau ${LEVELS[lv.id-2].name}`:`${lv.timer}s par question`;
+    return`<div class="${cls}" onclick="selectLevel(${lv.id})">
+      <div class="level-icon">${lv.icon}</div>
+      <div class="level-info">
+        <div class="level-name">${lv.name}</div>
+        <div class="level-desc">${lv.desc}</div>
+        <div class="level-meta">
+          <span class="lm-badge" style="background:${lv.color}22;color:${lv.color}">${reqTxt}</span>
+        </div>
+        ${progHtml}
+      </div>
+      ${lockIcon}
+    </div>`;
+  }).join('');
+
+  // XP bar
+  const xp=getXP();
+  const maxXp=400;
+  const pct=Math.min(100,Math.round(xp/maxXp*100));
+  document.getElementById('xp-val').textContent=xp+' XP';
+  document.getElementById('xp-fill').style.width=pct+'%';
+  const lvName=xp<50?'Débutant':xp<150?'Intermédiaire':xp<300?'Avancé':'Expert';
+  document.getElementById('xp-level-name').textContent=lvName+' · '+xp+'/'+maxXp+' XP';
 }
 
-// Quiz
-function startQuiz(){
-  if(mode==='flash'){startFlash();return;}
-  qs=shuffle(Q);cur=0;score=0;
+function getActiveLevel(){
+  for(let i=LEVELS.length-1;i>=0;i--){if(isUnlocked(LEVELS[i].id))return LEVELS[i].id;}
+  return 1;
+}
+
+function selectLevel(id){
+  if(!isUnlocked(id)){toast('Niveau verrouillé — atteins le seuil au niveau précédent !');return;}
+  if(mode==='flash'){startFlash(id);return;}
+  startQuiz(id);
+}
+
+// ── QUIZ ──
+function startQuiz(lv){
+  currentLevel=lv;
+  const lvConf=LEVELS[lv-1];
+  qs=shuffle(Q[lv]);cur=0;score=0;
   catSc={chiffres:[0,0],finance:[0,0],strategie:[0,0]};
-  showScreen('screen-quiz');renderQ();
+  // level badge color
+  const badge=document.getElementById('q-level-badge');
+  badge.textContent=lvConf.icon+' '+lvConf.name;
+  badge.style.cssText=`background:${lvConf.color}18;color:${lvConf.color};font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;`;
+  showScreen('screen-quiz');
+  renderQ();
 }
 
 function startTimer(){
-  clearInterval(timerInt);tLeft=30;
+  clearInterval(timerInt);
+  const t=LEVELS[currentLevel-1].timer;
+  tLeft=t;
   const el=document.getElementById('q-timer');
   el.textContent=tLeft+'s';el.className='q-timer';
   timerInt=setInterval(()=>{
     tLeft--;el.textContent=tLeft+'s';
-    if(tLeft<=8)el.className='q-timer hot';
+    if(tLeft<=Math.min(8,t*0.3))el.className='q-timer hot';
     if(tLeft<=0){clearInterval(timerInt);timeUp();}
   },1000);
 }
@@ -444,8 +423,8 @@ function timeUp(){
 function renderQ(){
   const q=qs[cur];
   document.getElementById('prog-bar').style.width=(cur/qs.length*100)+'%';
-  document.getElementById('prog-bar').style.background=PROG_COLORS[q.cat];
-  document.getElementById('q-num').textContent=`${cur+1} / ${qs.length}`;
+  document.getElementById('prog-bar').style.background=LEVELS[currentLevel-1].color;
+  document.getElementById('q-num').textContent=`${cur+1}/${qs.length}`;
   const badge=document.getElementById('q-badge');
   badge.textContent=CAT_ICONS[q.cat]+' '+CAT_LABELS[q.cat];
   badge.className='q-badge '+CAT_COLORS[q.cat];
@@ -474,63 +453,94 @@ function answer(idx){
   nb.textContent=cur+1<qs.length?'Question suivante →':'Voir mes résultats →';
 }
 
-function showFb(ok,txt){
-  const el=document.getElementById('fb');el.className='fb show '+(ok?'ok':'ko');el.textContent=txt;
-}
-
+function showFb(ok,txt){const el=document.getElementById('fb');el.className='fb show '+(ok?'ok':'ko');el.textContent=txt;}
 function nextQ(){cur++;if(cur>=qs.length)showResult();else renderQ();}
 
 function showResult(){
-  clearInterval(timerInt);saveHistory(score,qs.length);
-  const p=Math.round(score/qs.length*100);
+  clearInterval(timerInt);
+  const pct=Math.round(score/qs.length*100);
+  const lvConf=LEVELS[currentLevel-1];
+  saveBestScore(currentLevel,score);
+
+  // XP
+  const xpGained=score*5+(pct>=70?20:0)+(pct>=90?30:0);
+  addXP(xpGained);
+
   let em,ti,su;
-  if(p>=85){em='🏆';ti='Excellent !';su="Tu maîtrises le sujet. Prêt pour l'entretien RH Groupe.";}
-  else if(p>=65){em='💪';ti='Bon niveau';su="Quelques points à consolider. Relance le quiz sur les zones faibles.";}
-  else if(p>=45){em='📚';ti='À renforcer';su="Continue la préparation — les fondamentaux finance méritent attention.";}
-  else{em='🔁';ti='À retravailler';su="Recommence après avoir relu les fiches clés.";}
+  if(pct>=90){em='🏆';ti='Parfait !';su="Score exceptionnel. Tu maîtrises ce niveau à fond.";}
+  else if(pct>=70){em='💪';ti='Bon niveau';su="Bonne maîtrise. Rejoue pour viser 90%+.";}
+  else if(pct>=50){em='📚';ti='À consolider';su="Des lacunes à combler. Revois les feedbacks et rejoue.";}
+  else{em='🔁';ti='À retravailler';su="Recommence après avoir relu les notions clés.";}
+
   document.getElementById('r-emoji').textContent=em;
   document.getElementById('r-title').textContent=ti;
-  document.getElementById('r-score').textContent=score+'/'+qs.length;
-  document.getElementById('r-sub').textContent=su;
-  const cats={chiffres:'📊 Chiffres TotalEnergies',finance:'💰 Finance Corporate',strategie:'🌍 Stratégie Groupe'};
+  document.getElementById('r-score').style.color=lvConf.color;
+  document.getElementById('r-score').textContent=score+'/'+qs.length+' ('+pct+'%)';
+  document.getElementById('r-sub').textContent=su+'  +'+xpGained+' XP gagnés !';
+
+  // Check unlock next level
+  const nextLv=currentLevel+1;
+  const unlockBanner=document.getElementById('unlock-banner');
+  if(nextLv<=4 && pct>=lvConf.threshold && !isUnlocked(nextLv)){
+    const didUnlock=unlockLevel(nextLv);
+    if(didUnlock){
+      const nextConf=LEVELS[nextLv-1];
+      unlockBanner.style.display='block';
+      document.getElementById('unlock-icon').textContent='🔓';
+      document.getElementById('unlock-title').textContent='Niveau '+nextConf.name+' débloqué !';
+      document.getElementById('unlock-desc').textContent='Tu peux maintenant accéder aux questions '+nextConf.name.toLowerCase()+'.';
+    } else { unlockBanner.style.display='none'; }
+  } else { unlockBanner.style.display='none'; }
+
+  const cats={chiffres:'📊 Chiffres',finance:'💰 Finance',strategie:'🌍 Stratégie'};
   document.getElementById('bd').innerHTML=Object.entries(catSc).map(([c,[ok,tot]])=>{
+    if(!tot)return'';
     const p=tot>0?Math.round(ok/tot*100):0;
     const cl=p>=80?'vg':p>=50?'vm':'vb';
     return`<div class="bd-row"><span class="bd-label">${cats[c]}</span><span class="bd-val ${cl}">${ok}/${tot} (${p}%)</span></div>`;
   }).join('');
-  showScreen('screen-result');loadHistory();
+
+  showScreen('screen-result');
 }
 
-function share(){
-  const p=Math.round(score/qs.length*100);
-  const txt=`Quiz TotalEnergies ⚡\nScore : ${score}/${qs.length} (${p}%)\nPréparation Entretien RH Groupe 💼`;
-  if(navigator.share){navigator.share({title:'Quiz TotalEnergies',text:txt});}
-  else if(navigator.clipboard){navigator.clipboard.writeText(txt).then(()=>toast('Score copié !'));}
-  else toast(score+'/'+qs.length+' ('+p+'%)');
-}
+function retryLevel(){startQuiz(currentLevel);}
+function goHome(){renderHome();showScreen('screen-home');}
 
-// Flashcard
-function startFlash(){
-  fcQ=shuffle(Q);fcIdx=0;fcKnown=0;
-  document.getElementById('flashcard').classList.remove('flipped');
+// ── FLASHCARD ──
+function startFlash(lv){
+  currentLevel=lv||1;
+  fcQ=shuffle(Q[currentLevel]);fcIdx=0;fcKnown=0;
+  document.getElementById('fc-front').style.display='flex';
+  document.getElementById('fc-back').style.display='none';
   showScreen('screen-flash');renderFlash();
 }
 function renderFlash(){
   const q=fcQ[fcIdx];
-  document.getElementById('flashcard').classList.remove('flipped');
-  const b=document.getElementById('fc-badge');b.textContent=CAT_ICONS[q.cat]+' '+CAT_LABELS[q.cat];b.className='q-badge '+CAT_COLORS[q.cat];
+  const b=document.getElementById('fc-badge');
+  b.textContent=CAT_ICONS[q.cat]+' '+CAT_LABELS[q.cat];
+  b.className='q-badge '+CAT_COLORS[q.cat];
   document.getElementById('fc-q').textContent=q.q;
   document.getElementById('fc-a').textContent=q.a[q.c];
-  document.getElementById('fc-count').textContent=`Carte ${fcIdx+1} / ${fcQ.length} · ${fcKnown} connues`;
+  document.getElementById('fc-count').textContent=`Carte ${fcIdx+1}/${fcQ.length} · ${fcKnown} connues · Niveau ${LEVELS[currentLevel-1].name}`;
 }
-function flipCard(){document.getElementById('flashcard').classList.toggle('flipped');}
+function flipCard(){
+  const fc=document.getElementById('flashcard');
+  const fr=document.getElementById('fc-front');
+  const bk=document.getElementById('fc-back');
+  const flipped=bk.style.display==='flex';
+  fr.style.display=flipped?'flex':'none';
+  bk.style.display=flipped?'none':'flex';
+}
 function fcNext(k){
   if(k)fcKnown++;fcIdx++;
-  if(fcIdx>=fcQ.length){toast(`Fini ! ${fcKnown}/${fcQ.length} connues.`);setTimeout(()=>{fcIdx=0;fcKnown=0;fcQ=shuffle(Q);renderFlash();},1500);return;}
+  if(fcIdx>=fcQ.length){toast(`Fini ! ${fcKnown}/${fcQ.length} connues.`);setTimeout(()=>{fcIdx=0;fcKnown=0;fcQ=shuffle(Q[currentLevel]);renderFlash();},1500);return;}
+  document.getElementById('fc-front').style.display='flex';
+  document.getElementById('fc-back').style.display='none';
   renderFlash();
 }
 
-loadHistory();
+// Init
+renderHome();
 </script>
 </body>
 </html>
