@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Quiz Carrière — Khalil</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  :root {
+    --bg: #0D1117;
+    --surface: #161B22;
+    --surface2: #1C2330;
+    --border: rgba(255,255,255,0.08);
+    --text: #E6EDF3;
+    --muted: #7D8590;
+    --blue: #58A6FF;
+    --green: #3FB950;
+    --red: #F85149;
+    --orange: #F0883E;
+    --purple: #BC8CFF;
+    --yellow: #E3B341;
+  }
+  html, body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .app {
+    width: 100%; max-width: 560px;
+    padding: 20px 16px 40px;
+    position: relative;
+  }
+
+  /* ── SCREEN HOME ── */
+  .screen { display: none; }
+  .screen.active { display: flex; flex-direction: column; }
+
+  .home { align-items: center; text-align: center; gap: 24px; }
+  .home-logo { font-size: 48px; }
+  .home-title { font-size: 32px; font-weight: 900; letter-spacing: -0.02em; }
+  .home-title span { color: var(--blue); }
+  .home-sub { font-size: 14px; color: var(--muted); line-height: 1.6; max-width: 340px; }
+
+  .categories { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin: 8px 0; }
+  .cat-pill {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    text-align: left;
+  }
+  .cat-pill-icon { font-size: 18px; margin-bottom: 4px; display: block; }
+  .cat-pill-label { font-size: 11px; font-weight: 700; color: var(--text); }
+  .cat-pill-count { font-size: 10px; color: var(--muted); }
+
+  .btn-start {
+    width: 100%;
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 16px;
+    font-size: 15px; font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    letter-spacing: 0.02em;
+  }
+  .btn-start:active { opacity: 0.85; }
+
+  /* ── SCREEN QUIZ ── */
+  .quiz { gap: 20px; }
+
+  .progress-bar-wrap {
+    width: 100%;
+    background: var(--surface);
+    border-radius: 100px;
+    height: 4px;
+    overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%;
+    background: var(--blue);
+    border-radius: 100px;
+    transition: width 0.4s ease;
+  }
+
+  .quiz-meta {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; color: var(--muted); font-weight: 500;
+  }
+  .quiz-cat {
+    font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .c-finance { background: rgba(63,185,80,0.12); color: var(--green); }
+  .c-chiffres { background: rgba(88,166,255,0.12); color: var(--blue); }
+  .c-strategie { background: rgba(240,136,62,0.12); color: var(--orange); }
+  .c-carriere { background: rgba(188,140,255,0.12); color: var(--purple); }
+
+  .question-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 24px;
+  }
+  .question-text {
+    font-size: 17px; font-weight: 700; color: var(--text);
+    line-height: 1.45; margin-bottom: 6px;
+  }
+  .question-hint {
+    font-size: 12px; color: var(--muted); margin-bottom: 20px; line-height: 1.5;
+  }
+
+  .answers { display: flex; flex-direction: column; gap: 10px; }
+  .answer-btn {
+    width: 100%;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    text-align: left;
+    font-family: inherit;
+    font-size: 14px; font-weight: 500;
+    color: var(--text);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    display: flex; align-items: center; gap: 10px;
+    line-height: 1.4;
+  }
+  .answer-btn:active:not(:disabled) { opacity: 0.85; }
+  .answer-btn:hover:not(:disabled) { border-color: rgba(88,166,255,0.4); }
+  .answer-btn.correct { border-color: var(--green); background: rgba(63,185,80,0.1); }
+  .answer-btn.wrong { border-color: var(--red); background: rgba(248,81,73,0.08); }
+  .answer-btn.reveal { border-color: var(--green); background: rgba(63,185,80,0.06); }
+  .answer-btn:disabled { cursor: default; }
+  .answer-letter {
+    width: 26px; height: 26px; border-radius: 8px;
+    background: var(--bg); border: 1px solid var(--border);
+    font-size: 11px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; color: var(--muted);
+  }
+  .correct .answer-letter { background: var(--green); color: #fff; border-color: var(--green); }
+  .wrong .answer-letter { background: var(--red); color: #fff; border-color: var(--red); }
+  .reveal .answer-letter { background: var(--green); color: #fff; border-color: var(--green); }
+
+  .feedback {
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 13px; line-height: 1.55;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok { background: rgba(63,185,80,0.1); border: 1px solid rgba(63,185,80,0.2); color: #7ee787; }
+  .feedback.ko { background: rgba(248,81,73,0.08); border: 1px solid rgba(248,81,73,0.2); color: #ffa198; }
+
+  .btn-next {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid rgba(88,166,255,0.3);
+    border-radius: 14px;
+    padding: 15px;
+    font-size: 14px; font-weight: 700; font-family: inherit;
+    color: var(--blue);
+    cursor: pointer;
+    display: none;
+    transition: background 0.15s;
+  }
+  .btn-next.show { display: block; }
+  .btn-next:active { background: rgba(88,166,255,0.1); }
+
+  /* ── SCREEN RESULT ── */
+  .result { align-items: center; text-align: center; gap: 20px; }
+  .result-emoji { font-size: 56px; }
+  .result-title { font-size: 28px; font-weight: 900; letter-spacing: -0.02em; }
+  .result-score {
+    font-size: 64px; font-weight: 900; color: var(--blue);
+    letter-spacing: -0.03em; line-height: 1;
+  }
+  .result-sub { font-size: 14px; color: var(--muted); }
+  .result-breakdown {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .rb-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .rb-row:last-child { border-bottom: none; }
+  .rb-label { color: var(--muted); }
+  .rb-val { font-weight: 700; color: var(--text); }
+  .rb-val.good { color: var(--green); }
+  .rb-val.mid { color: var(--yellow); }
+  .rb-val.bad { color: var(--red); }
+
+  .btn-retry {
+    width: 100%;
+    background: var(--blue);
+    color: #fff; border: none;
+    border-radius: 14px;
+    padding: 16px;
+    font-size: 15px; font-weight: 700; font-family: inherit;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ── HOME ── -->
+  <div class="screen home active" id="screen-home">
+    <div class="home-logo">⚡</div>
+    <h1 class="home-title">Quiz <span>Carrière</span></h1>
+    <p class="home-sub">Prépare ton entretien RH Groupe et ta montée en compétences finance. 20 questions, 4 thèmes.</p>
+    <div class="categories">
+      <div class="cat-pill">
+        <span class="cat-pill-icon">📊</span>
+        <div class="cat-pill-label">Chiffres TotalEnergies</div>
+        <div class="cat-pill-count">5 questions</div>
+      </div>
+      <div class="cat-pill">
+        <span class="cat-pill-icon">💰</span>
+        <div class="cat-pill-label">Finance Corporate</div>
+        <div class="cat-pill-count">5 questions</div>
+      </div>
+      <div class="cat-pill">
+        <span class="cat-pill-icon">🌍</span>
+        <div class="cat-pill-label">Stratégie Groupe</div>
+        <div class="cat-pill-count">5 questions</div>
+      </div>
+      <div class="cat-pill">
+        <span class="cat-pill-icon">🎯</span>
+        <div class="cat-pill-label">Trajectoire & Pitch</div>
+        <div class="cat-pill-count">5 questions</div>
+      </div>
+    </div>
+    <button class="btn-start" onclick="startQuiz()">Commencer le quiz →</button>
+  </div>
+
+  <!-- ── QUIZ ── -->
+  <div class="screen quiz" id="screen-quiz">
+    <div>
+      <div class="progress-bar-wrap"><div class="progress-bar" id="progress"></div></div>
+    </div>
+    <div class="quiz-meta">
+      <span id="q-counter">Question 1 / 20</span>
+      <span class="quiz-cat" id="q-cat">Finance</span>
+    </div>
+    <div class="question-card">
+      <div class="question-text" id="q-text"></div>
+      <div class="question-hint" id="q-hint"></div>
+      <div class="answers" id="answers"></div>
+      <div class="feedback" id="feedback"></div>
+    </div>
+    <button class="btn-next" id="btn-next" onclick="nextQuestion()">Question suivante →</button>
+  </div>
+
+  <!-- ── RESULT ── -->
+  <div class="screen result" id="screen-result">
+    <div class="result-emoji" id="r-emoji">🎉</div>
+    <h2 class="result-title" id="r-title">Résultat</h2>
+    <div class="result-score" id="r-score">0/20</div>
+    <p class="result-sub" id="r-sub"></p>
+    <div class="result-breakdown" id="r-breakdown"></div>
+    <button class="btn-retry" onclick="restartQuiz()">Recommencer</button>
+  </div>
+
+</div>
+
+<script>
+const QUESTIONS = [
+  // ── CHIFFRES TOTALENERGIES ──
+  {
+    cat: "chiffres", catLabel: "Chiffres TotalEnergies",
+    q: "Quel était le Cash Flow des Opérations (CFFO) de TotalEnergies en 2025 ?",
+    hint: "CFFO = Cash Flow From Operations — indicateur clé de la capacité bénéficiaire opérationnelle.",
+    answers: ["22,3 milliards $", "27,8 milliards $", "31,4 milliards $", "19,6 milliards $"],
+    correct: 1,
+    explanation: "Le CFFO 2025 s'établit à 27,8 Mds$. C'est l'un des chiffres à citer en priorité dans un entretien."
+  },
+  {
+    cat: "chiffres", catLabel: "Chiffres TotalEnergies",
+    q: "Quel est le résultat net ajusté de TotalEnergies pour 2025 ?",
+    hint: "Le résultat net ajusté exclut les éléments exceptionnels pour refléter la performance récurrente.",
+    answers: ["12,1 milliards $", "18,3 milliards $", "15,6 milliards $", "21,2 milliards $"],
+    correct: 2,
+    explanation: "Résultat net ajusté 2025 : 15,6 Mds$. À distinguer du résultat net comptable."
+  },
+  {
+    cat: "chiffres", catLabel: "Chiffres TotalEnergies",
+    q: "Quel est le ROACE de TotalEnergies en 2025, et en quoi est-il remarquable ?",
+    hint: "ROACE = Return On Average Capital Employed. Mesure l'efficacité d'utilisation du capital.",
+    answers: ["9,4% — dans la moyenne des majors", "12,6% — meilleur des majors 4 ans consécutifs", "15,1% — record historique", "10,8% — en progression vs 2024"],
+    correct: 1,
+    explanation: "ROACE de 12,6%, meilleur des majors 4 ans consécutifs. C'est un argument fort sur la discipline financière du groupe."
+  },
+  {
+    cat: "chiffres", catLabel: "Chiffres TotalEnergies",
+    q: "Quel est le CAPEX net de TotalEnergies en 2025 ?",
+    hint: "CAPEX = Capital Expenditure — les investissements nets du groupe.",
+    answers: ["14,2 milliards $", "17,1 milliards $", "20,5 milliards $", "11,8 milliards $"],
+    correct: 1,
+    explanation: "CAPEX net 2025 : 17,1 Mds$. Reflète une stratégie d'investissement disciplinée."
+  },
+  {
+    cat: "chiffres", catLabel: "Chiffres TotalEnergies",
+    q: "Quelle était la performance boursière de TotalEnergies en 2025 ?",
+    hint: "À comparer avec le marché global et les autres majors pétrolières.",
+    answers: ["+8%", "+14%", "+20%", "+31%"],
+    correct: 2,
+    explanation: "+20% en 2025. Le gearing était à 14,7% et le coût de production Upstream à 5$/boe."
+  },
+  // ── FINANCE CORPORATE ──
+  {
+    cat: "finance", catLabel: "Finance Corporate",
+    q: "Qu'est-ce que le gearing ?",
+    hint: "C'est un ratio d'endettement très utilisé dans l'analyse financière des groupes pétroliers.",
+    answers: [
+      "Le ratio dividende / bénéfice par action",
+      "La dette nette divisée par les capitaux propres",
+      "Le ratio EBITDA / chiffre d'affaires",
+      "Le coût moyen pondéré du capital"
+    ],
+    correct: 1,
+    explanation: "Gearing = Dette nette / Capitaux propres. TotalEnergies affiche 14,7% en 2025 — niveau faible, signe de solidité financière."
+  },
+  {
+    cat: "finance", catLabel: "Finance Corporate",
+    q: "Que mesure le ROACE ?",
+    hint: "Indicateur phare pour évaluer la rentabilité d'un groupe pétrolier intégré.",
+    answers: [
+      "La rentabilité des actions cotées",
+      "Le retour sur les capitaux employés en moyenne",
+      "La rentabilité nette après impôts",
+      "Le ratio de couverture des intérêts"
+    ],
+    correct: 1,
+    explanation: "Return On Average Capital Employed = Résultat net opérationnel / Capitaux employés moyens. Mesure l'efficacité du capital."
+  },
+  {
+    cat: "finance", catLabel: "Finance Corporate",
+    q: "Qu'est-ce qu'un PPA dans le contexte énergie / finance ?",
+    hint: "TotalEnergies en a signé plusieurs avec des géants tech en 2025.",
+    answers: [
+      "Planned Production Agreement",
+      "Power Purchase Agreement — contrat d'achat d'électricité",
+      "Petroleum Production Allocation",
+      "Portfolio & Performance Assessment"
+    ],
+    correct: 1,
+    explanation: "PPA = Power Purchase Agreement. Contrat de long terme entre un producteur d'énergie et un acheteur. TotalEnergies en a signé avec Google, ByteDance, Microsoft (>4 GW)."
+  },
+  {
+    cat: "finance", catLabel: "Finance Corporate",
+    q: "Qu'est-ce que le boe dans le secteur pétrolier ?",
+    hint: "TotalEnergies affiche un coût de production à 5 de cette unité.",
+    answers: [
+      "Balance of Earnings — solde des bénéfices",
+      "Barrel of Equivalent — baril équivalent pétrole",
+      "Base Operating Expenditure",
+      "Budget of Operations Estimate"
+    ],
+    correct: 1,
+    explanation: "boe = Barrel of Oil Equivalent (baril équivalent pétrole). Permet de comparer différentes sources d'énergie. Coût de production TotalEnergies : 5$/boe — très compétitif."
+  },
+  {
+    cat: "finance", catLabel: "Finance Corporate",
+    q: "Qu'est-ce que le WACC (ou CMPC) ?",
+    hint: "Utilisé pour actualiser les flux de trésorerie dans une valorisation DCF.",
+    answers: [
+      "Le coût moyen pondéré du capital (dettes + fonds propres)",
+      "Le ratio de couverture de la dette",
+      "Le taux de croissance à long terme",
+      "Le niveau de capitalisation boursière"
+    ],
+    correct: 0,
+    explanation: "WACC (Weighted Average Cost of Capital) = CMPC en français. C'est le taux de rentabilité minimum exigé par les financeurs de l'entreprise. Clé dans toute valorisation DCF."
+  },
+  // ── STRATÉGIE GROUPE ──
+  {
+    cat: "strategie", catLabel: "Stratégie Groupe",
+    q: "Quels sont les deux projets majeurs de TotalEnergies en Namibie ?",
+    hint: "Ces projets représentent plus de 1,5 milliards de barils de réserves potentielles.",
+    answers: [
+      "Projet Oryx et Projet Kalahari",
+      "Projet Venus et Projet Mopane",
+      "Projet Namib et Projet Atlantic",
+      "Projet Orange et Projet Kudu"
+    ],
+    correct: 1,
+    explanation: "Projets Venus et Mopane — découvertes majeures (>1,5 Mds barils). FID (Final Investment Decision) attendues entre 2026 et 2028."
+  },
+  {
+    cat: "strategie", catLabel: "Stratégie Groupe",
+    q: "Avec quelles entreprises TotalEnergies a-t-il signé des PPAs pour alimenter des datacenters ?",
+    hint: "3 géants tech — pour plus de 4 GW au total.",
+    answers: [
+      "Amazon, Meta, Apple",
+      "Google, ByteDance, Microsoft",
+      "Netflix, Salesforce, Oracle",
+      "IBM, SAP, Tesla"
+    ],
+    correct: 1,
+    explanation: "TotalEnergies a signé des PPAs avec Google, ByteDance et Microsoft pour +4 GW. Signe de la convergence entre énergie et IA/cloud."
+  },
+  {
+    cat: "strategie", catLabel: "Stratégie Groupe",
+    q: "Quel est l'objectif du programme d'économies de TotalEnergies sur 2026–2030 ?",
+    hint: "Un programme massif annoncé pour améliorer la compétitivité du groupe.",
+    answers: [
+      "5 milliards $ d'économies",
+      "8,5 milliards $ d'économies",
+      "12,5 milliards $ d'économies",
+      "20 milliards $ d'économies"
+    ],
+    correct: 2,
+    explanation: "12,5 Mds$ d'économies sur 2026–2030. C'est un engagement fort sur la discipline des coûts — à citer en entretien comme preuve de rigueur financière."
+  },
+  {
+    cat: "strategie", catLabel: "Stratégie Groupe",
+    q: "Qu'est-ce que le deal EPH pour TotalEnergies ?",
+    hint: "Une acquisition dans le secteur de l'électricité en Europe.",
+    answers: [
+      "Rachat d'un portefeuille solaire en Espagne",
+      "Acquisition de ~14 GW de capacité électrique en Europe",
+      "Partenariat avec EDF sur le nucléaire",
+      "Fusion avec une major gazière européenne"
+    ],
+    correct: 1,
+    explanation: "Le deal EPH apporte à TotalEnergies ~14 GW de capacité électrique en Europe. Renforce son positionnement dans la transition énergétique."
+  },
+  {
+    cat: "strategie", catLabel: "Stratégie Groupe",
+    q: "Quelle est la stratégie globale de TotalEnergies face à la transition énergétique ?",
+    hint: "Le groupe revendique un modèle différencié par rapport aux autres majors.",
+    answers: [
+      "Sortie totale des hydrocarbures d'ici 2035",
+      "Maintenir les hydrocarbures pour financer la croissance dans l'électricité et les renouvelables",
+      "Focalisation exclusive sur le GNL",
+      "Recentrage sur l'upstream pétrole uniquement"
+    ],
+    correct: 1,
+    explanation: "TotalEnergies maintient sa production d'hydrocarbures (cash machine) pour financer l'expansion dans l'électricité, le GNL et les renouvelables. Un modèle 'multi-énergie'."
+  },
+  // ── TRAJECTOIRE & PITCH ──
+  {
+    cat: "carriere", catLabel: "Trajectoire & Pitch",
+    q: "Quel est l'objectif de long terme de ta trajectoire professionnelle ?",
+    hint: "Horizon 2033+, cible géographique Afrique / Maghreb / Moyen-Orient.",
+    answers: [
+      "Directeur technique EV Europe",
+      "DG d'une filiale TotalEnergies (Maroc, Afrique, Maghreb)",
+      "CFO d'une business unit internationale",
+      "Directeur de programme énergies renouvelables"
+    ],
+    correct: 1,
+    explanation: "Objectif : DG d'une filiale TotalEnergies, cible Maroc / Afrique / Maghreb / Moyen-Orient. Horizon 2033+."
+  },
+  {
+    cat: "carriere", catLabel: "Trajectoire & Pitch",
+    q: "Quel est le prochain move prévu dans ta trajectoire, et pourquoi ?",
+    hint: "Conseil clé de ton sponsor — accès difficile plus tard.",
+    answers: [
+      "Poste international en Afrique dès 2025",
+      "Move vers Finance / Contrôle de Gestion en 2027",
+      "Promotion Chef de Département EV en 2026",
+      "Formation INSEAD Executive MBA en 2026"
+    ],
+    correct: 1,
+    explanation: "Finance Business Partner ou Contrôle de Gestion — move prévu février 2027. Conseil du sponsor : 'Faire la finance en premier, c'est plus difficile d'y accéder plus tard.'"
+  },
+  {
+    cat: "carriere", catLabel: "Trajectoire & Pitch",
+    q: "Qu'est-ce qu'un profil HP dans le contexte TotalEnergies ?",
+    hint: "Catégorie identifiée par les RH qui déclenche un accompagnement spécifique.",
+    answers: [
+      "Haut Performeur — basé uniquement sur les résultats annuels",
+      "Haut Potentiel — profil identifié pour des responsabilités accrues à terme",
+      "Hautement Prioritaire — dans un plan de succession immédiate",
+      "Hyper Productif — reconnu par le management direct uniquement"
+    ],
+    correct: 1,
+    explanation: "HP = Haut Potentiel. Identification RH qui ouvre des parcours accélérés. Ton directeur (top 0,5% TotalEnergies) a initié la démarche et reste ton sponsor actif."
+  },
+  {
+    cat: "carriere", catLabel: "Trajectoire & Pitch",
+    q: "Quand est prévue l'activation du sponsor pour le move finance ?",
+    hint: "Il faut préparer ce moment bien à l'avance.",
+    answers: [
+      "Janvier–Février 2026",
+      "Septembre–Octobre 2026 pour un move en février 2027",
+      "Dès que possible — sans date fixe",
+      "Après l'entretien RH Groupe uniquement"
+    ],
+    correct: 1,
+    explanation: "Activation sponsor prévue sept-oct 2026 pour un move effectif en février 2027. Il faut préparer le terrain maintenant — visibilité, résultats, relation sponsor."
+  },
+  {
+    cat: "carriere", catLabel: "Trajectoire & Pitch",
+    q: "Dans un entretien RH Groupe en tant que profil HP, quel est ton pitch central ?",
+    hint: "Il doit être clair, ambitieux et ancré dans une réalité géographique et sectorielle précise.",
+    answers: [
+      "Devenir expert technique EV reconnu internationalement",
+      "Objectif DG filiale Afrique/Maghreb — prochain move finance — horizon 10-12 ans — mobilité assumée",
+      "Rejoindre le comité exécutif de TotalEnergies d'ici 5 ans",
+      "Lancer une startup EV au Maroc avec le soutien du groupe"
+    ],
+    correct: 1,
+    explanation: "Le pitch : objectif DG filiale Afrique/Maghreb, prochaine étape finance, mobilité assumée, horizon 10-12 ans. Court, lisible, crédible. À articuler avec confiance."
+  }
+];
+
+let questions = [];
+let current = 0;
+let score = 0;
+let catScores = { chiffres: [0,0], finance: [0,0], strategie: [0,0], carriere: [0,0] };
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function startQuiz() {
+  questions = shuffle([...QUESTIONS]);
+  current = 0; score = 0;
+  catScores = { chiffres: [0,0], finance: [0,0], strategie: [0,0], carriere: [0,0] };
+  showScreen('screen-quiz');
+  renderQuestion();
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function renderQuestion() {
+  const q = questions[current];
+  const total = questions.length;
+
+  document.getElementById('progress').style.width = ((current / total) * 100) + '%';
+  document.getElementById('q-counter').textContent = `Question ${current + 1} / ${total}`;
+
+  const catEl = document.getElementById('q-cat');
+  catEl.textContent = q.catLabel;
+  catEl.className = 'quiz-cat c-' + q.cat;
+
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('q-hint').textContent = q.hint;
+
+  const answersEl = document.getElementById('answers');
+  const shuffledAnswers = q.answers.map((a, i) => ({ text: a, orig: i }));
+  shuffle(shuffledAnswers);
+  q._shuffled = shuffledAnswers;
+
+  answersEl.innerHTML = shuffledAnswers.map((a, i) => `
+    <button class="answer-btn" onclick="answer(${i})">
+      <span class="answer-letter">${String.fromCharCode(65+i)}</span>
+      ${a.text}
+    </button>
+  `).join('');
+
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('feedback').innerHTML = '';
+  document.getElementById('btn-next').className = 'btn-next';
+}
+
+function answer(idx) {
+  const q = questions[current];
+  const btns = document.querySelectorAll('.answer-btn');
+  btns.forEach(b => b.disabled = true);
+
+  const chosen = q._shuffled[idx];
+  const isCorrect = chosen.orig === q.correct;
+
+  catScores[q.cat][1]++;
+
+  if (isCorrect) {
+    btns[idx].classList.add('correct');
+    score++;
+    catScores[q.cat][0]++;
+    showFeedback(true, '✓ ' + q.explanation);
+  } else {
+    btns[idx].classList.add('wrong');
+    // Reveal correct
+    q._shuffled.forEach((a, i) => {
+      if (a.orig === q.correct) btns[i].classList.add('reveal');
+    });
+    showFeedback(false, '✗ ' + q.explanation);
+  }
+
+  document.getElementById('btn-next').className = 'btn-next show';
+  document.getElementById('btn-next').textContent =
+    current + 1 < questions.length ? 'Question suivante →' : 'Voir mes résultats →';
+}
+
+function showFeedback(ok, text) {
+  const el = document.getElementById('feedback');
+  el.className = 'feedback show ' + (ok ? 'ok' : 'ko');
+  el.textContent = text;
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= questions.length) {
+    showResult();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResult() {
+  document.getElementById('progress').style.width = '100%';
+
+  const pct = Math.round((score / questions.length) * 100);
+  let emoji, title, sub;
+  if (pct >= 85) { emoji = '🏆'; title = 'Excellent !'; sub = "Tu maîtrises le sujet. Prêt pour l'entretien RH."; }
+  else if (pct >= 65) { emoji = '💪'; title = 'Bon niveau'; sub = "Quelques points à consolider — relance le quiz sur les zones faibles."; }
+  else if (pct >= 45) { emoji = '📚'; title = 'À renforcer'; sub = "Continue la préparation — les fondamentaux finance méritent plus d'attention."; }
+  else { emoji = '🔁'; title = 'À retravailler'; sub = "Recommence le quiz après avoir relu les fiches clés."; }
+
+  document.getElementById('r-emoji').textContent = emoji;
+  document.getElementById('r-title').textContent = title;
+  document.getElementById('r-score').textContent = score + '/' + questions.length;
+  document.getElementById('r-sub').textContent = sub;
+
+  const catNames = {
+    chiffres: '📊 Chiffres TotalEnergies',
+    finance: '💰 Finance Corporate',
+    strategie: '🌍 Stratégie Groupe',
+    carriere: '🎯 Trajectoire & Pitch'
+  };
+
+  const breakdown = document.getElementById('r-breakdown');
+  breakdown.innerHTML = Object.entries(catScores).map(([cat, [ok, total]]) => {
+    const p = total > 0 ? Math.round((ok/total)*100) : 0;
+    const cls = p >= 80 ? 'good' : p >= 50 ? 'mid' : 'bad';
+    return `<div class="rb-row">
+      <span class="rb-label">${catNames[cat]}</span>
+      <span class="rb-val ${cls}">${ok}/${total} (${p}%)</span>
+    </div>`;
+  }).join('');
+
+  showScreen('screen-result');
+}
+
+function restartQuiz() {
+  startQuiz();
+}
+</script>
+</body>
+</html>
