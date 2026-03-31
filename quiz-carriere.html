@@ -119,6 +119,7 @@ body{min-height:100vh;display:flex;justify-content:center;background:var(--bg)}
 .rtitle{font-size:24px;font-weight:900;color:var(--text);margin-bottom:4px}
 .rscore{font-size:50px;font-weight:900;letter-spacing:-0.03em;line-height:1}
 .rsub{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.6}
+.rtime{font-size:13px;color:var(--muted);margin-top:4px}
 .unlock-banner{background:linear-gradient(135deg,rgba(245,128,10,0.1),rgba(232,0,45,0.08));border:1.5px solid rgba(245,128,10,0.25);border-radius:14px;padding:16px;text-align:center}
 .ulicon{font-size:28px;margin-bottom:4px}
 .ultitle{font-size:15px;font-weight:800;color:var(--orange);margin-bottom:3px}
@@ -253,6 +254,7 @@ body{min-height:100vh;display:flex;justify-content:center;background:var(--bg)}
       <div class="rtitle" id="rtitle"></div>
       <div class="rscore" id="rscore"></div>
       <div class="rsub" id="rsub"></div>
+      <div class="rtime" id="rtime" style="font-size:13px;color:var(--muted);margin-top:4px"></div>
     </div>
     <div class="unlock-banner" id="unlock-banner" style="display:none">
       <div class="ulicon" id="ulicon"></div>
@@ -452,7 +454,7 @@ const MEMO={
   ],
 };
 
-let mode='quiz',curLevel=1,qs=[],cur=0,score=0,catSc={};
+let mode='quiz',curLevel=1,qs=[],cur=0,score=0,catSc={},sessionStart=0;
 let timerInt,tLeft;
 let fcIdx=0,fcQ=[],fcKnown=0;
 let activeMemo='chiffres';
@@ -471,7 +473,7 @@ function getBest(lv){return getP().bestScores[lv]||0}
 function saveBest(lv,s){const p=getP();if(!p.bestScores[lv]||s>p.bestScores[lv]){p.bestScores[lv]=s;saveP(p);}}
 function addXP(n){const p=getP();p.xp=(p.xp||0)+n;saveP(p);}
 function updateStreak(){const p=getP();const today=new Date().toDateString();if(p.lastPlayed===today)return;const yesterday=new Date(Date.now()-864e5).toDateString();p.streak=p.lastPlayed===yesterday?(p.streak||0)+1:1;p.lastPlayed=today;saveP(p);}
-function recordSession(sc,tot,cats){const p=getP();p.sessions=(p.sessions||0)+1;p.totalCorrect=(p.totalCorrect||0)+sc;p.totalQ=(p.totalQ||0)+tot;Object.entries(cats).forEach(([c,[ok,t]])=>{p.catCorrect=p.catCorrect||{};p.catTotal=p.catTotal||{};p.catCorrect[c]=(p.catCorrect[c]||0)+ok;p.catTotal[c]=(p.catTotal[c]||0)+t;});const d=new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});p.history=p.history||[];p.history.push({d,s:sc,t:tot,lv:curLevel});if(p.history.length>30)p.history=p.history.slice(-30);saveP(p);}
+function recordSession(sc,tot,cats){const p=getP();p.sessions=(p.sessions||0)+1;p.totalCorrect=(p.totalCorrect||0)+sc;p.totalQ=(p.totalQ||0)+tot;Object.entries(cats).forEach(([c,[ok,t]])=>{p.catCorrect=p.catCorrect||{};p.catTotal=p.catTotal||{};p.catCorrect[c]=(p.catCorrect[c]||0)+ok;p.catTotal[c]=(p.catTotal[c]||0)+t;});const d=new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});const elapsed=sessionStart?Date.now()-sessionStart:0;p.history=p.history||[];p.history.push({d,s:sc,t:tot,lv:curLevel,tm:elapsed});if(p.history.length>30)p.history=p.history.slice(-30);saveP(p);}
 
 function renderHome(){
   document.getElementById('levels-grid').innerHTML=LEVELS.map(lv=>{
@@ -540,7 +542,7 @@ function selectLevel(id){if(!isUnlocked(id)){toast('Niveau verrouillé — attei
 
 function startQuiz(lv){
   curLevel=lv;const lvConf=LEVELS[lv-1];
-  qs=shuffle(Q[lv]);cur=0;score=0;
+  qs=shuffle(Q[lv]);cur=0;score=0;sessionStart=Date.now();
   catSc={chiffres:[0,0],finance:[0,0],strategie:[0,0],branches:[0,0],projet:[0,0],hardcore:[0,0]};
   const b=document.getElementById('qlvbadge');b.textContent=lvConf.icon+' '+lvConf.name;
   b.style.cssText=`background:${lvConf.color}18;color:${lvConf.tc};font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;`;
@@ -596,6 +598,10 @@ function showResult(){
   document.getElementById('remoji').textContent=em;document.getElementById('rtitle').textContent=ti;
   document.getElementById('rscore').style.color=lvConf.tc;document.getElementById('rscore').textContent=score+'/'+qs.length+' ('+pct+'%)';
   document.getElementById('rsub').textContent=su+' +'+xpGained+' XP';
+  const elapsed=Math.round((Date.now()-sessionStart)/1000);
+  const mins=Math.floor(elapsed/60);const secs=elapsed%60;
+  const timeStr=mins>0?mins+'min '+secs+'s':secs+'s';
+  const timeEl=document.getElementById('rtime');if(timeEl)timeEl.textContent='⏱ '+timeStr;
   const nextLv=curLevel+1;const ub=document.getElementById('unlock-banner');
   if(nextLv<=5&&pct>=lvConf.threshold&&!isUnlocked(nextLv)){const did=unlockLv(nextLv);if(did){const nc=LEVELS[nextLv-1];ub.style.display='block';document.getElementById('ulicon').textContent='🔓';document.getElementById('ultitle').textContent='Niveau '+nc.name+' débloqué !';document.getElementById('uldesc').textContent='Tu accèdes maintenant au niveau '+nc.name.toLowerCase()+'.';launchConfetti();}else ub.style.display='none';}else ub.style.display='none';
   document.getElementById('bd').innerHTML=Object.entries(catSc).filter(([,v])=>v[1]>0).map(([c,[ok,tot]])=>{const p=tot>0?Math.round(ok/tot*100):0;const cl=p>=80?'vg':p>=50?'vm':'vb';return`<div class="bdrow"><span class="bdlabel">${CAT_ICONS[c]} ${CAT_LABELS[c]}</span><span class="bdval ${cl}">${ok}/${tot} (${p}%)</span></div>`;}).join('');
