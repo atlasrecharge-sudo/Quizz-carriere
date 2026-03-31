@@ -158,6 +158,21 @@ body{min-height:100vh;display:flex;justify-content:center;background:var(--bg)}
 
 <div class="app">
   <!-- HOME -->
+  <!-- LOGIN SCREEN -->
+  <div class="screen" id="screen-login">
+    <div class="card" style="text-align:center">
+      <div class="stripe"><div style="background:var(--red)"></div><div style="background:var(--orange)"></div><div style="background:var(--yellow)"></div><div style="background:var(--green)"></div><div style="background:var(--blue)"></div></div>
+      <h1 style="font-size:22px;font-weight:900;margin-bottom:4px">Quiz <span style="color:var(--red)">TotalEnergies</span></h1>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:20px">Entre le code d'accès et ton prénom pour jouer</p>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <input id="login-pseudo" type="text" maxlength="20" placeholder="Ton prénom ou pseudo" style="padding:12px 14px;border:1.5px solid var(--border);border-radius:12px;font-size:14px;font-family:inherit;background:var(--bg);color:var(--text);outline:none">
+        <input id="login-code" type="text" maxlength="20" placeholder="Code d'accès" style="padding:12px 14px;border:1.5px solid var(--border);border-radius:12px;font-size:14px;font-family:inherit;background:var(--bg);color:var(--text);outline:none;letter-spacing:0.1em">
+        <button onclick="doLogin()" style="background:var(--red);color:white;border:none;border-radius:13px;padding:14px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer">Accéder au quiz →</button>
+      </div>
+      <div id="login-error" style="margin-top:10px;font-size:12px;color:var(--red);display:none"></div>
+    </div>
+  </div>
+
   <div class="screen active" id="screen-home">
     <div class="card">
       <div class="stripe"><div style="background:var(--red)"></div><div style="background:var(--orange)"></div><div style="background:var(--yellow)"></div><div style="background:var(--green)"></div><div style="background:var(--blue)"></div></div>
@@ -173,9 +188,14 @@ body{min-height:100vh;display:flex;justify-content:center;background:var(--bg)}
         <div style="font-size:11px;color:var(--muted)" id="last-played"></div>
       </div>
     </div>
+    <div id="home-player-bar" style="display:none;align-items:center;justify-content:space-between;padding:8px 4px">
+      <span style="font-size:13px;font-weight:700;color:var(--text)" id="home-player-name"></span>
+      <button onclick="logout()" style="font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer">Changer →</button>
+    </div>
     <div class="htabs">
       <button class="htab on" onclick="switchTab('stats')">📊 Stats</button>
       <button class="htab" onclick="switchTab('memo')">📋 Mémo</button>
+      <button class="htab" onclick="switchTab('leaderboard')">🏅 Classement</button>
     </div>
     <div id="tab-stats" style="display:flex;flex-direction:column;gap:14px">
       <div class="card">
@@ -189,6 +209,12 @@ body{min-height:100vh;display:flex;justify-content:center;background:var(--bg)}
         <div class="stat-card"><div class="stat-n" id="st-correct">0%</div><div class="stat-l">Taux de réussite</div></div>
         <div class="stat-card"><div class="stat-n" id="st-xp">0</div><div class="stat-l">XP total</div></div>
         <div class="stat-card"><div class="stat-n" id="st-best">—</div><div class="stat-l">Meilleur niveau</div></div>
+      </div>
+    </div>
+    <div id="tab-leaderboard" style="display:none">
+      <div class="card">
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:12px">🏅 Classement</div>
+        <div id="lb-content"><div style="font-size:12px;color:var(--muted)">Chargement...</div></div>
       </div>
     </div>
     <div id="tab-memo" style="display:none">
@@ -278,6 +304,75 @@ body{min-height:100vh;display:flex;justify-content:center;background:var(--bg)}
 </div>
 
 <script>
+// Supabase config
+const SB_URL="https://uudtxrexzbvuckbxgwxo.supabase.co";
+const SB_KEY="sb_publishable_zpaxosZrlJ0miJuP_3xH8Q_PKa2W4n7";
+const INVITE_CODE="TOTAL2026"; // code d'accès à partager aux collègues
+
+async function sbFetch(path, opts={}){
+  const res=await fetch(SB_URL+path,{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=representation',...opts.headers},...opts});
+  return res.ok?res.json():null;
+}
+
+// Player session (localStorage)
+function getPlayer(){return JSON.parse(localStorage.getItem('tep2_player')||'null');}
+function savePlayer(p){localStorage.setItem('tep2_player',JSON.stringify(p));}
+
+async function doLogin(){
+  const pseudo=document.getElementById('login-pseudo').value.trim();
+  const code=document.getElementById('login-code').value.trim().toUpperCase();
+  const err=document.getElementById('login-error');
+  if(!pseudo){err.textContent='Saisis ton prénom.';err.style.display='block';return;}
+  if(code!==INVITE_CODE){err.textContent='Code incorrect. Demande le code à Khalil.';err.style.display='block';return;}
+  err.style.display='none';
+  // Check if player already exists (same pseudo + code)
+  const existing=await sbFetch(`/rest/v1/players?pseudo=eq.${encodeURIComponent(pseudo)}&invite_code=eq.${code}&select=id,pseudo`);
+  let player;
+  if(existing&&existing.length>0){player=existing[0];}
+  else{
+    const created=await sbFetch('/rest/v1/players',{method:'POST',body:JSON.stringify({pseudo,invite_code:code})});
+    if(!created||!created.length){err.textContent='Erreur serveur. Réessaie.';err.style.display='block';return;}
+    player=created[0];
+  }
+  savePlayer(player);
+  initHome();
+  showScreen('screen-home');
+}
+
+function logout(){localStorage.removeItem('tep2_player');showScreen('screen-login');}
+
+async function saveScoreRemote(level,score,total,pct,durationSec){
+  const player=getPlayer();if(!player)return;
+  await sbFetch('/rest/v1/scores',{method:'POST',body:JSON.stringify({player_id:player.id,level,score,total,pct,duration_sec:durationSec})});
+}
+
+async function renderLeaderboard(){
+  const lb=document.getElementById('lb-content');
+  lb.innerHTML='<div style="font-size:12px;color:var(--muted)">Chargement...</div>';
+  const data=await sbFetch('/rest/v1/leaderboard?select=*&order=best_level.desc,best_pct.desc');
+  if(!data||!data.length){lb.innerHTML='<div style="font-size:12px;color:var(--muted)">Aucun joueur encore. Partage le lien !</div>';return;}
+  const currentPlayer=getPlayer();
+  lb.innerHTML=data.map((p,i)=>{
+    const lv=LEVELS[(p.best_level||1)-1];
+    const isMe=currentPlayer&&p.player_id===currentPlayer.id;
+    return`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);${isMe?'background:var(--bg);border-radius:8px;padding:8px;':''}">
+      <span style="font-size:16px;font-weight:900;color:var(--muted);min-width:20px">${i+1}</span>
+      <span style="font-size:20px">${lv.icon}</span>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:700;color:var(--text)">${p.pseudo}${isMe?' 👈':''}</div>
+        <div style="font-size:11px;color:var(--muted)">Niveau ${lv.name} · ${p.sessions} session${p.sessions>1?'s':''} · Moy. ${p.avg_pct}%</div>
+      </div>
+      <span style="font-size:14px;font-weight:800;color:${lv.tc}">${p.best_pct}%</span>
+    </div>`;
+  }).join('');
+}
+
+function initHome(){
+  const player=getPlayer();
+  const bar=document.getElementById('home-player-bar');
+  if(player){bar.style.display='flex';document.getElementById('home-player-name').textContent='👋 '+player.pseudo;}
+}
+
 const LEVELS=[
   {id:1,name:"Débutant",icon:"🌱",color:"var(--green)",tc:"#00A550",timer:40,threshold:0,lv:"lv1",desc:"Définitions, notions de base, ordres de grandeur"},
   {id:2,name:"Intermédiaire",icon:"📘",color:"var(--blue)",tc:"#0064A8",timer:30,threshold:60,lv:"lv2",desc:"Mécanismes financiers, stratégie et branches"},
@@ -501,9 +596,11 @@ function renderHome(){
 }
 
 function switchTab(tab){
-  document.querySelectorAll('.htab').forEach((b,i)=>{b.className='htab'+([['stats','memo'][i]===tab?' on':'']);});
+  document.querySelectorAll('.htab').forEach(b=>{const t=b.getAttribute('onclick').match(/'(\w+)'/)?.[1];b.className='htab'+(t===tab?' on':'');});
   document.getElementById('tab-stats').style.display=tab==='stats'?'flex':'none';
   document.getElementById('tab-memo').style.display=tab==='memo'?'block':'none';
+  document.getElementById('tab-leaderboard').style.display=tab==='leaderboard'?'block':'none';
+  if(tab==='leaderboard')renderLeaderboard();
 }
 
 function renderStats(){
@@ -590,6 +687,8 @@ function showResult(){
   clearInterval(timerInt);const pct=Math.round(score/qs.length*100);const lvConf=LEVELS[curLevel-1];
   saveBest(curLevel,score);const xpGained=score*5+(pct>=70?20:0)+(pct>=90?30:0);addXP(xpGained);
   recordSession(score,qs.length,catSc);updateStreak();
+  const dur=sessionStart?Math.round((Date.now()-sessionStart)/1000):0;
+  saveScoreRemote(curLevel,score,qs.length,pct,dur);
   let em,ti,su;
   if(pct>=90){em='🏆';ti='Parfait !';su="Score exceptionnel. Tu maîtrises ce niveau.";}
   else if(pct>=70){em='💪';ti='Bon niveau';su="Bonne maîtrise. Rejoue pour viser 90%+.";}
@@ -675,7 +774,10 @@ document.getElementById('tab-stats').style.display='flex';
 document.getElementById('tab-stats').style.flexDirection='column';
 document.getElementById('tab-stats').style.gap='14px';
 checkSharedScore();
-renderHome();
+// Login gate
+if(!getPlayer()){showScreen('screen-login');}else{initHome();renderHome();}
+
+
 </script>
 </body>
 </html>
