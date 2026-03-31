@@ -36,6 +36,7 @@ body{min-height:100vh;display:flex;justify-content:center;background:var(--bg)}
 .lv2{border-color:rgba(0,100,168,0.3)}.lv2 .lname{color:var(--blue)}
 .lv3{border-color:rgba(245,128,10,0.3)}.lv3 .lname{color:var(--orange)}
 .lv4{border-color:rgba(232,0,45,0.3)}.lv4 .lname{color:var(--red)}
+.lv5{border-color:rgba(124,58,237,0.4);background:linear-gradient(135deg,rgba(124,58,237,0.04),transparent)}.lv5 .lname{color:var(--purple)}
 .licon{font-size:26px;flex-shrink:0}
 .linfo{flex:1}
 .lname{font-size:14px;font-weight:800;margin-bottom:2px}
@@ -196,6 +197,7 @@ body{min-height:100vh;display:flex;justify-content:center;background:var(--bg)}
         <button class="mtab" onclick="switchMemo('strategie')">🌍 Stratégie</button>
         <button class="mtab" onclick="switchMemo('branches')">⚡ Branches</button>
         <button class="mtab" onclick="switchMemo('projet')">🎯 Projet</button>
+        <button class="mtab" onclick="switchMemo('hardcore')">💀 Hardcore</button>
       </div>
       <div id="memo-content"></div>
     </div>
@@ -279,12 +281,13 @@ const LEVELS=[
   {id:2,name:"Intermédiaire",icon:"📘",color:"var(--blue)",tc:"#0064A8",timer:30,threshold:60,lv:"lv2",desc:"Mécanismes financiers, stratégie et branches"},
   {id:3,name:"Avancé",icon:"🔥",color:"var(--orange)",tc:"#F5800A",timer:25,threshold:70,lv:"lv3",desc:"Indicateurs précis, gestion de projet, stratégie groupe"},
   {id:4,name:"Expert",icon:"🏆",color:"var(--red)",tc:"#E8002D",timer:15,threshold:80,lv:"lv4",desc:"Niveau entretien RH Groupe — précision et vitesse exigées"},
+  {id:5,name:"Hardcore",icon:"💀",color:"var(--purple)",tc:"#7C3AED",timer:8,threshold:90,lv:"lv5",desc:"Pour ceux qui pensent tout savoir — 8 secondes, pas de pitié"},
 ];
 
-const CAT_LABELS={chiffres:"Chiffres TotalEnergies",finance:"Finance Corporate",strategie:"Stratégie Groupe",branches:"Branches TotalEnergies",projet:"Gestion de Projet"};
-const CAT_ICONS={chiffres:"📊",finance:"💰",strategie:"🌍",branches:"⚡",projet:"🎯"};
-const CAT_COLORS={chiffres:"b-chiffres",finance:"b-finance",strategie:"b-strategie",branches:"b-branches",projet:"b-projet"};
-const CAT_TC={chiffres:"var(--blue)",finance:"var(--green)",strategie:"var(--orange)",branches:"var(--purple)",projet:"var(--teal)"};
+const CAT_LABELS={chiffres:"Chiffres TotalEnergies",finance:"Finance Corporate",strategie:"Stratégie Groupe",branches:"Branches TotalEnergies",projet:"Gestion de Projet",hardcore:"Hardcore"};
+const CAT_ICONS={chiffres:"📊",finance:"💰",strategie:"🌍",branches:"⚡",projet:"🎯",hardcore:"💀"};
+const CAT_COLORS={chiffres:"b-chiffres",finance:"b-finance",strategie:"b-strategie",branches:"b-branches",projet:"b-projet",hardcore:"b-branches"};
+const CAT_TC={chiffres:"var(--blue)",finance:"var(--green)",strategie:"var(--orange)",branches:"var(--purple)",projet:"var(--teal)",hardcore:"var(--purple)"};
 
 const Q={
 1:[ // DÉBUTANT (15 questions)
@@ -355,6 +358,23 @@ const Q={
   {cat:"projet",q:"Comment priorisez-vous un backlog avec des contraintes conflictuelles (délai, coût, scope) ?",hint:"Triangle contraintes projet — niveau senior.",a:["Toujours prioriser le délai avant tout","Laisser l'équipe décider","Utiliser la valeur métier × effort : maximiser le ratio valeur/effort, en concertation avec le PO et les stakeholders","Prioriser selon le budget disponible uniquement"],c:2,e:"Priorisation backlog : valeur métier (impact) / effort (complexité) = priorité. Techniques : MoSCoW, WSJF, ICE Score. Toujours en concertation avec PO et stakeholders."},
   {cat:"branches",q:"Qu'est-ce que le Vehicle-to-Grid (V2G) et pourquoi TotalEnergies EV y investit ?",hint:"Utilisation bidirectionnelle de la batterie du véhicule.",a:["Technologie pour recharger plus vite","Système de navigation intégré au chargeur","Standard de connexion entre véhicule et réseau mobile","Capacité d'un VE à restituer de l'énergie au réseau — flexibilité énergétique et revenus pour le conducteur"],c:3,e:"V2G = Vehicle-to-Grid. Le VE peut renvoyer de l'énergie au réseau. Bénéfices : stabilisation réseau, revenus pour le conducteur, optimisation énergetique. Axe stratégique pour TotalEnergies EV."},
 ],
+5:[ // HARDCORE (15 questions — 8s, pièges, précision extrême)
+  {cat:"chiffres",q:"TotalEnergies 2025 : CFFO = 27,8 Mds$ et RN ajusté = 15,6 Mds$. Quel est le ratio RN ajusté / CFFO approximatif ?",hint:"Calcul mental — ratio de conversion du cash en résultat.",a:["~36%","~56%","~72%","~44%"],c:1,e:"15,6 / 27,8 ≈ 56%. Cela mesure la part du cash opérationnel qui devient du résultat net ajusté — utile pour comparer l'efficacité entre majors."},
+  {cat:"finance",q:"Un projet a un ROACE de 9% et le WACC est de 10%. Que faut-il conclure ?",hint:"Comparez ROACE et WACC — piège classique.",a:["Le projet crée de la valeur — 9% c'est bon","Le projet détruit de la valeur (ROACE < WACC)","On ne peut rien conclure sans le FCF","Le projet est rentable car ROACE > 0"],c:1,e:"ROACE (9%) < WACC (10%) → destruction de valeur économique. Même si le projet est profitable en absolu, il ne génère pas assez pour rémunérer les investisseurs."},
+  {cat:"strategie",q:"Si le Brent chute à 30$/baril pendant 2 ans, TotalEnergies peut-il maintenir son dividende ?",hint:"Breakeven à ~40$/baril — mais quelle est la vraie marge de manœuvre ?",a:["Non — en dessous du breakeven, dividende supprimé immédiatement","Oui — grâce aux réserves de cash, au bilan solide (gearing 14,7%) et à la flexibilité du CAPEX","Oui — le GNL compense intégralement la perte Upstream","Non — la dette exploserait immédiatement"],c:1,e:"À 30$/bbl, TotalEnergies est sous son breakeven mais peut puiser dans son bilan (gearing faible), réduire le CAPEX discrétionnaire et utiliser les couvertures. Le dividende progressif a déjà résisté à la crise 2020."},
+  {cat:"branches",q:"Quelle est la différence technique entre OCPP 1.6 et OCPP 2.0.1 ?",hint:"Évolution majeure du protocole — impact sur le Smart Charging et la sécurité.",a:["OCPP 2.0.1 ajoute le support du Plug & Charge (ISO 15118), la sécurité end-to-end et le device management avancé","OCPP 2.0.1 est juste une mise à jour mineure de format","OCPP 1.6 supporte déjà l'ISO 15118 nativement","OCPP 2.0.1 abandonne le protocole JSON pour passer à XML"],c:0,e:"OCPP 2.0.1 apporte : ISO 15118 (Plug & Charge), sécurité TLS améliorée, device management avancé, smart charging granulaire. Transition critique pour les CPOs comme TotalEnergies EV."},
+  {cat:"projet",q:"Dans un projet Agile, un sponsor demande d'ajouter une feature majeure en milieu de sprint. Que faites-vous ?",hint:"Sacro-saint principe Scrum — intégrité du sprint.",a:["Vous l'intégrez immédiatement — le client est prioritaire","Vous refusez catégoriquement et sans discussion","Vous expliquez l'impact sur le sprint actuel, proposez de l'ajouter au prochain sprint backlog en concertation avec le PO","Vous découpez le sprint en deux pour l'intégrer"],c:2,e:"En Scrum, le sprint est protégé. On n'ajoute pas de travail en cours de sprint sauf urgence absolue. La bonne réponse : transparence sur l'impact, ajout au backlog priorisé pour le sprint suivant, décision PO + Sponsor."},
+  {cat:"chiffres",q:"TotalEnergies vise 35+ GW de renouvelables en 2030. En 2025, la capacité installée est ~20 GW. Quel CAGR approximatif faut-il pour atteindre 35 GW ?",hint:"CAGR = Compound Annual Growth Rate sur 5 ans.",a:["~3% par an","~7% par an","~12% par an","~20% par an"],c:1,e:"(35/20)^(1/5) - 1 ≈ 11,8% → ~12% par an. En réalité TotalEnergies cible ~10-12% CAGR sur les renouvelables — cohérent avec la feuille de route."},
+  {cat:"finance",q:"Qu'est-ce que l'EVA (Economic Value Added) et en quoi diffère-t-il du résultat net ?",hint:"Mesure de la vraie création de valeur économique.",a:["EVA = Résultat net - impôts. Identique au RN ajusté","EVA = NOPAT - (WACC × Capitaux Employés). Mesure la valeur créée au-delà du coût du capital","EVA = EBITDA - Amortissements. Proche de l'EBIT","EVA = FCF - Dividendes. Mesure le cash résiduel"],c:1,e:"EVA = Net Operating Profit After Tax - (WACC × Capital Employed). Un RN positif peut coexister avec un EVA négatif si le coût du capital n'est pas couvert. TotalEnergies pilote sa stratégie sur le ROACE vs WACC, équivalent à l'EVA."},
+  {cat:"strategie",q:"Pourquoi TotalEnergies n'a-t-il pas rebaptisé ses activités 'fossil-free' comme certains pairs ?",hint:"Positionnement de marque et stratégie de communication.",a:["Par conservatisme marketing — manque d'ambition sur la transition","Stratégie délibérée : assumer le modèle multi-énergie, crédibilité vs greenwashing, et maintenir la confiance des investisseurs pétroliers","Par obligation réglementaire française","Pour éviter de payer des redevances de marque"],c:1,e:"TotalEnergies assume son modèle multi-énergie : pas de promesse 'fossil-free' non tenue. Crédibilité > greenwashing. Les investisseurs pétroliers restent actionnaires car le modèle est clair. Stratégie de long terme vs communication court-termiste."},
+  {cat:"branches",q:"Qu'est-ce que le 'roaming' EV et comment TotalEnergies EV le monétise-t-il ?",hint:"Interopérabilité entre réseaux de recharge — modèle économique.",a:["Le roaming EV est gratuit — pas de monétisation possible","TotalEnergies EV monétise via des frais d'interchange (B2B entre CPO et MSP) et des abonnements MSP permettant l'accès multi-réseau","Le roaming n'existe pas encore — chaque réseau est fermé","TotalEnergies facture directement les utilisateurs d'autres réseaux"],c:1,e:"Le roaming EV fonctionne comme le roaming téléphonique : frais d'interchange CPO→MSP. TotalEnergies EV est à la fois CPO (revenus borne) et MSP (abonnements conducteurs). Modèle B2B + B2C."},
+  {cat:"projet",q:"Qu'est-ce que le WSJF (Weighted Shortest Job First) et quand l'utilise-t-on ?",hint:"Méthode de priorisation SAFe — au-delà du Scrum classique.",a:["Une méthode de gestion des risques projets","Une technique de priorisation agile à l'échelle : (Valeur + Urgence + Réduction risque) / Taille. Maximise le débit de valeur","Une cérémonie de planification trimestrielle (PI Planning)","Un outil de reporting Jira pour les équipes distribuées"],c:1,e:"WSJF = Weighted Shortest Job First. Score = (Business Value + Time Criticality + Risk Reduction) / Job Size. Priorise les petits jobs à forte valeur. Utilisé en SAFe pour la priorisation au niveau programme."},
+  {cat:"chiffres",q:"En 2025, TotalEnergies a un CAPEX net de 17,1 Mds$ et un CFFO de 27,8 Mds$. Quel est le FCF approximatif ?",hint:"FCF = CFFO - CAPEX. Calcul direct.",a:["~5 Mds$","~10,7 Mds$","~15 Mds$","~8,3 Mds$"],c:1,e:"FCF = 27,8 - 17,1 = 10,7 Mds$. Ce FCF finance les dividendes et les rachats d'actions. Avec un dividende ~8 Mds$, il reste ~2,7 Mds$ pour les rachats."},
+  {cat:"finance",q:"Qu'est-ce que la dette hybride et pourquoi TotalEnergies en émet ?",hint:"Instrument de financement à mi-chemin entre dette et capital.",a:["Une dette à taux variable indexée sur le pétrole","Un instrument traité à 50% comme dette et 50% comme capitaux propres par les agences de notation — améliore le gearing sans diluer les actionnaires","Une dette subordonnée aux fournisseurs uniquement","Un emprunt interbancaire à court terme"],c:1,e:"La dette hybride (obligations perpétuelles subordonnées) est comptabilisée partiellement en fonds propres par S&P/Moody's. Permet à TotalEnergies d'améliorer son ratio gearing sans émettre des actions — outil de gestion du bilan."},
+  {cat:"strategie",q:"Quel est le risque principal de la stratégie 'double trajectoire' de TotalEnergies (hydrocarbures + renouvelables) ?",hint:"Analyse critique du modèle — niveau CODIR.",a:["Le risque est nul — c'est la meilleure stratégie possible","Risque de stranded assets si la transition s'accélère, et risque de dilution stratégique si les deux activités se cannibalisent en capital","Le risque principal est la concurrence des majors américaines","Risque de surproduction GNL en 2030"],c:1,e:"Stranded assets : si le pétrole devient non rentable plus vite que prévu, les investissements Upstream sont perdus. Dilution stratégique : vouloir tout faire peut conduire à ne rien faire exceptionnellement bien. C'est le débat BP/Shell vs TotalEnergies."},
+  {cat:"branches",q:"Dans un projet de déploiement de bornes EV, quels sont les 3 risques critiques à identifier en priorité ?",hint:"Question chef de projet niveau senior dans le secteur EV.",a:["Budget dépassé, délai retardé, qualité insuffisante","Délai de raccordement réseau électrique, homologation OCPP/réglementaire, et adoption utilisateurs (utilisation réelle vs prévisionnelle)","Manque de développeurs, bug logiciel, mauvais marketing","Concurrence des autres CPOs, prix de l'électricité, météo"],c:1,e:"Les 3 risques critiques d'un projet EV : 1) Raccordement réseau (ENEDIS/gestionnaire réseau — délais 6-18 mois). 2) Conformité OCPP/réglementaire (AFIR, calibration). 3) Adoption : une borne installée non utilisée ne génère pas de revenus."},
+  {cat:"chiffres",q:"Si TotalEnergies maintient son ROACE à 12,6% sur 5 ans avec des capitaux employés moyens de 120 Mds$, quel est le RNOAI annuel approximatif ?",hint:"Application directe de la formule ROACE.",a:["~10 Mds$","~15,1 Mds$","~8,5 Mds$","~20 Mds$"],c:1,e:"RNOAI = ROACE × Capitaux Employés = 12,6% × 120 = 15,12 Mds$ ≈ 15,1 Mds$. Cohérent avec le RN ajusté 2025 de 15,6 Mds$."},
+],
 };
 
 const MEMO={
@@ -417,6 +437,18 @@ const MEMO={
     {k:"KPI",v:"Key Performance Indicator",e:"Indicateur mesurable d'un objectif — délai, coût, qualité"},
     {k:"Risk register",v:"Registre des risques",e:"Probabilité × Impact, mitigation, responsable"},
     {k:"Rétrospective",v:"Cérémonie fin de sprint",e:"L'équipe identifie ce qui a bien/mal fonctionné et planifie des améliorations"},
+  ],
+  hardcore:[
+    {k:"EVA",v:"NOPAT - (WACC × Capitaux Employés)",e:"Vraie création de valeur économique — positif si ROACE > WACC"},
+    {k:"FCF 2025",v:"~10,7 Mds$",e:"CFFO 27,8 - CAPEX 17,1 = 10,7 Mds$ disponibles pour dividendes + rachats"},
+    {k:"CAGR renouvelables",v:"~12%/an",e:"Pour passer de ~20 GW (2025) à 35+ GW (2030) en 5 ans"},
+    {k:"Ratio RN ajusté / CFFO",v:"~56%",e:"15,6 / 27,8 — mesure l'efficacité de conversion du cash en résultat"},
+    {k:"RNOAI 2025",v:"~15,1 Mds$",e:"ROACE 12,6% × Capitaux employés ~120 Mds$"},
+    {k:"OCPP 1.6 vs 2.0.1",v:"2.0.1 ajoute ISO 15118, sécurité TLS, device management",e:"Migration critique pour les CPOs — Plug & Charge natif"},
+    {k:"Dette hybride",v:"50% dettes / 50% fonds propres (agences notation)",e:"Améliore le gearing sans diluer — outil bilan TotalEnergies"},
+    {k:"WSJF",v:"(Business Value + Urgence + Risk Reduction) / Taille",e:"Priorisation SAFe — maximise le débit de valeur par unité d'effort"},
+    {k:"Roaming EV",v:"Frais d'interchange CPO→MSP",e:"Modèle B2B + B2C — TotalEnergies EV est les deux"},
+    {k:"Risques critiques déploiement bornes",v:"Raccordement réseau / Conformité OCPP / Adoption",e:"Délais ENEDIS, homologation AFIR, utilisation réelle vs prévisionnelle"},
   ],
 };
 
@@ -493,7 +525,7 @@ function renderStats(){
 function switchMemo(cat){
   activeMemo=cat;
   document.querySelectorAll('.mtab').forEach(b=>b.className='mtab');
-  const idx={chiffres:0,finance:1,strategie:2,branches:3,projet:4}[cat];
+  const idx={chiffres:0,finance:1,strategie:2,branches:3,projet:4,hardcore:5}[cat];
   document.querySelectorAll('.mtab')[idx].className='mtab on';
   renderMemoContent();
 }
@@ -509,7 +541,7 @@ function selectLevel(id){if(!isUnlocked(id)){toast('Niveau verrouillé — attei
 function startQuiz(lv){
   curLevel=lv;const lvConf=LEVELS[lv-1];
   qs=shuffle(Q[lv]);cur=0;score=0;
-  catSc={chiffres:[0,0],finance:[0,0],strategie:[0,0],branches:[0,0],projet:[0,0]};
+  catSc={chiffres:[0,0],finance:[0,0],strategie:[0,0],branches:[0,0],projet:[0,0],hardcore:[0,0]};
   const b=document.getElementById('qlvbadge');b.textContent=lvConf.icon+' '+lvConf.name;
   b.style.cssText=`background:${lvConf.color}18;color:${lvConf.tc};font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;`;
   showScreen('screen-quiz');renderQ();
@@ -565,7 +597,7 @@ function showResult(){
   document.getElementById('rscore').style.color=lvConf.tc;document.getElementById('rscore').textContent=score+'/'+qs.length+' ('+pct+'%)';
   document.getElementById('rsub').textContent=su+' +'+xpGained+' XP';
   const nextLv=curLevel+1;const ub=document.getElementById('unlock-banner');
-  if(nextLv<=4&&pct>=lvConf.threshold&&!isUnlocked(nextLv)){const did=unlockLv(nextLv);if(did){const nc=LEVELS[nextLv-1];ub.style.display='block';document.getElementById('ulicon').textContent='🔓';document.getElementById('ultitle').textContent='Niveau '+nc.name+' débloqué !';document.getElementById('uldesc').textContent='Tu accèdes maintenant au niveau '+nc.name.toLowerCase()+'.';launchConfetti();}else ub.style.display='none';}else ub.style.display='none';
+  if(nextLv<=5&&pct>=lvConf.threshold&&!isUnlocked(nextLv)){const did=unlockLv(nextLv);if(did){const nc=LEVELS[nextLv-1];ub.style.display='block';document.getElementById('ulicon').textContent='🔓';document.getElementById('ultitle').textContent='Niveau '+nc.name+' débloqué !';document.getElementById('uldesc').textContent='Tu accèdes maintenant au niveau '+nc.name.toLowerCase()+'.';launchConfetti();}else ub.style.display='none';}else ub.style.display='none';
   document.getElementById('bd').innerHTML=Object.entries(catSc).filter(([,v])=>v[1]>0).map(([c,[ok,tot]])=>{const p=tot>0?Math.round(ok/tot*100):0;const cl=p>=80?'vg':p>=50?'vm':'vb';return`<div class="bdrow"><span class="bdlabel">${CAT_ICONS[c]} ${CAT_LABELS[c]}</span><span class="bdval ${cl}">${ok}/${tot} (${p}%)</span></div>`;}).join('');
   showScreen('screen-result');
 }
