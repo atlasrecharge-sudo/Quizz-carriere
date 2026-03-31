@@ -344,6 +344,15 @@ function logout(){localStorage.removeItem('tep2_player');showScreen('screen-logi
 async function saveScoreRemote(level,score,total,pct,durationSec){
   const player=getPlayer();if(!player)return;
   await sbFetch('/rest/v1/scores',{method:'POST',body:JSON.stringify({player_id:player.id,level,score,total,pct,duration_sec:durationSec})});
+  // Update XP + streak on player record
+  const today=new Date().toISOString().split('T')[0];
+  const p=getP();
+  const newXp=p.xp||0;
+  const lastPlayed=player.last_played;
+  const yesterday=new Date(Date.now()-86400000).toISOString().split('T')[0];
+  const newStreak=lastPlayed===yesterday?(player.streak||0)+1:lastPlayed===today?(player.streak||1):1;
+  await sbFetch(`/rest/v1/players?id=eq.${player.id}`,{method:'PATCH',body:JSON.stringify({xp:newXp,streak:newStreak,last_played:today}),headers:{'Prefer':'return=representation'}});
+  player.streak=newStreak;player.last_played=today;savePlayer(player);
 }
 
 async function renderLeaderboard(){
@@ -562,8 +571,8 @@ function toggleDark(){const h=document.documentElement;const d=h.getAttribute('d
 
 function getP(){return JSON.parse(localStorage.getItem('tep2')||'{"xp":0,"unlocked":[1],"bestScores":{},"sessions":0,"totalCorrect":0,"totalQ":0,"catCorrect":{},"catTotal":{},"history":[],"streak":0,"lastPlayed":null}')}
 function saveP(p){localStorage.setItem('tep2',JSON.stringify(p))}
-function isUnlocked(lv){return getP().unlocked.includes(lv)}
-function unlockLv(lv){const p=getP();if(!p.unlocked.includes(lv)){p.unlocked.push(lv);saveP(p);return true;}return false;}
+function isUnlocked(lv){return true;} // All levels open
+function unlockLv(lv){return false;}
 function getBest(lv){return getP().bestScores[lv]||0}
 function saveBest(lv,s){const p=getP();if(!p.bestScores[lv]||s>p.bestScores[lv]){p.bestScores[lv]=s;saveP(p);}}
 function addXP(n){const p=getP();p.xp=(p.xp||0)+n;saveP(p);}
@@ -578,7 +587,7 @@ function renderHome(){
       <div class="linfo">
         <div class="lname">${lv.name}</div>
         <div class="ldesc">${lv.desc}</div>
-        <span class="lmeta" style="background:${lv.color}18;color:${lv.tc}">${locked?'Débloque à '+(LEVELS[lv.id-2]?.threshold||0)+'% niveau précédent':lv.timer+'s / question · 15 questions'}</span>
+        <span class="lmeta" style="background:${lv.color}18;color:${lv.tc}">${lv.timer+'s / question · 15 questions'}</span>
         ${(!locked&&best>0)?`<div class="lprog"><div class="lbar" style="width:${pct}%;background:${lv.tc}"></div></div>`:''}
       </div>
       <div class="lright">${locked?'🔒':`<div class="lscore" style="color:${lv.tc}">${best>0?best+'/15':''}</div><div class="lpct">${best>0?pct+'%':''}</div>`}</div>
@@ -635,7 +644,7 @@ function renderMemoContent(){
     ${items.map(m=>`<div class="memo-item"><div><div class="memo-key">${m.k}</div><div class="memo-exp">${m.e}</div></div><div class="memo-val" style="color:${c}">${m.v}</div></div>`).join('')}
   </div>`;}
 
-function selectLevel(id){if(!isUnlocked(id)){toast('Niveau verrouillé — atteins le seuil au niveau précédent !');return;}if(mode==='flash'){startFlash(id);return;}startQuiz(id);}
+function selectLevel(id){if(mode==='flash'){startFlash(id);return;}startQuiz(id);}
 
 function startQuiz(lv){
   curLevel=lv;const lvConf=LEVELS[lv-1];
@@ -701,8 +710,7 @@ function showResult(){
   const mins=Math.floor(elapsed/60);const secs=elapsed%60;
   const timeStr=mins>0?mins+'min '+secs+'s':secs+'s';
   const timeEl=document.getElementById('rtime');if(timeEl)timeEl.textContent='⏱ '+timeStr;
-  const nextLv=curLevel+1;const ub=document.getElementById('unlock-banner');
-  if(nextLv<=5&&pct>=lvConf.threshold&&!isUnlocked(nextLv)){const did=unlockLv(nextLv);if(did){const nc=LEVELS[nextLv-1];ub.style.display='block';document.getElementById('ulicon').textContent='🔓';document.getElementById('ultitle').textContent='Niveau '+nc.name+' débloqué !';document.getElementById('uldesc').textContent='Tu accèdes maintenant au niveau '+nc.name.toLowerCase()+'.';launchConfetti();}else ub.style.display='none';}else ub.style.display='none';
+  const ub=document.getElementById('unlock-banner');ub.style.display='none';
   document.getElementById('bd').innerHTML=Object.entries(catSc).filter(([,v])=>v[1]>0).map(([c,[ok,tot]])=>{const p=tot>0?Math.round(ok/tot*100):0;const cl=p>=80?'vg':p>=50?'vm':'vb';return`<div class="bdrow"><span class="bdlabel">${CAT_ICONS[c]} ${CAT_LABELS[c]}</span><span class="bdval ${cl}">${ok}/${tot} (${p}%)</span></div>`;}).join('');
   showScreen('screen-result');
 }
